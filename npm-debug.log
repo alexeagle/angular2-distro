@@ -1,0 +1,49 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/Users/alexeagle/.nvm/versions/node/v0.12.2/bin/npm',
+1 verbose cli   'link',
+1 verbose cli   '../ts2dart' ]
+2 info using npm@2.9.0
+3 info using node@v0.12.2
+4 verbose install where, what [ '/Users/alexeagle/.nvm/versions/node/v0.12.2/lib',
+4 verbose install   [ '../ts2dart' ] ]
+5 verbose install initial load of /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/package.json
+6 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/angular-cli/package.json
+7 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/clang-format/package.json
+8 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/grunt/package.json
+9 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/grunt-cli/package.json
+10 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/gulp/package.json
+11 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/harp/package.json
+12 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/http-server/package.json
+13 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/jake/package.json
+14 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/npm/package.json
+15 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/npm-release/package.json
+16 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/tick/package.json
+17 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/ts2dart/package.json
+18 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/tsd/package.json
+19 verbose installManyTop reading scoped package data from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/node_modules/typescript/package.json
+20 warn package.json npm-release@0.0.4-3 No repository field.
+21 verbose readDependencies loading dependencies from /Users/alexeagle/.nvm/versions/node/v0.12.2/lib/package.json
+22 silly cache add args [ '../ts2dart', null ]
+23 verbose cache add spec ../ts2dart
+24 silly cache add parsed spec { raw: '../ts2dart',
+24 silly cache add   scope: null,
+24 silly cache add   name: null,
+24 silly cache add   rawSpec: '../ts2dart',
+24 silly cache add   spec: '/Users/alexeagle/Projects/angular/modules/ts2dart',
+24 silly cache add   type: 'local' }
+25 error addLocal Could not install /Users/alexeagle/Projects/angular/modules/ts2dart
+26 verbose stack Error: ENOENT, open '/Users/alexeagle/Projects/angular/modules/ts2dart'
+26 verbose stack     at Error (native)
+27 verbose cwd /Users/alexeagle/Projects/angular/modules/angular2
+28 error Darwin 14.4.0
+29 error argv "node" "/Users/alexeagle/.nvm/versions/node/v0.12.2/bin/npm" "link" "../ts2dart"
+30 error node v0.12.2
+31 error npm  v2.9.0
+32 error path /Users/alexeagle/Projects/angular/modules/ts2dart
+33 error code ENOENT
+34 error errno -2
+35 error enoent ENOENT, open '/Users/alexeagle/Projects/angular/modules/ts2dart'
+35 error enoent This is most likely not a problem with npm itself
+35 error enoent and is related to npm not being able to find a file.
+36 verbose exit [ -2, true ]

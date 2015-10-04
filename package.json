@@ -1,0 +1,13 @@
+{
+  "name": "angular2",
+  "version": "0.0.0-experimental",
+  "description": "Angular 2 - a web framework for modern web apps",
+  "homepage": "http://angular.io",
+  "typings": "./angular2.d.ts",
+  "dependencies": {
+    "traceur": "",
+    "reflect-metadata": "0.1.1",
+    "@reactivex/rxjs": "0.0.0-prealpha.3",
+    "zone.js": "0.5.7"
+  }
+}
