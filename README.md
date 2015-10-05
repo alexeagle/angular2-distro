@@ -20,10 +20,12 @@ to find the type definitions directly from the `node_modules` folder.
 Remaining problems to address before demo/shipping:
 - Errors from tsc because our transitive typings are missing, see 
   https://github.com/Microsoft/TypeScript/issues/5097
-- VSCode should use the version of typescript found in node_modules *by default*
-- Need rectangle-selection in VSCode to remove leading stars from example code in the docs
-- tsc --watch should see newly added files, so we can start the compiler before coding
+- VSCode should use the version of typescript found in node_modules *by default*:
+  mailed a contact on the team requesting this
+- tsc --watch should see newly added files, so we can start the compiler before coding:
+  https://github.com/Microsoft/TypeScript/issues/4553
 - Lots of private APIs exposed, need to
   - Use `@internal` everywhere: https://github.com/angular/angular/pull/4477
-  - members marked `private` appear
-  - introduce abstract classes as a supertype of current Angular APIs with @private constructor
+  - members marked `private` appear: https://github.com/Microsoft/TypeScript/issues/5106
+  - introduce abstract classes as a supertype of current Angular APIs with @private constructor:
+    https://github.com/angular/angular/issues/4518
