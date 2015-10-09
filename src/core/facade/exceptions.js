@@ -66,4 +66,8 @@ function makeTypeError(message) {
     return new TypeError(message);
 }
 exports.makeTypeError = makeTypeError;
+function unimplemented() {
+    throw new BaseException('unimplemented');
+}
+exports.unimplemented = unimplemented;
 //# sourceMappingURL=exceptions.js.map

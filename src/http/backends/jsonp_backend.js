@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
     switch (arguments.length) {
@@ -9,6 +14,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var interfaces_1 = require('../interfaces');
 var enums_1 = require('../enums');
 var static_response_1 = require('../static_response');
 var base_response_options_1 = require('../base_response_options');
@@ -20,11 +26,16 @@ var lang_1 = require('angular2/src/core/facade/lang');
 var Rx = require('@reactivex/rxjs/dist/cjs/Rx');
 var Observable = Rx.Observable;
 var JSONPConnection = (function () {
-    /**
-     * @private
-     */
-    function JSONPConnection(req, _dom, baseResponseOptions) {
+    function JSONPConnection() {
+    }
+    return JSONPConnection;
+})();
+exports.JSONPConnection = JSONPConnection;
+var JSONPConnection_ = (function (_super) {
+    __extends(JSONPConnection_, _super);
+    function JSONPConnection_(req, _dom, baseResponseOptions) {
         var _this = this;
+        _super.call(this);
         this._dom = _dom;
         this.baseResponseOptions = baseResponseOptions;
         this._finished = false;
@@ -84,7 +95,7 @@ var JSONPConnection = (function () {
             };
         });
     }
-    JSONPConnection.prototype.finished = function (data) {
+    JSONPConnection_.prototype.finished = function (data) {
         // Don't leak connections
         this._finished = true;
         this._dom.removeConnection(this._id);
@@ -92,25 +103,32 @@ var JSONPConnection = (function () {
             return;
         this._responseData = data;
     };
-    return JSONPConnection;
-})();
-exports.JSONPConnection = JSONPConnection;
-var JSONPBackend = (function () {
-    /**
-     * @private
-     */
-    function JSONPBackend(_browserJSONP, _baseResponseOptions) {
+    return JSONPConnection_;
+})(JSONPConnection);
+exports.JSONPConnection_ = JSONPConnection_;
+var JSONPBackend = (function (_super) {
+    __extends(JSONPBackend, _super);
+    function JSONPBackend() {
+        _super.apply(this, arguments);
+    }
+    return JSONPBackend;
+})(interfaces_1.ConnectionBackend);
+exports.JSONPBackend = JSONPBackend;
+var JSONPBackend_ = (function (_super) {
+    __extends(JSONPBackend_, _super);
+    function JSONPBackend_(_browserJSONP, _baseResponseOptions) {
+        _super.call(this);
         this._browserJSONP = _browserJSONP;
         this._baseResponseOptions = _baseResponseOptions;
     }
-    JSONPBackend.prototype.createConnection = function (request) {
-        return new JSONPConnection(request, this._browserJSONP, this._baseResponseOptions);
+    JSONPBackend_.prototype.createConnection = function (request) {
+        return new JSONPConnection_(request, this._browserJSONP, this._baseResponseOptions);
     };
-    JSONPBackend = __decorate([
+    JSONPBackend_ = __decorate([
         di_1.Injectable(), 
         __metadata('design:paramtypes', [browser_jsonp_1.BrowserJsonp, base_response_options_1.ResponseOptions])
-    ], JSONPBackend);
-    return JSONPBackend;
-})();
-exports.JSONPBackend = JSONPBackend;
+    ], JSONPBackend_);
+    return JSONPBackend_;
+})(JSONPBackend);
+exports.JSONPBackend_ = JSONPBackend_;
 //# sourceMappingURL=jsonp_backend.js.map

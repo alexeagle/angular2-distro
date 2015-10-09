@@ -18,7 +18,8 @@ var metadata_1 = require('./metadata');
 var exceptions_2 = require('./exceptions');
 var forward_ref_1 = require('./forward_ref');
 /**
- * @private
+ * FIXME(alexeagle): make internal
+ * currently exposed by di
  */
 var Dependency = (function () {
     function Dependency(key, optional, lowerBoundVisibility, upperBoundVisibility, properties) {
@@ -101,56 +102,23 @@ var Binding = (function () {
     return Binding;
 })();
 exports.Binding = Binding;
-/**
- * An internal resolved representation of a {@link Binding} used by the {@link Injector}.
- *
- * It is usually created automatically by `Injector.resolveAndCreate`.
- *
- * It can be created manually, as follows:
- *
- * ### Example ([live demo](http://plnkr.co/edit/RfEnhh8kUEI0G3qsnIeT?p%3Dpreview&p=preview))
- *
- * ```typescript
- * var resolvedBindings = Injector.resolve([new Binding('message', {toValue: 'Hello'})]);
- * var injector = Injector.fromResolvedBindings(resolvedBindings);
- *
- * expect(injector.get('message')).toEqual('Hello');
- * ```
- */
-var ResolvedBinding = (function () {
-    /**
-     * @private
-     */
-    function ResolvedBinding(
-        /**
-         * A key, usually a `Type`.
-         */
-        key, 
-        /**
-         * @private
-         * Factory function which can return an instance of an object represented by a key.
-         */
-        resolvedFactories, 
-        /**
-         * @private
-         * Indicates if the binding is a multi-binding or a regular binding.
-         */
-        multiBinding) {
+var ResolvedBinding_ = (function () {
+    function ResolvedBinding_(key, resolvedFactories, multiBinding) {
         this.key = key;
         this.resolvedFactories = resolvedFactories;
         this.multiBinding = multiBinding;
     }
-    Object.defineProperty(ResolvedBinding.prototype, "resolvedFactory", {
-        /** @private */
+    Object.defineProperty(ResolvedBinding_.prototype, "resolvedFactory", {
         get: function () { return this.resolvedFactories[0]; },
         enumerable: true,
         configurable: true
     });
-    return ResolvedBinding;
+    return ResolvedBinding_;
 })();
-exports.ResolvedBinding = ResolvedBinding;
+exports.ResolvedBinding_ = ResolvedBinding_;
 /**
- * @private
+ * FIXME(alexeagle): make internal
+ * currently this is exposed by di, binding
  * An internal resolved representation of a factory function created by resolving {@link Binding}.
  */
 var ResolvedFactory = (function () {
@@ -334,7 +302,7 @@ exports.resolveFactory = resolveFactory;
  * convenience binding syntax.
  */
 function resolveBinding(binding) {
-    return new ResolvedBinding(key_1.Key.get(binding.token), [resolveFactory(binding)], false);
+    return new ResolvedBinding_(key_1.Key.get(binding.token), [resolveFactory(binding)], false);
 }
 exports.resolveBinding = resolveBinding;
 /**
@@ -344,11 +312,11 @@ function resolveBindings(bindings) {
     var normalized = _createListOfBindings(_normalizeBindings(bindings, new Map()));
     return normalized.map(function (b) {
         if (b instanceof _NormalizedBinding) {
-            return new ResolvedBinding(b.key, [b.resolvedFactory], false);
+            return new ResolvedBinding_(b.key, [b.resolvedFactory], false);
         }
         else {
             var arr = b;
-            return new ResolvedBinding(arr[0].key, arr.map(function (_) { return _.resolvedFactory; }), true);
+            return new ResolvedBinding_(arr[0].key, arr.map(function (_) { return _.resolvedFactory; }), true);
         }
     });
 }
@@ -371,7 +339,7 @@ function _createListOfBindings(flattenedBindings) {
     return collection_1.MapWrapper.values(flattenedBindings);
 }
 function _normalizeBindings(bindings, res) {
-    collection_1.ListWrapper.forEach(bindings, function (b) {
+    bindings.forEach(function (b) {
         if (b instanceof lang_1.Type) {
             _normalizeBinding(bind(b).toClass(b), res);
         }
@@ -419,8 +387,8 @@ function _constructDependencies(factoryFunction, dependencies) {
         return _dependenciesFor(factoryFunction);
     }
     else {
-        var params = collection_1.ListWrapper.map(dependencies, function (t) { return [t]; });
-        return collection_1.ListWrapper.map(dependencies, function (t) { return _extractToken(factoryFunction, t, params); });
+        var params = dependencies.map(function (t) { return [t]; });
+        return dependencies.map(function (t) { return _extractToken(factoryFunction, t, params); });
     }
 }
 function _dependenciesFor(typeOrFunc) {
@@ -430,7 +398,7 @@ function _dependenciesFor(typeOrFunc) {
     if (collection_1.ListWrapper.any(params, function (p) { return lang_1.isBlank(p); })) {
         throw new exceptions_2.NoAnnotationError(typeOrFunc, params);
     }
-    return collection_1.ListWrapper.map(params, function (p) { return _extractToken(typeOrFunc, p, params); });
+    return params.map(function (p) { return _extractToken(typeOrFunc, p, params); });
 }
 function _extractToken(typeOrFunc, metadata /*any[] | any*/, params) {
     var depProps = [];

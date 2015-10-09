@@ -1,4 +1,3 @@
-/// <reference path="../../typings/jasmine/jasmine.d.ts"/>
 var lang_1 = require('angular2/src/core/facade/lang');
 var exceptions_1 = require('angular2/src/core/facade/exceptions');
 var collection_1 = require('angular2/src/core/facade/collection');

@@ -11,9 +11,9 @@ var async_1 = require('angular2/src/core/facade/async');
 var MockXHR = (function (_super) {
     __extends(MockXHR, _super);
     function MockXHR() {
-        _super.call(this);
-        this._definitions = new collection_1.Map();
+        _super.apply(this, arguments);
         this._expectations = [];
+        this._definitions = new collection_1.Map();
         this._requests = [];
     }
     MockXHR.prototype.get = function (url) {
@@ -31,8 +31,7 @@ var MockXHR = (function (_super) {
             throw new exceptions_1.BaseException('No pending requests to flush');
         }
         do {
-            var request = collection_1.ListWrapper.removeAt(this._requests, 0);
-            this._processRequest(request);
+            this._processRequest(this._requests.shift());
         } while (this._requests.length > 0);
         this.verifyNoOustandingExpectations();
     };
@@ -44,7 +43,7 @@ var MockXHR = (function (_super) {
             var expectation = this._expectations[i];
             urls.push(expectation.url);
         }
-        throw new exceptions_1.BaseException("Unsatisfied requests: " + collection_1.ListWrapper.join(urls, ', '));
+        throw new exceptions_1.BaseException("Unsatisfied requests: " + urls.join(', '));
     };
     MockXHR.prototype._processRequest = function (request) {
         var url = request.url;

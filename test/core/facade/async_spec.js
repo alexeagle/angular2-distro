@@ -1,6 +1,5 @@
 var test_lib_1 = require('angular2/test_lib');
 var async_1 = require('angular2/src/core/facade/async');
-var collection_1 = require('angular2/src/core/facade/collection');
 function main() {
     test_lib_1.describe('EventEmitter', function () {
         var emitter;
@@ -58,7 +57,7 @@ function main() {
                 });
                 one.resolve('one');
             }));
-            collection_1.ListWrapper.forEach([null, true, false, 10, 'thing', {}, []], function (abruptCompletion) {
+            [null, true, false, 10, 'thing', {}, []].forEach(function (abruptCompletion) {
                 test_lib_1.it("should treat \"" + abruptCompletion + "\" as an \"abrupt completion\"", test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
                     var one = async_1.PromiseWrapper.completer();
                     var all = async_1.PromiseWrapper.all([one.promise, abruptCompletion]);

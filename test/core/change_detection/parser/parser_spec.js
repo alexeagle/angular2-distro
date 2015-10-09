@@ -1,7 +1,6 @@
 var test_lib_1 = require('angular2/test_lib');
 var lang_1 = require('angular2/src/core/facade/lang');
 var reflection_1 = require('angular2/src/core/reflection/reflection');
-var collection_1 = require('angular2/src/core/facade/collection');
 var parser_1 = require('angular2/src/core/change_detection/parser/parser');
 var unparser_1 = require('./unparser');
 var lexer_1 = require('angular2/src/core/change_detection/parser/lexer');
@@ -217,10 +216,10 @@ function main() {
         });
         test_lib_1.describe('parseTemplateBindings', function () {
             function keys(templateBindings) {
-                return collection_1.ListWrapper.map(templateBindings, function (binding) { return binding.key; });
+                return templateBindings.map(function (binding) { return binding.key; });
             }
             function keyValues(templateBindings) {
-                return collection_1.ListWrapper.map(templateBindings, function (binding) {
+                return templateBindings.map(function (binding) {
                     if (binding.keyIsVar) {
                         return '#' + binding.key + (lang_1.isBlank(binding.name) ? '=null' : '=' + binding.name);
                     }
@@ -230,9 +229,7 @@ function main() {
                 });
             }
             function exprSources(templateBindings) {
-                return collection_1.ListWrapper.map(templateBindings, function (binding) { return lang_1.isPresent(binding.expression) ?
-                    binding.expression.source :
-                    null; });
+                return templateBindings.map(function (binding) { return lang_1.isPresent(binding.expression) ? binding.expression.source : null; });
             }
             test_lib_1.it('should parse an empty string', function () { test_lib_1.expect(parseTemplateBindings('')).toEqual([]); });
             test_lib_1.it('should parse a string without a value', function () { test_lib_1.expect(keys(parseTemplateBindings('a'))).toEqual(['a']); });

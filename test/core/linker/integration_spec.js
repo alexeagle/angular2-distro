@@ -805,7 +805,8 @@ function main() {
                     tcb.createAsync(ComponentWithoutView);
                 }
                 catch (e) {
-                    test_lib_1.expect(e.message).toEqual("No View annotation found on component " + lang_1.stringify(ComponentWithoutView));
+                    test_lib_1.expect(e.message)
+                        .toContain("must have either 'template', 'templateUrl', or '@View' set.");
                     return null;
                 }
             }));
@@ -1133,6 +1134,19 @@ function main() {
                     });
                 }));
             }
+            test_lib_1.it('should support defining views in the component decorator', test_lib_1.inject([test_lib_1.TestComponentBuilder, test_lib_1.AsyncTestCompleter], function (tcb, async) {
+                tcb.overrideView(MyComp, new metadata_1.ViewMetadata({
+                    template: '<component-with-template></component-with-template>',
+                    directives: [ComponentWithTemplate]
+                }))
+                    .createAsync(MyComp)
+                    .then(function (rootTC) {
+                    rootTC.detectChanges();
+                    var native = rootTC.debugElement.componentViewChildren[0].nativeElement;
+                    test_lib_1.expect(native).toHaveText("No View Decorator: 123");
+                    async.done();
+                });
+            }));
         });
     });
 }
@@ -1872,6 +1886,19 @@ var DirectiveThrowingAnError = (function () {
         __metadata('design:paramtypes', [])
     ], DirectiveThrowingAnError);
     return DirectiveThrowingAnError;
+})();
+var ComponentWithTemplate = (function () {
+    function ComponentWithTemplate() {
+        this.items = [1, 2, 3];
+    }
+    ComponentWithTemplate = __decorate([
+        metadata_1.Component({
+            selector: 'component-with-template',
+            directives: [core_1.NgFor], template: "No View Decorator: <div *ng-for=\"#item of items\">{{item}}</div>"
+        }), 
+        __metadata('design:paramtypes', [])
+    ], ComponentWithTemplate);
+    return ComponentWithTemplate;
 })();
 var DirectiveWithPropDecorators = (function () {
     function DirectiveWithPropDecorators() {

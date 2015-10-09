@@ -24,7 +24,7 @@ var AppViewPool = (function () {
     AppViewPool.prototype.getView = function (protoView) {
         var pooledViews = this._pooledViewsPerProtoView.get(protoView);
         if (lang_1.isPresent(pooledViews) && pooledViews.length > 0) {
-            return collection_1.ListWrapper.removeLast(pooledViews);
+            return pooledViews.pop();
         }
         return null;
     };

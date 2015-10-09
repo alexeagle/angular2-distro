@@ -6,7 +6,7 @@ export interface NodeFactory<N> {
     createTemplateAnchor(attrNameAndValues: string[]): N;
     createElement(name: string, attrNameAndValues: string[]): N;
     mergeElement(existing: N, attrNameAndValues: string[]): any;
-    createShadowRoot(host: N): N;
+    createShadowRoot(host: N, templateId: number): N;
     createText(value: string): N;
     appendChild(parent: N, child: N): any;
     on(element: N, eventName: string, callback: Function): any;

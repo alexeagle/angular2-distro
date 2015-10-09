@@ -100,7 +100,7 @@ var FormBuilder = (function () {
     FormBuilder.prototype.array = function (controlsConfig, validator) {
         var _this = this;
         if (validator === void 0) { validator = null; }
-        var controls = collection_1.ListWrapper.map(controlsConfig, function (c) { return _this._createControl(c); });
+        var controls = controlsConfig.map(function (c) { return _this._createControl(c); });
         if (lang_1.isPresent(validator)) {
             return new modelModule.ControlArray(controls, validator);
         }

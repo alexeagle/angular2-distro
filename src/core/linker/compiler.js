@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
     switch (arguments.length) {
@@ -24,13 +29,18 @@ var template_commands_1 = require('angular2/src/core/linker/template_commands');
  * both compiles and instantiates a Component.
  */
 var Compiler = (function () {
-    /**
-     * @private
-     */
-    function Compiler(_protoViewFactory) {
+    function Compiler() {
+    }
+    return Compiler;
+})();
+exports.Compiler = Compiler;
+var Compiler_ = (function (_super) {
+    __extends(Compiler_, _super);
+    function Compiler_(_protoViewFactory) {
+        _super.call(this);
         this._protoViewFactory = _protoViewFactory;
     }
-    Compiler.prototype.compileInHost = function (componentType) {
+    Compiler_.prototype.compileInHost = function (componentType) {
         var metadatas = reflection_1.reflector.annotations(componentType);
         var compiledHostTemplate = null;
         for (var i = 0; i < metadatas.length; i++) {
@@ -45,17 +55,17 @@ var Compiler = (function () {
         }
         return async_1.PromiseWrapper.resolve(this._createProtoView(compiledHostTemplate));
     };
-    Compiler.prototype._createProtoView = function (compiledHostTemplate) {
+    Compiler_.prototype._createProtoView = function (compiledHostTemplate) {
         return this._protoViewFactory.createHost(compiledHostTemplate).ref;
     };
-    Compiler.prototype.clearCache = function () { this._protoViewFactory.clearCache(); };
-    Compiler = __decorate([
+    Compiler_.prototype.clearCache = function () { this._protoViewFactory.clearCache(); };
+    Compiler_ = __decorate([
         di_1.Injectable(), 
         __metadata('design:paramtypes', [proto_view_factory_1.ProtoViewFactory])
-    ], Compiler);
-    return Compiler;
-})();
-exports.Compiler = Compiler;
+    ], Compiler_);
+    return Compiler_;
+})(Compiler);
+exports.Compiler_ = Compiler_;
 function internalCreateProtoView(compiler, compiledHostTemplate) {
     return compiler._createProtoView(compiledHostTemplate);
 }

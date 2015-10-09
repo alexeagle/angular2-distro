@@ -5,7 +5,7 @@ function paramParser(rawParams) {
     var map = new collection_1.Map();
     if (rawParams.length > 0) {
         var params = lang_1.StringWrapper.split(rawParams, new RegExp('&'));
-        collection_1.ListWrapper.forEach(params, function (param) {
+        params.forEach(function (param) {
             var split = lang_1.StringWrapper.split(param, new RegExp('='));
             var key = split[0];
             var val = split[1];
@@ -117,10 +117,8 @@ var URLSearchParams = (function () {
     };
     URLSearchParams.prototype.toString = function () {
         var paramsList = [];
-        collection_1.MapWrapper.forEach(this.paramsMap, function (values, k) {
-            collection_1.ListWrapper.forEach(values, function (v) { paramsList.push(k + '=' + v); });
-        });
-        return collection_1.ListWrapper.join(paramsList, '&');
+        collection_1.MapWrapper.forEach(this.paramsMap, function (values, k) { values.forEach(function (v) { return paramsList.push(k + '=' + v); }); });
+        return paramsList.join('&');
     };
     URLSearchParams.prototype.delete = function (param) { collection_1.MapWrapper.delete(this.paramsMap, param); };
     return URLSearchParams;

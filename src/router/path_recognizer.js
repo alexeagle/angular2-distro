@@ -23,7 +23,7 @@ var TouchMap = (function () {
         var _this = this;
         var unused = collection_1.StringMapWrapper.create();
         var keys = collection_1.StringMapWrapper.keys(this.keys);
-        collection_1.ListWrapper.forEach(keys, function (key) { unused[key] = collection_1.StringMapWrapper.get(_this.map, key); });
+        keys.forEach(function (key) { return unused[key] = collection_1.StringMapWrapper.get(_this.map, key); });
         return unused;
     };
     return TouchMap;
@@ -257,7 +257,7 @@ var PathRecognizer = (function () {
         if (this._cache.has(hashKey)) {
             return this._cache.get(hashKey);
         }
-        var instruction = new instruction_1.ComponentInstruction(urlPath, urlParams, _recognizer, params);
+        var instruction = new instruction_1.ComponentInstruction_(urlPath, urlParams, _recognizer, params);
         this._cache.set(hashKey, instruction);
         return instruction;
     };

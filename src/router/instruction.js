@@ -1,4 +1,10 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var collection_1 = require('angular2/src/core/facade/collection');
+var exceptions_1 = require('angular2/src/core/facade/exceptions');
 var lang_1 = require('angular2/src/core/facade/lang');
 /**
  * `RouteParams` is an immutable map of parameters for the given route
@@ -141,15 +147,7 @@ function stringifyAux(instruction) {
  * You should not modify this object. It should be treated as immutable.
  */
 var ComponentInstruction = (function () {
-    /**
-     * @private
-     */
-    function ComponentInstruction(urlPath, urlParams, _recognizer, params) {
-        if (params === void 0) { params = null; }
-        this.urlPath = urlPath;
-        this.urlParams = urlParams;
-        this._recognizer = _recognizer;
-        this.params = params;
+    function ComponentInstruction() {
         this.reuse = false;
     }
     Object.defineProperty(ComponentInstruction.prototype, "componentType", {
@@ -157,39 +155,61 @@ var ComponentInstruction = (function () {
          * Returns the component type of the represented route, or `null` if this instruction
          * hasn't been resolved.
          */
-        get: function () { return this._recognizer.handler.componentType; },
+        get: function () { return exceptions_1.unimplemented(); },
         enumerable: true,
         configurable: true
     });
-    /**
-     * Returns a promise that will resolve to component type of the represented route.
-     * If this instruction references an {@link AsyncRoute}, the `loader` function of that route
-     * will run.
-     */
-    ComponentInstruction.prototype.resolveComponentType = function () { return this._recognizer.handler.resolveComponentType(); };
+    ;
     Object.defineProperty(ComponentInstruction.prototype, "specificity", {
         /**
          * Returns the specificity of the route associated with this `Instruction`.
          */
-        get: function () { return this._recognizer.specificity; },
+        get: function () { return exceptions_1.unimplemented(); },
         enumerable: true,
         configurable: true
     });
+    ;
     Object.defineProperty(ComponentInstruction.prototype, "terminal", {
         /**
          * Returns `true` if the component type of this instruction has no child {@link RouteConfig},
          * or `false` if it does.
          */
+        get: function () { return exceptions_1.unimplemented(); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    return ComponentInstruction;
+})();
+exports.ComponentInstruction = ComponentInstruction;
+var ComponentInstruction_ = (function (_super) {
+    __extends(ComponentInstruction_, _super);
+    function ComponentInstruction_(urlPath, urlParams, _recognizer, params) {
+        if (params === void 0) { params = null; }
+        _super.call(this);
+        this._recognizer = _recognizer;
+        this.urlPath = urlPath;
+        this.urlParams = urlParams;
+        this.params = params;
+    }
+    Object.defineProperty(ComponentInstruction_.prototype, "componentType", {
+        get: function () { return this._recognizer.handler.componentType; },
+        enumerable: true,
+        configurable: true
+    });
+    ComponentInstruction_.prototype.resolveComponentType = function () { return this._recognizer.handler.resolveComponentType(); };
+    Object.defineProperty(ComponentInstruction_.prototype, "specificity", {
+        get: function () { return this._recognizer.specificity; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComponentInstruction_.prototype, "terminal", {
         get: function () { return this._recognizer.terminal; },
         enumerable: true,
         configurable: true
     });
-    /**
-     * Returns the route data of the given route that was specified in the {@link RouteDefinition},
-     * or `null` if no route data was specified.
-     */
-    ComponentInstruction.prototype.routeData = function () { return this._recognizer.handler.data; };
-    return ComponentInstruction;
-})();
-exports.ComponentInstruction = ComponentInstruction;
+    ComponentInstruction_.prototype.routeData = function () { return this._recognizer.handler.data; };
+    return ComponentInstruction_;
+})(ComponentInstruction);
+exports.ComponentInstruction_ = ComponentInstruction_;
 //# sourceMappingURL=instruction.js.map

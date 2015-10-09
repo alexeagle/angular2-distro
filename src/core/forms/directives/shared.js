@@ -31,7 +31,7 @@ function setUpControl(control, dir) {
 }
 exports.setUpControl = setUpControl;
 function _throwError(dir, message) {
-    var path = collection_1.ListWrapper.join(dir.path, " -> ");
+    var path = dir.path.join(" -> ");
     throw new exceptions_1.BaseException(message + " '" + path + "'");
 }
 function setProperty(renderer, elementRef, propName, propValue) {

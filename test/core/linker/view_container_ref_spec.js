@@ -10,12 +10,12 @@ function main() {
         var location;
         var view;
         var viewManager;
-        function createViewContainer() { return new view_container_ref_1.ViewContainerRef(viewManager, location); }
+        function createViewContainer() { return new view_container_ref_1.ViewContainerRef_(viewManager, location); }
         test_lib_1.beforeEach(function () {
             viewManager = new spies_1.SpyAppViewManager();
             view = new spies_1.SpyView();
             view.prop("viewContainers", [null]);
-            location = new element_ref_1.ElementRef(new view_ref_1.ViewRef(view), 0, null);
+            location = new element_ref_1.ElementRef_(new view_ref_1.ViewRef_(view), 0, null);
         });
         test_lib_1.describe('length', function () {
             test_lib_1.it('should return a 0 length if there is no underlying AppViewContainer', function () {

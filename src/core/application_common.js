@@ -33,7 +33,7 @@ function applicationDomBindings() {
         new di_1.Binding(event_manager_1.EVENT_MANAGER_PLUGINS, { toClass: event_manager_1.DomEventsPlugin, multi: true }),
         new di_1.Binding(event_manager_1.EVENT_MANAGER_PLUGINS, { toClass: key_events_1.KeyEventsPlugin, multi: true }),
         new di_1.Binding(event_manager_1.EVENT_MANAGER_PLUGINS, { toClass: hammer_gestures_1.HammerGesturesPlugin, multi: true }),
-        render_1.DomRenderer,
+        di_1.bind(render_1.DomRenderer).toClass(render_1.DomRenderer_),
         di_1.bind(api_1.Renderer).toAlias(render_1.DomRenderer),
         shared_styles_host_1.DomSharedStylesHost,
         di_1.bind(shared_styles_host_1.SharedStylesHost).toAlias(shared_styles_host_1.DomSharedStylesHost),

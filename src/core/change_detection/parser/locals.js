@@ -2,7 +2,8 @@ var lang_1 = require('angular2/src/core/facade/lang');
 var exceptions_1 = require('angular2/src/core/facade/exceptions');
 var collection_1 = require('angular2/src/core/facade/collection');
 /**
- * @private
+ * FIXME(alexeagle): make internal
+ * Currently this is exposed by abstract_change_detector
  */
 var Locals = (function () {
     function Locals(parent, current) {

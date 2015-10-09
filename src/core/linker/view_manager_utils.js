@@ -17,7 +17,6 @@ var viewModule = require('./view');
 var element_ref_1 = require('./element_ref');
 var template_ref_1 = require('./template_ref');
 var pipes_1 = require('angular2/src/core/pipes/pipes');
-var api_1 = require('angular2/src/core/render/api');
 var AppViewManagerUtils = (function () {
     function AppViewManagerUtils() {
     }
@@ -48,7 +47,7 @@ var AppViewManagerUtils = (function () {
                     .nestedProtoView :
                 mergedParentViewProto;
             var renderFragment = null;
-            if (viewOffset === 0 || protoView.type === api_1.ViewType.EMBEDDED) {
+            if (viewOffset === 0 || protoView.type === viewModule.ViewType.EMBEDDED) {
                 renderFragment = renderFragments[fragmentIdx++];
             }
             var currentView = new viewModule.AppView(renderer, protoView, viewOffset, elementOffset, textOffset, protoView.protoLocals, renderView, renderFragment, containerElementInjector);
@@ -80,20 +79,20 @@ var AppViewManagerUtils = (function () {
                 }
                 elementInjectors[boundElementIndex] = elementInjector;
                 // elementRefs
-                var el = new element_ref_1.ElementRef(currentView.ref, boundElementIndex, renderer);
+                var el = new element_ref_1.ElementRef_(currentView.ref, boundElementIndex, renderer);
                 elementRefs[el.boundElementIndex] = el;
                 // preBuiltObjects
                 if (lang_1.isPresent(elementInjector)) {
                     var templateRef = lang_1.isPresent(binder.nestedProtoView) &&
-                        binder.nestedProtoView.type === api_1.ViewType.EMBEDDED ?
-                        new template_ref_1.TemplateRef(el) :
+                        binder.nestedProtoView.type === viewModule.ViewType.EMBEDDED ?
+                        new template_ref_1.TemplateRef_(el) :
                         null;
                     preBuiltObjects[boundElementIndex] =
                         new eli.PreBuiltObjects(viewManager, currentView, el, templateRef);
                 }
             }
             currentView.init(protoView.changeDetectorFactory(currentView), elementInjectors, rootElementInjectors, preBuiltObjects, views, elementRefs, viewContainers);
-            if (lang_1.isPresent(parentView) && protoView.type === api_1.ViewType.COMPONENT) {
+            if (lang_1.isPresent(parentView) && protoView.type === viewModule.ViewType.COMPONENT) {
                 parentView.changeDetector.addShadowDomChild(currentView.changeDetector);
             }
             elementOffset += protoView.elementBinders.length;
@@ -155,7 +154,7 @@ var AppViewManagerUtils = (function () {
         while (viewIdx <= endViewOffset) {
             var currView = initView.views[viewIdx];
             var currProtoView = currView.proto;
-            if (currView !== initView && currView.proto.type === api_1.ViewType.EMBEDDED) {
+            if (currView !== initView && currView.proto.type === viewModule.ViewType.EMBEDDED) {
                 // Don't hydrate components of embedded fragment views.
                 viewIdx += currView.proto.mergeInfo.viewCount;
             }

@@ -83,7 +83,19 @@ exports.SpyAppViewManager = SpyAppViewManager;
 var SpyRenderer = (function (_super) {
     __extends(SpyRenderer, _super);
     function SpyRenderer() {
+        // Note: Renderer is an abstract class,
+        // so we can't generates spy functions automatically
+        // by inspecting the prototype...
         _super.call(this, api_1.Renderer);
+        this.spy('setEventDispatcher');
+        this.spy('destroyView');
+        this.spy('createView');
+        this.spy('createProtoView');
+        this.spy('hydrateView');
+        this.spy('dehydrateView');
+        this.spy('attachFragmentAfterElement');
+        this.spy('attachFragmentAfterFragment');
+        this.spy('detachFragment');
     }
     return SpyRenderer;
 })(test_lib_1.SpyObject);

@@ -75,7 +75,8 @@ var RouteRegistry = (function () {
             for (var i = 0; i < annotations.length; i++) {
                 var annotation = annotations[i];
                 if (annotation instanceof route_config_impl_1.RouteConfig) {
-                    collection_1.ListWrapper.forEach(annotation.configs, function (config) { return _this.config(component, config); });
+                    var routeCfgs = annotation.configs;
+                    routeCfgs.forEach(function (config) { return _this.config(component, config); });
                 }
             }
         }
@@ -103,7 +104,7 @@ var RouteRegistry = (function () {
         }
         // Matches some beginning part of the given URL
         var possibleMatches = componentRecognizer.recognize(parsedUrl);
-        var matchPromises = collection_1.ListWrapper.map(possibleMatches, function (candidate) { return _this._completePrimaryRouteMatch(candidate); });
+        var matchPromises = possibleMatches.map(function (candidate) { return _this._completePrimaryRouteMatch(candidate); });
         return async_1.PromiseWrapper.all(matchPromises).then(mostSpecific);
     };
     RouteRegistry.prototype._completePrimaryRouteMatch = function (partialMatch) {

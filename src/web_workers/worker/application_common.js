@@ -9,6 +9,7 @@ var app_root_url_1 = require('angular2/src/core/compiler/app_root_url');
 var renderer_1 = require('./renderer');
 var api_1 = require('angular2/src/core/render/api');
 var client_message_broker_1 = require('angular2/src/web_workers/shared/client_message_broker');
+var service_message_broker_1 = require('angular2/src/web_workers/shared/service_message_broker');
 var message_bus_1 = require('angular2/src/web_workers/shared/message_bus');
 var application_ref_1 = require('angular2/src/core/application_ref');
 var serializer_1 = require("angular2/src/web_workers/shared/serializer");
@@ -73,7 +74,8 @@ function webWorkerBindings(appComponentType, bus, initData) {
         compiler_1.compilerBindings(),
         serializer_1.Serializer,
         di_1.bind(message_bus_1.MessageBus).toValue(bus),
-        client_message_broker_1.ClientMessageBrokerFactory,
+        di_1.bind(client_message_broker_1.ClientMessageBrokerFactory).toClass(client_message_broker_1.ClientMessageBrokerFactory_),
+        di_1.bind(service_message_broker_1.ServiceMessageBrokerFactory).toClass(service_message_broker_1.ServiceMessageBrokerFactory_),
         renderer_1.WebWorkerRenderer,
         di_1.bind(api_1.Renderer).toAlias(renderer_1.WebWorkerRenderer),
         di_1.bind(api_2.ON_WEB_WORKER).toValue(true),

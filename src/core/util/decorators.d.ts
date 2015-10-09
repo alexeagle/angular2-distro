@@ -1,4 +1,4 @@
-import { Type } from 'angular2/src/core/facade/lang';
+import { ConcreteType, Type } from 'angular2/src/core/facade/lang';
 /**
  * Declares the interface to be used with {@link Class}.
  */
@@ -16,7 +16,12 @@ export interface ClassDefinition {
      *
      * See {@link Class} for example of usage.
      */
-    constructor: (Function | any[]);
+    constructor: Function | any[];
+    /**
+     * Other methods on the class. Note that values should have type 'Function' but TS requires
+     * all properties to have a narrower type than the index signature.
+     */
+    [x: string]: Type | Function | any[];
 }
 /**
  * An interface implemented by all Angular type decorators, which allows them to be used as ES7
@@ -55,7 +60,7 @@ export interface TypeDecorator {
     /**
      * Generate a class from the definition and annotate it with {@link TypeDecorator#annotations}.
      */
-    Class(obj: ClassDefinition): Type;
+    Class(obj: ClassDefinition): ConcreteType;
 }
 /**
  * Provides a way for expressing ES6 classes with parameter annotations in ES5.
@@ -138,7 +143,7 @@ export interface TypeDecorator {
  * });
  * ```
  */
-export declare function Class(clsDef: ClassDefinition): Type;
-export declare function makeDecorator(annotationCls: any, chainFn?: (fn: Function) => void): (...args) => (cls: any) => any;
+export declare function Class(clsDef: ClassDefinition): ConcreteType;
+export declare function makeDecorator(annotationCls: any, chainFn?: (fn: Function) => void): (...args: any[]) => (cls: any) => any;
 export declare function makeParamDecorator(annotationCls: any): any;
 export declare function makePropDecorator(decoratorCls: any): any;

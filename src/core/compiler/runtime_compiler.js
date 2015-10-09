@@ -20,27 +20,32 @@ var template_compiler_1 = require('./template_compiler');
 var di_1 = require('angular2/src/core/di');
 var RuntimeCompiler = (function (_super) {
     __extends(RuntimeCompiler, _super);
-    /**
-     * @private
-     */
-    function RuntimeCompiler(_protoViewFactory, _templateCompiler) {
+    function RuntimeCompiler() {
+        _super.apply(this, arguments);
+    }
+    return RuntimeCompiler;
+})(compiler_1.Compiler);
+exports.RuntimeCompiler = RuntimeCompiler;
+var RuntimeCompiler_ = (function (_super) {
+    __extends(RuntimeCompiler_, _super);
+    function RuntimeCompiler_(_protoViewFactory, _templateCompiler) {
         _super.call(this, _protoViewFactory);
         this._templateCompiler = _templateCompiler;
     }
-    RuntimeCompiler.prototype.compileInHost = function (componentType) {
+    RuntimeCompiler_.prototype.compileInHost = function (componentType) {
         var _this = this;
         return this._templateCompiler.compileHostComponentRuntime(componentType)
             .then(function (compiledHostTemplate) { return compiler_1.internalCreateProtoView(_this, compiledHostTemplate); });
     };
-    RuntimeCompiler.prototype.clearCache = function () {
+    RuntimeCompiler_.prototype.clearCache = function () {
         _super.prototype.clearCache.call(this);
         this._templateCompiler.clearCache();
     };
-    RuntimeCompiler = __decorate([
+    RuntimeCompiler_ = __decorate([
         di_1.Injectable(), 
         __metadata('design:paramtypes', [proto_view_factory_1.ProtoViewFactory, template_compiler_1.TemplateCompiler])
-    ], RuntimeCompiler);
-    return RuntimeCompiler;
-})(compiler_1.Compiler);
-exports.RuntimeCompiler = RuntimeCompiler;
+    ], RuntimeCompiler_);
+    return RuntimeCompiler_;
+})(compiler_1.Compiler_);
+exports.RuntimeCompiler_ = RuntimeCompiler_;
 //# sourceMappingURL=runtime_compiler.js.map

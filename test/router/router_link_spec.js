@@ -15,7 +15,8 @@ var core_1 = require('angular2/core');
 var debug_1 = require('angular2/src/core/debug');
 var router_1 = require('angular2/router');
 var dom_adapter_1 = require('angular2/src/core/dom/dom_adapter');
-var dummyInstruction = new router_1.Instruction(new router_1.ComponentInstruction('detail', [], null), null, {});
+var instruction_1 = require("angular2/src/router/instruction");
+var dummyInstruction = new router_1.Instruction(new instruction_1.ComponentInstruction_('detail', [], null), null, {});
 function main() {
     test_lib_1.describe('router-link directive', function () {
         var tcb;

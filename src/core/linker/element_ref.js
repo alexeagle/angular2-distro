@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var exceptions_1 = require('angular2/src/core/facade/exceptions');
 /**
  * Represents a location in a View that has an injection, change-detection and render context
@@ -10,26 +15,8 @@ var exceptions_1 = require('angular2/src/core/facade/exceptions');
  * element.
  */
 var ElementRef = (function () {
-    /**
-     * @private
-     */
-    function ElementRef(parentView, boundElementIndex, _renderer) {
-        this._renderer = _renderer;
-        this.parentView = parentView;
-        this.boundElementIndex = boundElementIndex;
+    function ElementRef() {
     }
-    Object.defineProperty(ElementRef.prototype, "renderView", {
-        /**
-         * @private
-         */
-        get: function () { return this.parentView.render; },
-        // TODO(tbosch): remove this once Typescript supports declaring interfaces
-        // that contain getters
-        // https://github.com/Microsoft/TypeScript/issues/3745
-        set: function (viewRef) { throw new exceptions_1.BaseException('Abstract setter'); },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ElementRef.prototype, "nativeElement", {
         /**
          * The underlying native element or `null` if direct access to native elements is not supported
@@ -50,11 +37,45 @@ var ElementRef = (function () {
          *   </p>
          * </div>
          */
-        get: function () { return this._renderer.getNativeElementSync(this); },
+        get: function () { return exceptions_1.unimplemented(); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ElementRef.prototype, "renderView", {
+        get: function () { return exceptions_1.unimplemented(); },
         enumerable: true,
         configurable: true
     });
     return ElementRef;
 })();
 exports.ElementRef = ElementRef;
+var ElementRef_ = (function (_super) {
+    __extends(ElementRef_, _super);
+    function ElementRef_(parentView, 
+        /**
+         * Index of the element inside the {@link ViewRef}.
+         *
+         * This is used internally by the Angular framework to locate elements.
+         */
+        boundElementIndex, _renderer) {
+        _super.call(this);
+        this.parentView = parentView;
+        this.boundElementIndex = boundElementIndex;
+        this._renderer = _renderer;
+    }
+    Object.defineProperty(ElementRef_.prototype, "renderView", {
+        get: function () { return this.parentView.render; },
+        set: function (value) { exceptions_1.unimplemented(); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ElementRef_.prototype, "nativeElement", {
+        get: function () { return this._renderer.getNativeElementSync(this); },
+        enumerable: true,
+        configurable: true
+    });
+    return ElementRef_;
+})(ElementRef);
+exports.ElementRef_ = ElementRef_;
 //# sourceMappingURL=element_ref.js.map

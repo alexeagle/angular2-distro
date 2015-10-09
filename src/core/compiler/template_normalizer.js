@@ -17,7 +17,7 @@ var xhr_1 = require('angular2/src/core/compiler/xhr');
 var url_resolver_1 = require('angular2/src/core/compiler/url_resolver');
 var style_url_resolver_1 = require('./style_url_resolver');
 var di_1 = require('angular2/src/core/di');
-var api_1 = require('angular2/src/core/render/api');
+var view_1 = require('angular2/src/core/metadata/view');
 var html_ast_1 = require('./html_ast');
 var html_parser_1 = require('./html_parser');
 var template_preparser_1 = require('./template_preparser');
@@ -55,9 +55,9 @@ var TemplateNormalizer = (function () {
             return styleWithImports.style;
         });
         var encapsulation = templateMeta.encapsulation;
-        if (encapsulation === api_1.ViewEncapsulation.Emulated && allResolvedStyles.length === 0 &&
+        if (encapsulation === view_1.ViewEncapsulation.Emulated && allResolvedStyles.length === 0 &&
             allStyleAbsUrls.length === 0) {
-            encapsulation = api_1.ViewEncapsulation.None;
+            encapsulation = view_1.ViewEncapsulation.None;
         }
         return new directive_metadata_1.CompileTemplateMetadata({
             encapsulation: encapsulation,

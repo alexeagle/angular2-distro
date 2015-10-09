@@ -27,19 +27,7 @@ import { WtfScopeFn } from '../profile/profile';
  * });
  * ```
  */
-export declare class LifeCycle {
-    static _tickScope: WtfScopeFn;
-    _changeDetectors: ChangeDetector[];
-    _enforceNoNewChanges: boolean;
-    _runningTick: boolean;
-    /**
-     * @private
-     */
-    constructor(changeDetector?: ChangeDetector, enforceNoNewChanges?: boolean);
-    /**
-     * @private
-     */
-    registerWith(zone: NgZone, changeDetector?: ChangeDetector): void;
+export declare abstract class LifeCycle {
     /**
      *  Invoke this method to explicitly process change detection and its side-effects.
      *
@@ -55,5 +43,14 @@ export declare class LifeCycle {
      *  complete.
      *
      */
+    abstract tick(): any;
+}
+export declare class LifeCycle_ extends LifeCycle {
+    static _tickScope: WtfScopeFn;
+    _changeDetectors: ChangeDetector[];
+    _enforceNoNewChanges: boolean;
+    _runningTick: boolean;
+    constructor(changeDetector?: ChangeDetector, enforceNoNewChanges?: boolean);
+    registerWith(zone: NgZone, changeDetector?: ChangeDetector): void;
     tick(): void;
 }

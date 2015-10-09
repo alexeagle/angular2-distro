@@ -8,18 +8,11 @@ import { ElementRef } from 'angular2/src/core/linker/element_ref';
  * element and provides access to the corresponding ElementInjector and
  * underlying DOM Element, as well as a way to query for children.
  */
-export declare class DebugElement {
-    private _parentView;
-    private _boundElementIndex;
-    _elementInjector: ElementInjector;
-    /**
-     * @private
-     */
-    constructor(_parentView: AppView, _boundElementIndex: number);
+export declare abstract class DebugElement {
     componentInstance: any;
     nativeElement: any;
     elementRef: ElementRef;
-    getDirectiveInstance(directiveIndex: number): any;
+    abstract getDirectiveInstance(directiveIndex: number): any;
     /**
      * Get child DebugElements from within the Light DOM.
      *
@@ -33,10 +26,10 @@ export declare class DebugElement {
      * @return {DebugElement[]}
      */
     componentViewChildren: DebugElement[];
-    triggerEventHandler(eventName: string, eventObj: Event): void;
-    hasDirective(type: Type): boolean;
-    inject(type: Type): any;
-    getLocal(name: string): any;
+    abstract triggerEventHandler(eventName: string, eventObj: Event): void;
+    abstract hasDirective(type: Type): boolean;
+    abstract inject(type: Type): any;
+    abstract getLocal(name: string): any;
     /**
      * Return the first descendant TestElement matching the given predicate
      * and scope.
@@ -57,6 +50,22 @@ export declare class DebugElement {
      * @return {DebugElement[]}
      */
     queryAll(predicate: Predicate<DebugElement>, scope?: Function): DebugElement[];
+}
+export declare class DebugElement_ extends DebugElement {
+    private _parentView;
+    private _boundElementIndex;
+    _elementInjector: ElementInjector;
+    constructor(_parentView: AppView, _boundElementIndex: number);
+    componentInstance: any;
+    nativeElement: any;
+    elementRef: ElementRef;
+    getDirectiveInstance(directiveIndex: number): any;
+    children: DebugElement[];
+    componentViewChildren: DebugElement[];
+    triggerEventHandler(eventName: string, eventObj: Event): void;
+    hasDirective(type: Type): boolean;
+    inject(type: Type): any;
+    getLocal(name: string): any;
     _getChildElements(view: AppView, parentBoundElementIndex: number): DebugElement[];
 }
 /**

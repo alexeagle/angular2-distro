@@ -171,12 +171,6 @@ var ListWrapper = (function () {
     ListWrapper.createFixedSize = function (size) { return new Array(size); };
     ListWrapper.createGrowableSize = function (size) { return new Array(size); };
     ListWrapper.clone = function (array) { return array.slice(0); };
-    ListWrapper.map = function (array, fn) { return array.map(fn); };
-    ListWrapper.forEach = function (array, fn) {
-        for (var i = 0; i < array.length; i++) {
-            fn(array[i]);
-        }
-    };
     ListWrapper.forEachWithIndex = function (array, fn) {
         for (var i = 0; i < array.length; i++) {
             fn(array[i], i);
@@ -232,7 +226,6 @@ var ListWrapper = (function () {
             list.splice(index, 1);
         }
     };
-    ListWrapper.removeLast = function (list) { return list.pop(); };
     ListWrapper.remove = function (list, el) {
         var index = list.indexOf(el);
         if (index > -1) {
@@ -242,7 +235,6 @@ var ListWrapper = (function () {
         return false;
     };
     ListWrapper.clear = function (list) { list.length = 0; };
-    ListWrapper.join = function (list, s) { return list.join(s); };
     ListWrapper.isEmpty = function (list) { return list.length == 0; };
     ListWrapper.fill = function (list, value, start, end) {
         if (start === void 0) { start = 0; }

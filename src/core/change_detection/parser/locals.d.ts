@@ -1,5 +1,6 @@
 /**
- * @private
+ * FIXME(alexeagle): make internal
+ * Currently this is exposed by abstract_change_detector
  */
 export declare class Locals {
     parent: Locals;

@@ -1,3 +1,4 @@
+var runtime_compiler_1 = require("./runtime_compiler");
 var template_compiler_1 = require('./template_compiler');
 exports.TemplateCompiler = template_compiler_1.TemplateCompiler;
 var directive_metadata_1 = require('./directive_metadata');
@@ -19,7 +20,7 @@ var command_compiler_1 = require('angular2/src/core/compiler/command_compiler');
 var template_compiler_2 = require('angular2/src/core/compiler/template_compiler');
 var change_detection_1 = require('angular2/src/core/change_detection/change_detection');
 var compiler_1 = require('angular2/src/core/linker/compiler');
-var runtime_compiler_1 = require('angular2/src/core/compiler/runtime_compiler');
+var runtime_compiler_2 = require('angular2/src/core/compiler/runtime_compiler');
 var element_schema_registry_1 = require('angular2/src/core/compiler/schema/element_schema_registry');
 var dom_element_schema_registry_1 = require('angular2/src/core/compiler/schema/dom_element_schema_registry');
 var url_resolver_1 = require('angular2/src/core/compiler/url_resolver');
@@ -40,8 +41,8 @@ function compilerBindings() {
         di_1.bind(change_detection_1.ChangeDetectorGenConfig)
             .toValue(new change_detection_1.ChangeDetectorGenConfig(lang_1.assertionsEnabled(), lang_1.assertionsEnabled(), false, true)),
         template_compiler_2.TemplateCompiler,
-        runtime_compiler_1.RuntimeCompiler,
-        di_1.bind(compiler_1.Compiler).toAlias(runtime_compiler_1.RuntimeCompiler),
+        di_1.bind(runtime_compiler_2.RuntimeCompiler).toClass(runtime_compiler_1.RuntimeCompiler_),
+        di_1.bind(compiler_1.Compiler).toAlias(runtime_compiler_2.RuntimeCompiler),
         dom_element_schema_registry_1.DomElementSchemaRegistry,
         di_1.bind(element_schema_registry_1.ElementSchemaRegistry).toAlias(dom_element_schema_registry_1.DomElementSchemaRegistry),
         anchor_based_app_root_url_1.AnchorBasedAppRootUrl,

@@ -1,6 +1,6 @@
 var test_lib_1 = require('angular2/test_lib');
 var directive_metadata_1 = require('angular2/src/core/compiler/directive_metadata');
-var api_1 = require('angular2/src/core/render/api');
+var view_1 = require('angular2/src/core/metadata/view');
 var template_normalizer_1 = require('angular2/src/core/compiler/template_normalizer');
 var xhr_1 = require('angular2/src/core/compiler/xhr');
 var test_bindings_1 = require('./test_bindings');
@@ -110,7 +110,7 @@ function main() {
         });
         test_lib_1.describe('normalizeLoadedTemplate', function () {
             test_lib_1.it('should store the viewEncapsulationin the result', test_lib_1.inject([template_normalizer_1.TemplateNormalizer], function (normalizer) {
-                var viewEncapsulation = api_1.ViewEncapsulation.Native;
+                var viewEncapsulation = view_1.ViewEncapsulation.Native;
                 var template = normalizer.normalizeLoadedTemplate(dirType, new directive_metadata_1.CompileTemplateMetadata({ encapsulation: viewEncapsulation, styles: [], styleUrls: [] }), '', 'package:some/module/');
                 test_lib_1.expect(template.encapsulation).toBe(viewEncapsulation);
             }));
@@ -166,8 +166,8 @@ function main() {
                 test_lib_1.expect(template.styleUrls).toEqual(['package:some/module/test.css']);
             }));
             test_lib_1.it('should normalize ViewEncapsulation.Emulated to ViewEncapsulation.None if there are no stlyes nor stylesheets', test_lib_1.inject([template_normalizer_1.TemplateNormalizer], function (normalizer) {
-                var template = normalizer.normalizeLoadedTemplate(dirType, new directive_metadata_1.CompileTemplateMetadata({ encapsulation: api_1.ViewEncapsulation.Emulated, styles: [], styleUrls: [] }), '', 'package:some/module/id');
-                test_lib_1.expect(template.encapsulation).toEqual(api_1.ViewEncapsulation.None);
+                var template = normalizer.normalizeLoadedTemplate(dirType, new directive_metadata_1.CompileTemplateMetadata({ encapsulation: view_1.ViewEncapsulation.Emulated, styles: [], styleUrls: [] }), '', 'package:some/module/id');
+                test_lib_1.expect(template.encapsulation).toEqual(view_1.ViewEncapsulation.None);
             }));
             test_lib_1.it('should ignore ng-content in elements with ng-non-bindable', test_lib_1.inject([template_normalizer_1.TemplateNormalizer], function (normalizer) {
                 var template = normalizer.normalizeLoadedTemplate(dirType, new directive_metadata_1.CompileTemplateMetadata({ encapsulation: null, styles: [], styleUrls: [] }), '<div ng-non-bindable><ng-content select="a"></ng-content></div>', 'package:some/module/');

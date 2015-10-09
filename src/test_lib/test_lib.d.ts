@@ -1,4 +1,3 @@
-/// <reference path="../../../../../angular2/typings/jasmine/jasmine.d.ts" />
 import { FunctionWithParamTokens } from './test_injector';
 export { inject } from './test_injector';
 export declare var proxy: ClassDecorator;

@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
     switch (arguments.length) {
@@ -21,22 +26,27 @@ var render_1 = require('angular2/src/core/render/render');
 var dom_adapter_1 = require('angular2/src/core/dom/dom_adapter');
 var debug_element_1 = require('angular2/src/core/debug/debug_element');
 var RootTestComponent = (function () {
-    /**
-     * @private
-     */
-    function RootTestComponent(componentRef) {
-        this.debugElement = new debug_element_1.DebugElement(view_ref_1.internalView(componentRef.hostView), 0);
-        this._componentParentView = view_ref_1.internalView(componentRef.hostView);
-        this._componentRef = componentRef;
+    function RootTestComponent() {
     }
-    RootTestComponent.prototype.detectChanges = function () {
-        this._componentParentView.changeDetector.detectChanges();
-        this._componentParentView.changeDetector.checkNoChanges();
-    };
-    RootTestComponent.prototype.destroy = function () { this._componentRef.dispose(); };
     return RootTestComponent;
 })();
 exports.RootTestComponent = RootTestComponent;
+var RootTestComponent_ = (function (_super) {
+    __extends(RootTestComponent_, _super);
+    function RootTestComponent_(componentRef) {
+        _super.call(this);
+        this.debugElement = new debug_element_1.DebugElement_(view_ref_1.internalView(componentRef.hostView), 0);
+        this._componentParentView = view_ref_1.internalView(componentRef.hostView);
+        this._componentRef = componentRef;
+    }
+    RootTestComponent_.prototype.detectChanges = function () {
+        this._componentParentView.changeDetector.detectChanges();
+        this._componentParentView.changeDetector.checkNoChanges();
+    };
+    RootTestComponent_.prototype.destroy = function () { this._componentRef.dispose(); };
+    return RootTestComponent_;
+})(RootTestComponent);
+exports.RootTestComponent_ = RootTestComponent_;
 var _nextRootElementId = 0;
 /**
  * Builds a RootTestComponent for use in component level tests.
@@ -171,7 +181,7 @@ var TestComponentBuilder = (function () {
         dom_adapter_1.DOM.appendChild(doc.body, rootEl);
         return this._injector.get(dynamic_component_loader_1.DynamicComponentLoader)
             .loadAsRoot(rootComponentType, "#" + rootElId, this._injector)
-            .then(function (componentRef) { return new RootTestComponent(componentRef); });
+            .then(function (componentRef) { return new RootTestComponent_(componentRef); });
     };
     TestComponentBuilder = __decorate([
         di_1.Injectable(), 

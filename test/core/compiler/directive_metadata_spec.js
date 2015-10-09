@@ -1,6 +1,6 @@
 var test_lib_1 = require('angular2/test_lib');
 var directive_metadata_1 = require('angular2/src/core/compiler/directive_metadata');
-var api_1 = require('angular2/src/core/render/api');
+var view_1 = require('angular2/src/core/metadata/view');
 var change_detection_1 = require('angular2/src/core/change_detection');
 var interfaces_1 = require('angular2/src/core/linker/interfaces');
 function main() {
@@ -12,7 +12,7 @@ function main() {
             fullTypeMeta =
                 new directive_metadata_1.CompileTypeMetadata({ name: 'SomeType', moduleUrl: 'someUrl', isHost: true });
             fullTemplateMeta = new directive_metadata_1.CompileTemplateMetadata({
-                encapsulation: api_1.ViewEncapsulation.Emulated,
+                encapsulation: view_1.ViewEncapsulation.Emulated,
                 template: '<a></a>',
                 templateUrl: 'someTemplateUrl',
                 styles: ['someStyle'],
@@ -51,6 +51,10 @@ function main() {
             });
         });
         test_lib_1.describe('TemplateMetadata', function () {
+            test_lib_1.it('should use ViewEncapsulation.Emulated by default', function () {
+                test_lib_1.expect(new directive_metadata_1.CompileTemplateMetadata({ encapsulation: null }).encapsulation)
+                    .toBe(view_1.ViewEncapsulation.Emulated);
+            });
             test_lib_1.it('should serialize with full data', function () {
                 test_lib_1.expect(directive_metadata_1.CompileTemplateMetadata.fromJson(fullTemplateMeta.toJson()))
                     .toEqual(fullTemplateMeta);

@@ -6,7 +6,7 @@ function main() {
         test_lib_1.it('should delegate detectChanges()', function () {
             var changeDetector = new spies_1.SpyChangeDetector();
             changeDetector.spy('detectChanges');
-            var changeDetectorRef = new change_detector_ref_1.ChangeDetectorRef(changeDetector);
+            var changeDetectorRef = new change_detector_ref_1.ChangeDetectorRef_(changeDetector);
             changeDetectorRef.detectChanges();
             test_lib_1.expect(changeDetector.spy('detectChanges')).toHaveBeenCalled();
         });

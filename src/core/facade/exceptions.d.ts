@@ -21,3 +21,4 @@ export declare class WrappedException extends Error {
     toString(): string;
 }
 export declare function makeTypeError(message?: string): Error;
+export declare function unimplemented(): any;

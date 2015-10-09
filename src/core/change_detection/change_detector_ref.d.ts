@@ -1,13 +1,5 @@
 import { ChangeDetector } from './interfaces';
-/**
- * Reference to a component's change detection object.
- */
-export declare class ChangeDetectorRef {
-    private _cd;
-    /**
-     * @private
-     */
-    constructor(_cd: ChangeDetector);
+export declare abstract class ChangeDetectorRef {
     /**
      * Marks all {@link OnPush} ancestors as to be checked.
      *
@@ -46,7 +38,7 @@ export declare class ChangeDetectorRef {
      * bootstrap(App);
      * ```
      */
-    markForCheck(): void;
+    abstract markForCheck(): void;
     /**
      * Detaches the change detector from the change detector tree.
      *
@@ -104,7 +96,7 @@ export declare class ChangeDetectorRef {
      * bootstrap(App);
      * ```
      */
-    detach(): void;
+    abstract detach(): void;
     /**
      * Checks the change detector and its children.
      *
@@ -126,7 +118,7 @@ export declare class ChangeDetectorRef {
      *
      * See {@link detach} for more information.
      */
-    detectChanges(): void;
+    abstract detectChanges(): void;
     /**
      * Reattach the change detector to the change detector tree.
      *
@@ -185,5 +177,13 @@ export declare class ChangeDetectorRef {
      * bootstrap(App);
      * ```
      */
+    abstract reattach(): void;
+}
+export declare class ChangeDetectorRef_ extends ChangeDetectorRef {
+    private _cd;
+    constructor(_cd: ChangeDetector);
+    markForCheck(): void;
+    detach(): void;
+    detectChanges(): void;
     reattach(): void;
 }

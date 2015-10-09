@@ -7,7 +7,7 @@ export declare class KeyEventsPlugin extends EventManagerPlugin {
     static parseEventName(eventName: string): {
         [key: string]: string;
     };
-    static getEventFullKey(event: Event): string;
-    static eventCallback(element: HTMLElement, fullKey: any, handler: (Event) => any, zone: NgZone): (event: Event) => void;
+    static getEventFullKey(event: KeyboardEvent): string;
+    static eventCallback(element: HTMLElement, fullKey: any, handler: (e: Event) => any, zone: NgZone): (event: KeyboardEvent) => void;
     static _normalizeKey(keyName: string): string;
 }

@@ -3,26 +3,29 @@ import { Promise } from "angular2/src/core/facade/async";
 import { Serializer } from "angular2/src/web_workers/shared/serializer";
 import { Type } from "angular2/src/core/facade/lang";
 export { Type } from "angular2/src/core/facade/lang";
-export declare class ClientMessageBrokerFactory {
+export declare abstract class ClientMessageBrokerFactory {
+    /**
+     * Initializes the given channel and attaches a new {@link ClientMessageBroker} to it.
+     */
+    abstract createMessageBroker(channel: string, runInZone?: boolean): ClientMessageBroker;
+}
+export declare class ClientMessageBrokerFactory_ extends ClientMessageBrokerFactory {
     private _messageBus;
     _serializer: Serializer;
-    /**
-     * @private
-     */
     constructor(_messageBus: MessageBus, _serializer: Serializer);
     /**
      * Initializes the given channel and attaches a new {@link ClientMessageBroker} to it.
      */
     createMessageBroker(channel: string, runInZone?: boolean): ClientMessageBroker;
 }
-export declare class ClientMessageBroker {
+export declare abstract class ClientMessageBroker {
+    abstract runOnService(args: UiArguments, returnType: Type): Promise<any>;
+}
+export declare class ClientMessageBroker_ extends ClientMessageBroker {
     _serializer: Serializer;
     channel: any;
     private _pending;
     private _sink;
-    /**
-     * @private
-     */
     constructor(messageBus: MessageBus, _serializer: Serializer, channel: any);
     private _generateMessageId(name);
     runOnService(args: UiArguments, returnType: Type): Promise<any>;

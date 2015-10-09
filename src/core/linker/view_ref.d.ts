@@ -13,10 +13,6 @@ export declare function internalProtoView(protoViewRef: ProtoViewRef): viewModul
  * {@link AppViewManager#createHostViewInContainer}, {@link ViewContainerRef#createHostView}.
  */
 export interface HostViewRef {
-    /**
-     * @private
-     */
-    changeDetectorRef: ChangeDetectorRef;
 }
 /**
  * Represents an Angular View.
@@ -71,34 +67,29 @@ export interface HostViewRef {
  * <!-- /ViewRef: outer-0 -->
  * ```
  */
-export declare class ViewRef implements HostViewRef {
+export declare abstract class ViewRef implements HostViewRef {
+    /**
+     * Sets `value` of local variable called `variableName` in this View.
+     */
+    abstract setLocal(variableName: string, value: any): void;
+    changeDetectorRef: ChangeDetectorRef;
+}
+export declare class ViewRef_ extends ViewRef {
     _view: viewModule.AppView;
     private _changeDetectorRef;
-    /**
-     * @private
-     */
     constructor(_view: viewModule.AppView);
     /**
-     * @private
-     *
      * Return `RenderViewRef`
      */
     render: RenderViewRef;
     /**
-     * @private
-     *
      * Return `RenderFragmentRef`
      */
     renderFragment: RenderFragmentRef;
     /**
-     * @private
-     *
      * Return `ChangeDetectorRef`
      */
     changeDetectorRef: ChangeDetectorRef;
-    /**
-     * Sets `value` of local variable called `variableName` in this View.
-     */
     setLocal(variableName: string, value: any): void;
 }
 /**
@@ -140,10 +131,9 @@ export declare class ViewRef implements HostViewRef {
  *
  * Notice that the original template is broken down into two separate ProtoViews.
  */
-export declare class ProtoViewRef {
+export declare abstract class ProtoViewRef {
+}
+export declare class ProtoViewRef_ extends ProtoViewRef {
     _protoView: viewModule.AppProtoView;
-    /**
-     * @private
-     */
     constructor(_protoView: viewModule.AppProtoView);
 }

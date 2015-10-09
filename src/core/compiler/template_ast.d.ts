@@ -94,9 +94,10 @@ export declare class DirectiveAst implements TemplateAst {
     visit(visitor: TemplateAstVisitor, context: any): any;
 }
 export declare class NgContentAst implements TemplateAst {
+    index: number;
     ngContentIndex: number;
     sourceInfo: string;
-    constructor(ngContentIndex: number, sourceInfo: string);
+    constructor(index: number, ngContentIndex: number, sourceInfo: string);
     visit(visitor: TemplateAstVisitor, context: any): any;
 }
 export declare enum PropertyBindingType {

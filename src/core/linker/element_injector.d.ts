@@ -1,6 +1,7 @@
 import { Type } from 'angular2/src/core/facade/lang';
 import { Injector, Key, Dependency, Binding, ResolvedBinding } from 'angular2/src/core/di';
 import { ProtoInjector, BindingWithVisibility, DependencyProvider } from 'angular2/src/core/di/injector';
+import { ResolvedBinding_ } from 'angular2/src/core/di/binding';
 import { QueryMetadata } from '../metadata/di';
 import * as viewModule from './view';
 import * as avmModule from './view_manager';
@@ -35,7 +36,7 @@ export declare class DirectiveDependency extends Dependency {
     static _attributeName(properties: any): string;
     static _query(properties: any): QueryMetadata;
 }
-export declare class DirectiveBinding extends ResolvedBinding {
+export declare class DirectiveBinding extends ResolvedBinding_ {
     metadata: DirectiveMetadata;
     bindings: Array<Type | Binding | any[]>;
     viewBindings: Array<Type | Binding | any[]>;

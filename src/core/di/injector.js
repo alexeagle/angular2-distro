@@ -483,7 +483,7 @@ var Injector = (function () {
         return new Injector(proto, null, null);
     };
     /**
-     * @private
+     * @internal
      */
     Injector.prototype.debugContext = function () { return this._debugContext(); };
     /**
@@ -535,7 +535,7 @@ var Injector = (function () {
         return this._getByKey(key_1.Key.get(token), null, null, true, Visibility.PublicAndPrivate);
     };
     /**
-     * @private
+     * @internal
      */
     Injector.prototype.getAt = function (index) { return this._strategy.getObjAtIndex(index); };
     Object.defineProperty(Injector.prototype, "parent", {
@@ -559,7 +559,7 @@ var Injector = (function () {
     });
     Object.defineProperty(Injector.prototype, "internalStrategy", {
         /**
-         * @private
+         * @internal
          * Internal. Do not use.
          * We return `any` not to export the InjectorStrategy type.
          */

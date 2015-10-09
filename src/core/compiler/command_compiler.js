@@ -14,7 +14,7 @@ var collection_1 = require('angular2/src/core/facade/collection');
 var template_commands_1 = require('angular2/src/core/linker/template_commands');
 var template_ast_1 = require('./template_ast');
 var source_module_1 = require('./source_module');
-var api_1 = require('angular2/src/core/render/api');
+var view_1 = require('angular2/src/core/metadata/view');
 var style_compiler_1 = require('./style_compiler');
 var util_1 = require('./util');
 var di_1 = require('angular2/src/core/di');
@@ -55,11 +55,11 @@ var RuntimeCommandFactory = (function () {
     RuntimeCommandFactory.prototype._addStyleShimAttributes = function (attrNameAndValues, localComponent, localTemplateId) {
         var additionalStyles = [];
         if (lang_1.isPresent(localComponent) &&
-            localComponent.template.encapsulation === api_1.ViewEncapsulation.Emulated) {
+            localComponent.template.encapsulation === view_1.ViewEncapsulation.Emulated) {
             additionalStyles.push(style_compiler_1.shimHostAttribute(this.appId, localTemplateId));
             additionalStyles.push('');
         }
-        if (this.component.template.encapsulation === api_1.ViewEncapsulation.Emulated) {
+        if (this.component.template.encapsulation === view_1.ViewEncapsulation.Emulated) {
             additionalStyles.push(style_compiler_1.shimContentAttribute(this.appId, this.templateId));
             additionalStyles.push('');
         }
@@ -68,7 +68,9 @@ var RuntimeCommandFactory = (function () {
     RuntimeCommandFactory.prototype.createText = function (value, isBound, ngContentIndex) {
         return template_commands_1.text(value, isBound, ngContentIndex);
     };
-    RuntimeCommandFactory.prototype.createNgContent = function (ngContentIndex) { return template_commands_1.ngContent(ngContentIndex); };
+    RuntimeCommandFactory.prototype.createNgContent = function (index, ngContentIndex) {
+        return template_commands_1.ngContent(index, ngContentIndex);
+    };
     RuntimeCommandFactory.prototype.createBeginElement = function (name, attrNameAndValues, eventTargetAndNames, variableNameAndValues, directives, isBound, ngContentIndex) {
         return template_commands_1.beginElement(name, this._addStyleShimAttributes(attrNameAndValues, null, null), eventTargetAndNames, variableNameAndValues, this._mapDirectives(directives), isBound, ngContentIndex);
     };
@@ -94,11 +96,11 @@ var CodegenCommandFactory = (function () {
     CodegenCommandFactory.prototype._addStyleShimAttributes = function (attrNameAndValues, localComponent, localTemplateIdExpr) {
         var additionalStlyes = [];
         if (lang_1.isPresent(localComponent) &&
-            localComponent.template.encapsulation === api_1.ViewEncapsulation.Emulated) {
+            localComponent.template.encapsulation === view_1.ViewEncapsulation.Emulated) {
             additionalStlyes.push(new Expression(style_compiler_1.shimHostAttributeExpr(this.appIdExpr, localTemplateIdExpr)));
             additionalStlyes.push('');
         }
-        if (this.component.template.encapsulation === api_1.ViewEncapsulation.Emulated) {
+        if (this.component.template.encapsulation === view_1.ViewEncapsulation.Emulated) {
             additionalStlyes.push(new Expression(style_compiler_1.shimContentAttributeExpr(this.appIdExpr, this.templateIdExpr)));
             additionalStlyes.push('');
         }
@@ -107,8 +109,8 @@ var CodegenCommandFactory = (function () {
     CodegenCommandFactory.prototype.createText = function (value, isBound, ngContentIndex) {
         return exports.TEMPLATE_COMMANDS_MODULE_REF + "text(" + util_1.escapeSingleQuoteString(value) + ", " + isBound + ", " + ngContentIndex + ")";
     };
-    CodegenCommandFactory.prototype.createNgContent = function (ngContentIndex) {
-        return exports.TEMPLATE_COMMANDS_MODULE_REF + "ngContent(" + ngContentIndex + ")";
+    CodegenCommandFactory.prototype.createNgContent = function (index, ngContentIndex) {
+        return exports.TEMPLATE_COMMANDS_MODULE_REF + "ngContent(" + index + ", " + ngContentIndex + ")";
     };
     CodegenCommandFactory.prototype.createBeginElement = function (name, attrNameAndValues, eventTargetAndNames, variableNameAndValues, directives, isBound, ngContentIndex) {
         var attrsExpression = codeGenArray(this._addStyleShimAttributes(attrNameAndValues, null, null));
@@ -150,7 +152,7 @@ var CommandBuilderVisitor = (function () {
     };
     CommandBuilderVisitor.prototype.visitNgContent = function (ast, context) {
         this.transitiveNgContentCount++;
-        this.result.push(this.commandFactory.createNgContent(ast.ngContentIndex));
+        this.result.push(this.commandFactory.createNgContent(ast.index, ast.ngContentIndex));
         return null;
     };
     CommandBuilderVisitor.prototype.visitEmbeddedTemplate = function (ast, context) {
@@ -191,7 +193,7 @@ var CommandBuilderVisitor = (function () {
         eventTargetAndNames = removeKeyValueArrayDuplicates(eventTargetAndNames);
         var attrNameAndValues = this._readAttrNameAndValues(directives, ast.attrs);
         if (lang_1.isPresent(component)) {
-            this.result.push(this.commandFactory.createBeginComponent(ast.name, attrNameAndValues, eventTargetAndNames, variableNameAndValues, directives, component.template.encapsulation === api_1.ViewEncapsulation.Native, ast.ngContentIndex));
+            this.result.push(this.commandFactory.createBeginComponent(ast.name, attrNameAndValues, eventTargetAndNames, variableNameAndValues, directives, component.template.encapsulation === view_1.ViewEncapsulation.Native, ast.ngContentIndex));
             template_ast_1.templateVisitAll(this, ast.children);
             this.result.push(this.commandFactory.createEndComponent());
         }

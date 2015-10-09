@@ -1,6 +1,6 @@
 import { Type } from 'angular2/src/core/facade/lang';
 import { ChangeDetectionStrategy } from 'angular2/src/core/change_detection/change_detection';
-import { ViewEncapsulation } from 'angular2/src/core/render/api';
+import { ViewEncapsulation } from 'angular2/src/core/metadata/view';
 import { LifecycleHooks } from 'angular2/src/core/linker/interfaces';
 export declare class CompileTypeMetadata {
     runtime: Type;

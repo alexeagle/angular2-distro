@@ -1,7 +1,7 @@
 var lang_1 = require('angular2/src/core/facade/lang');
 var collection_1 = require('angular2/src/core/facade/collection');
 var change_detection_1 = require('angular2/src/core/change_detection/change_detection');
-var api_1 = require('angular2/src/core/render/api');
+var view_1 = require('angular2/src/core/metadata/view');
 var selector_1 = require('angular2/src/core/compiler/selector');
 var util_1 = require('./util');
 var interfaces_1 = require('angular2/src/core/linker/interfaces');
@@ -33,7 +33,7 @@ exports.CompileTypeMetadata = CompileTypeMetadata;
 var CompileTemplateMetadata = (function () {
     function CompileTemplateMetadata(_a) {
         var _b = _a === void 0 ? {} : _a, encapsulation = _b.encapsulation, template = _b.template, templateUrl = _b.templateUrl, styles = _b.styles, styleUrls = _b.styleUrls, ngContentSelectors = _b.ngContentSelectors;
-        this.encapsulation = encapsulation;
+        this.encapsulation = lang_1.isPresent(encapsulation) ? encapsulation : view_1.ViewEncapsulation.Emulated;
         this.template = template;
         this.templateUrl = templateUrl;
         this.styles = lang_1.isPresent(styles) ? styles : [];
@@ -43,7 +43,7 @@ var CompileTemplateMetadata = (function () {
     CompileTemplateMetadata.fromJson = function (data) {
         return new CompileTemplateMetadata({
             encapsulation: lang_1.isPresent(data['encapsulation']) ?
-                api_1.VIEW_ENCAPSULATION_VALUES[data['encapsulation']] :
+                view_1.VIEW_ENCAPSULATION_VALUES[data['encapsulation']] :
                 data['encapsulation'],
             template: data['template'],
             templateUrl: data['templateUrl'],

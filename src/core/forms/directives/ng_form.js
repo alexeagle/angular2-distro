@@ -166,7 +166,7 @@ var NgForm = (function (_super) {
         return false;
     };
     NgForm.prototype._findContainer = function (path) {
-        collection_1.ListWrapper.removeLast(path);
+        path.pop();
         return collection_1.ListWrapper.isEmpty(path) ? this.form : this.form.find(path);
     };
     NgForm.prototype._later = function (fn) { async_1.PromiseWrapper.then(async_1.PromiseWrapper.resolve(null), fn, function (_) { }); };

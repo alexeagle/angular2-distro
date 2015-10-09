@@ -37,7 +37,7 @@ export declare class Headers {
      * Deletes all header values for the given name.
      */
     delete(name: string): void;
-    forEach(fn: (value: string, name: string, headers: Headers) => any): void;
+    forEach(fn: (values: string[], name: string, headers: Map<string, string[]>) => void): void;
     /**
      * Returns first header that matches given name.
      */

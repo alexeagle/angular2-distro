@@ -45,7 +45,7 @@ var RenderViewWithFragmentsStore = (function () {
         this._lookupByIndex.set(startIndex, view.viewRef);
         this._lookupByView.set(view.viewRef, startIndex);
         startIndex++;
-        collection_1.ListWrapper.forEach(view.fragmentRefs, function (ref) {
+        view.fragmentRefs.forEach(function (ref) {
             _this._lookupByIndex.set(startIndex, ref);
             _this._lookupByView.set(ref, startIndex);
             startIndex++;
@@ -110,13 +110,13 @@ var RenderViewWithFragmentsStore = (function () {
         if (this._onWebWorker) {
             return {
                 'viewRef': view.viewRef.serialize(),
-                'fragmentRefs': collection_1.ListWrapper.map(view.fragmentRefs, function (val) { return val.serialize(); })
+                'fragmentRefs': view.fragmentRefs.map(function (val) { return val.serialize(); })
             };
         }
         else {
             return {
                 'viewRef': this._lookupByView.get(view.viewRef),
-                'fragmentRefs': collection_1.ListWrapper.map(view.fragmentRefs, function (val) { return _this._lookupByView.get(val); })
+                'fragmentRefs': view.fragmentRefs.map(function (val) { return _this._lookupByView.get(val); })
             };
         }
     };
@@ -126,7 +126,7 @@ var RenderViewWithFragmentsStore = (function () {
             return null;
         }
         var viewRef = this.deserializeRenderViewRef(obj['viewRef']);
-        var fragments = collection_1.ListWrapper.map(obj['fragmentRefs'], function (val) { return _this.deserializeRenderFragmentRef(val); });
+        var fragments = obj['fragmentRefs'].map(function (val) { return _this.deserializeRenderFragmentRef(val); });
         return new api_1.RenderViewWithFragments(viewRef, fragments);
     };
     RenderViewWithFragmentsStore = __decorate([

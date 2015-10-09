@@ -10,30 +10,7 @@ import { RenderViewRef, RenderElementRef, Renderer } from 'angular2/src/core/ren
  * An `ElementRef` is backed by a render-specific element. In the browser, this is usually a DOM
  * element.
  */
-export declare class ElementRef implements RenderElementRef {
-    private _renderer;
-    /**
-     * @private
-     *
-     * Reference to the {@link ViewRef} that this `ElementRef` is part of.
-     */
-    parentView: ViewRef;
-    /**
-     * @private
-     *
-     * Index of the element inside the {@link ViewRef}.
-     *
-     * This is used internally by the Angular framework to locate elements.
-     */
-    boundElementIndex: number;
-    /**
-     * @private
-     */
-    constructor(parentView: ViewRef, boundElementIndex: number, _renderer: Renderer);
-    /**
-     * @private
-     */
-    renderView: RenderViewRef;
+export declare abstract class ElementRef implements RenderElementRef {
     /**
      * The underlying native element or `null` if direct access to native elements is not supported
      * (e.g. when the application runs in a web worker).
@@ -53,5 +30,25 @@ export declare class ElementRef implements RenderElementRef {
      *   </p>
      * </div>
      */
+    nativeElement: any;
+    renderView: RenderViewRef;
+}
+export declare class ElementRef_ extends ElementRef {
+    parentView: ViewRef;
+    /**
+     * Index of the element inside the {@link ViewRef}.
+     *
+     * This is used internally by the Angular framework to locate elements.
+     */
+    boundElementIndex: number;
+    private _renderer;
+    constructor(parentView: ViewRef, 
+        /**
+         * Index of the element inside the {@link ViewRef}.
+         *
+         * This is used internally by the Angular framework to locate elements.
+         */
+        boundElementIndex: number, _renderer: Renderer);
+    renderView: RenderViewRef;
     nativeElement: any;
 }

@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var ng_zone_1 = require('angular2/src/core/zone/ng_zone');
 var lang_1 = require('angular2/src/core/facade/lang');
 var di_1 = require('angular2/src/core/di');
@@ -22,6 +27,9 @@ var view_resolver_1 = require('./linker/view_resolver');
 var directive_resolver_1 = require('./linker/directive_resolver');
 var pipe_resolver_1 = require('./linker/pipe_resolver');
 var compiler_1 = require('angular2/src/core/linker/compiler');
+var dynamic_component_loader_2 = require("./linker/dynamic_component_loader");
+var view_manager_2 = require("./linker/view_manager");
+var compiler_2 = require("./linker/compiler");
 /**
  * Constructs the set of bindings meant for use at the platform level.
  *
@@ -61,11 +69,12 @@ function _componentBindings(appComponentType) {
  */
 function applicationCommonBindings() {
     return [
-        compiler_1.Compiler,
+        di_1.bind(compiler_1.Compiler)
+            .toClass(compiler_2.Compiler_),
         application_tokens_1.APP_ID_RANDOM_BINDING,
         view_pool_1.AppViewPool,
         di_1.bind(view_pool_1.APP_VIEW_POOL_CAPACITY).toValue(10000),
-        view_manager_1.AppViewManager,
+        di_1.bind(view_manager_1.AppViewManager).toClass(view_manager_2.AppViewManager_),
         view_manager_utils_1.AppViewManagerUtils,
         view_listener_1.AppViewListener,
         proto_view_factory_1.ProtoViewFactory,
@@ -75,8 +84,8 @@ function applicationCommonBindings() {
         di_1.bind(change_detection_1.KeyValueDiffers).toValue(change_detection_1.defaultKeyValueDiffers),
         directive_resolver_1.DirectiveResolver,
         pipe_resolver_1.PipeResolver,
-        dynamic_component_loader_1.DynamicComponentLoader,
-        di_1.bind(life_cycle_1.LifeCycle).toFactory(function (exceptionHandler) { return new life_cycle_1.LifeCycle(null, lang_1.assertionsEnabled()); }, [exceptions_1.ExceptionHandler]),
+        di_1.bind(dynamic_component_loader_1.DynamicComponentLoader).toClass(dynamic_component_loader_2.DynamicComponentLoader_),
+        di_1.bind(life_cycle_1.LifeCycle).toFactory(function (exceptionHandler) { return new life_cycle_1.LifeCycle_(null, lang_1.assertionsEnabled()); }, [exceptions_1.ExceptionHandler]),
     ];
 }
 exports.applicationCommonBindings = applicationCommonBindings;
@@ -89,7 +98,7 @@ function createNgZone() {
 exports.createNgZone = createNgZone;
 var _platform;
 /**
- * @private
+ * FIXME(alexeagle): make internal
  */
 function platformCommon(bindings, initializer) {
     if (lang_1.isPresent(_platform)) {
@@ -104,7 +113,7 @@ function platformCommon(bindings, initializer) {
     if (lang_1.isBlank(bindings)) {
         bindings = platformBindings();
     }
-    _platform = new PlatformRef(di_1.Injector.resolveAndCreate(bindings), function () { _platform = null; });
+    _platform = new PlatformRef_(di_1.Injector.resolveAndCreate(bindings), function () { _platform = null; });
     return _platform;
 }
 exports.platformCommon = platformCommon;
@@ -117,71 +126,39 @@ exports.platformCommon = platformCommon;
  * explicitly by calling {@link platform}().
  */
 var PlatformRef = (function () {
-    /**
-     * @private
-     */
-    function PlatformRef(_injector, _dispose) {
-        this._injector = _injector;
-        this._dispose = _dispose;
-        /**
-         * @private
-         */
-        this._applications = [];
+    function PlatformRef() {
     }
     Object.defineProperty(PlatformRef.prototype, "injector", {
         /**
          * Retrieve the platform {@link Injector}, which is the parent injector for
          * every Angular application on the page and provides singleton bindings.
          */
+        get: function () { return exceptions_1.unimplemented(); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    return PlatformRef;
+})();
+exports.PlatformRef = PlatformRef;
+var PlatformRef_ = (function (_super) {
+    __extends(PlatformRef_, _super);
+    function PlatformRef_(_injector, _dispose) {
+        _super.call(this);
+        this._injector = _injector;
+        this._dispose = _dispose;
+        this._applications = [];
+    }
+    Object.defineProperty(PlatformRef_.prototype, "injector", {
         get: function () { return this._injector; },
         enumerable: true,
         configurable: true
     });
-    /**
-     * Instantiate a new Angular application on the page.
-     *
-     * # What is an application?
-     *
-     * Each Angular application has its own zone, change detection, compiler,
-     * renderer, and other framework components. An application hosts one or more
-     * root components, which can be initialized via `ApplicationRef.bootstrap()`.
-     *
-     * # Application Bindings
-     *
-     * Angular applications require numerous bindings to be properly instantiated.
-     * When using `application()` to create a new app on the page, these bindings
-     * must be provided. Fortunately, there are helper functions to configure
-     * typical bindings, as shown in the example below.
-     *
-     * # Example
-     * ```
-     * var myAppBindings = [MyAppService];
-     *
-     * platform()
-     *   .application([applicationCommonBindings(), applicationDomBindings(), myAppBindings])
-     *   .bootstrap(MyTopLevelComponent);
-     * ```
-     * # See Also
-     *
-     * See the {@link bootstrap} documentation for more details.
-     */
-    PlatformRef.prototype.application = function (bindings) {
+    PlatformRef_.prototype.application = function (bindings) {
         var app = this._initApp(createNgZone(), bindings);
         return app;
     };
-    /**
-     * Instantiate a new Angular application on the page, using bindings which
-     * are only available asynchronously. One such use case is to initialize an
-     * application running in a web worker.
-     *
-     * # Usage
-     *
-     * `bindingFn` is a function that will be called in the new application's zone.
-     * It should return a {@link Promise} to a list of bindings to be used for the
-     * new application. Once this promise resolves, the application will be
-     * constructed in the same manner as a normal `application()`.
-     */
-    PlatformRef.prototype.asyncApplication = function (bindingFn) {
+    PlatformRef_.prototype.asyncApplication = function (bindingFn) {
         var _this = this;
         var zone = createNgZone();
         var completer = async_1.PromiseWrapper.completer();
@@ -192,7 +169,7 @@ var PlatformRef = (function () {
         });
         return completer.promise;
     };
-    PlatformRef.prototype._initApp = function (zone, bindings) {
+    PlatformRef_.prototype._initApp = function (zone, bindings) {
         var _this = this;
         var injector;
         zone.run(function () {
@@ -213,70 +190,61 @@ var PlatformRef = (function () {
                 }
             }
         });
-        var app = new ApplicationRef(this, zone, injector);
+        var app = new ApplicationRef_(this, zone, injector);
         this._applications.push(app);
         return app;
     };
-    /**
-     * Destroy the Angular platform and all Angular applications on the page.
-     */
-    PlatformRef.prototype.dispose = function () {
+    PlatformRef_.prototype.dispose = function () {
         this._applications.forEach(function (app) { return app.dispose(); });
         this._dispose();
     };
-    /**
-     * @private
-     */
-    PlatformRef.prototype._applicationDisposed = function (app) { collection_1.ListWrapper.remove(this._applications, app); };
-    return PlatformRef;
-})();
-exports.PlatformRef = PlatformRef;
+    PlatformRef_.prototype._applicationDisposed = function (app) { collection_1.ListWrapper.remove(this._applications, app); };
+    return PlatformRef_;
+})(PlatformRef);
+exports.PlatformRef_ = PlatformRef_;
 /**
  * A reference to an Angular application running on a page.
  *
  * For more about Angular applications, see the documentation for {@link bootstrap}.
  */
 var ApplicationRef = (function () {
-    /**
-     * @private
-     */
-    function ApplicationRef(_platform, _zone, _injector) {
+    function ApplicationRef() {
+    }
+    Object.defineProperty(ApplicationRef.prototype, "injector", {
+        /**
+         * Retrieve the application {@link Injector}.
+         */
+        get: function () { return exceptions_1.unimplemented(); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ApplicationRef.prototype, "zone", {
+        /**
+         * Retrieve the application {@link NgZone}.
+         */
+        get: function () { return exceptions_1.unimplemented(); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    return ApplicationRef;
+})();
+exports.ApplicationRef = ApplicationRef;
+var ApplicationRef_ = (function (_super) {
+    __extends(ApplicationRef_, _super);
+    function ApplicationRef_(_platform, _zone, _injector) {
+        _super.call(this);
         this._platform = _platform;
         this._zone = _zone;
         this._injector = _injector;
         this._bootstrapListeners = [];
         this._rootComponents = [];
     }
-    /**
-     * Register a listener to be called each time `bootstrap()` is called to bootstrap
-     * a new root component.
-     */
-    ApplicationRef.prototype.registerBootstrapListener = function (listener) {
+    ApplicationRef_.prototype.registerBootstrapListener = function (listener) {
         this._bootstrapListeners.push(listener);
     };
-    /**
-     * Bootstrap a new component at the root level of the application.
-     *
-     * # Bootstrap process
-     *
-     * When bootstrapping a new root component into an application, Angular mounts the
-     * specified application component onto DOM elements identified by the [componentType]'s
-     * selector and kicks off automatic change detection to finish initializing the component.
-     *
-     * # Optional Bindings
-     *
-     * Bindings for the given component can optionally be overridden via the `bindings`
-     * parameter. These bindings will only apply for the root component being added and any
-     * child components under it.
-     *
-     * # Example
-     * ```
-     * var app = platform.application([applicationCommonBindings(), applicationDomBindings()];
-     * app.bootstrap(FirstRootComponent);
-     * app.bootstrap(SecondRootComponent, [bind(OverrideBinding).toClass(OverriddenBinding)]);
-     * ```
-     */
-    ApplicationRef.prototype.bootstrap = function (componentType, bindings) {
+    ApplicationRef_.prototype.bootstrap = function (componentType, bindings) {
         var _this = this;
         var completer = async_1.PromiseWrapper.completer();
         this._zone.run(function () {
@@ -308,31 +276,22 @@ var ApplicationRef = (function () {
         });
         return completer.promise;
     };
-    Object.defineProperty(ApplicationRef.prototype, "injector", {
-        /**
-         * Retrieve the application {@link Injector}.
-         */
+    Object.defineProperty(ApplicationRef_.prototype, "injector", {
         get: function () { return this._injector; },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ApplicationRef.prototype, "zone", {
-        /**
-         * Retrieve the application {@link NgZone}.
-         */
+    Object.defineProperty(ApplicationRef_.prototype, "zone", {
         get: function () { return this._zone; },
         enumerable: true,
         configurable: true
     });
-    /**
-     * Dispose of this application and all of its components.
-     */
-    ApplicationRef.prototype.dispose = function () {
+    ApplicationRef_.prototype.dispose = function () {
         // TODO(alxhub): Dispose of the NgZone.
         this._rootComponents.forEach(function (ref) { return ref.dispose(); });
         this._platform._applicationDisposed(this);
     };
-    return ApplicationRef;
-})();
-exports.ApplicationRef = ApplicationRef;
+    return ApplicationRef_;
+})(ApplicationRef);
+exports.ApplicationRef_ = ApplicationRef_;
 //# sourceMappingURL=application_ref.js.map

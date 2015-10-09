@@ -1,7 +1,7 @@
 var di_1 = require('angular2/src/core/di');
 var lang_1 = require('angular2/src/core/facade/lang');
 /**
- *  @private
+ *  @internal
  */
 exports.APP_COMPONENT_REF_PROMISE = lang_1.CONST_EXPR(new di_1.OpaqueToken('Promise<ComponentRef>'));
 /**

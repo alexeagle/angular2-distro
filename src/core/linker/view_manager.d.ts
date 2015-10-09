@@ -15,20 +15,11 @@ import { WtfScopeFn } from '../profile/profile';
  * Most applications should use higher-level abstractions like {@link DynamicComponentLoader} and
  * {@link ViewContainerRef} instead.
  */
-export declare class AppViewManager {
-    private _viewPool;
-    private _viewListener;
-    private _utils;
-    private _renderer;
-    private _protoViewFactory;
-    /**
-     * @private
-     */
-    constructor(_viewPool: AppViewPool, _viewListener: AppViewListener, _utils: AppViewManagerUtils, _renderer: Renderer, _protoViewFactory: any);
+export declare abstract class AppViewManager {
     /**
      * Returns a {@link ViewContainerRef} of the View Container at the specified location.
      */
-    getViewContainer(location: ElementRef): ViewContainerRef;
+    abstract getViewContainer(location: ElementRef): ViewContainerRef;
     /**
      * Returns the {@link ElementRef} that makes up the specified Host View.
      */
@@ -40,12 +31,11 @@ export declare class AppViewManager {
      * Throws an exception if the specified `hostLocation` is not a Host Element of a Component, or if
      * variable `variableName` couldn't be found in the Component View of this Component.
      */
-    getNamedElementInComponentView(hostLocation: ElementRef, variableName: string): ElementRef;
+    abstract getNamedElementInComponentView(hostLocation: ElementRef, variableName: string): ElementRef;
     /**
      * Returns the component instance for the provided Host Element.
      */
-    getComponent(hostLocation: ElementRef): any;
-    _createRootHostViewScope: WtfScopeFn;
+    abstract getComponent(hostLocation: ElementRef): any;
     /**
      * Creates an instance of a Component and attaches it to the first element in the global View
      * (usually DOM Document) that matches the component's selector or `overrideSelector`.
@@ -98,16 +88,14 @@ export declare class AppViewManager {
      * ng.bootstrap(MyApp);
      * ```
      */
-    createRootHostView(hostProtoViewRef: ProtoViewRef, overrideSelector: string, injector: Injector): HostViewRef;
-    _destroyRootHostViewScope: WtfScopeFn;
+    abstract createRootHostView(hostProtoViewRef: ProtoViewRef, overrideSelector: string, injector: Injector): HostViewRef;
     /**
      * Destroys the Host View created via {@link AppViewManager#createRootHostView}.
      *
      * Along with the Host View, the Component Instance as well as all nested View and Components are
      * destroyed as well.
      */
-    destroyRootHostView(hostViewRef: HostViewRef): void;
-    _createEmbeddedViewInContainerScope: WtfScopeFn;
+    abstract destroyRootHostView(hostViewRef: HostViewRef): any;
     /**
      * Instantiates an Embedded View based on the {@link TemplateRef `templateRef`} and inserts it
      * into the View Container specified via `viewContainerLocation` at the specified `index`.
@@ -119,8 +107,7 @@ export declare class AppViewManager {
      *
      * Use {@link AppViewManager#destroyViewInContainer} to destroy the created Embedded View.
      */
-    createEmbeddedViewInContainer(viewContainerLocation: ElementRef, index: number, templateRef: TemplateRef): ViewRef;
-    _createHostViewInContainerScope: WtfScopeFn;
+    abstract createEmbeddedViewInContainer(viewContainerLocation: ElementRef, index: number, templateRef: TemplateRef): ViewRef;
     /**
      * Instantiates a single {@link Component} and inserts its Host View into the View Container
      * found at `viewContainerLocation`. Within the container, the view will be inserted at position
@@ -136,6 +123,40 @@ export declare class AppViewManager {
      *
      * Use {@link AppViewManager#destroyViewInContainer} to destroy the created Host View.
      */
+    abstract createHostViewInContainer(viewContainerLocation: ElementRef, index: number, protoViewRef: ProtoViewRef, imperativelyCreatedInjector: ResolvedBinding[]): HostViewRef;
+    /**
+     * Destroys an Embedded or Host View attached to a View Container at the specified `index`.
+     *
+     * The View Container is located via `viewContainerLocation`.
+     */
+    abstract destroyViewInContainer(viewContainerLocation: ElementRef, index: number): any;
+    /**
+     *
+     * See {@link AppViewManager#detachViewInContainer}.
+     */
+    abstract attachViewInContainer(viewContainerLocation: ElementRef, index: number, viewRef: ViewRef): ViewRef;
+    /**
+     * See {@link AppViewManager#attachViewInContainer}.
+     */
+    abstract detachViewInContainer(viewContainerLocation: ElementRef, index: number): ViewRef;
+}
+export declare class AppViewManager_ extends AppViewManager {
+    private _viewPool;
+    private _viewListener;
+    private _utils;
+    private _renderer;
+    private _protoViewFactory;
+    constructor(_viewPool: AppViewPool, _viewListener: AppViewListener, _utils: AppViewManagerUtils, _renderer: Renderer, _protoViewFactory: any);
+    getViewContainer(location: ElementRef): ViewContainerRef;
+    getNamedElementInComponentView(hostLocation: ElementRef, variableName: string): ElementRef;
+    getComponent(hostLocation: ElementRef): any;
+    _createRootHostViewScope: WtfScopeFn;
+    createRootHostView(hostProtoViewRef: ProtoViewRef, overrideSelector: string, injector: Injector): HostViewRef;
+    _destroyRootHostViewScope: WtfScopeFn;
+    destroyRootHostView(hostViewRef: HostViewRef): void;
+    _createEmbeddedViewInContainerScope: WtfScopeFn;
+    createEmbeddedViewInContainer(viewContainerLocation: ElementRef, index: number, templateRef: TemplateRef): ViewRef;
+    _createHostViewInContainerScope: WtfScopeFn;
     createHostViewInContainer(viewContainerLocation: ElementRef, index: number, protoViewRef: ProtoViewRef, imperativelyCreatedInjector: ResolvedBinding[]): HostViewRef;
     /**
      *
@@ -144,22 +165,10 @@ export declare class AppViewManager {
     _createViewInContainer(viewContainerLocation: ElementRef, index: number, protoView: viewModule.AppProtoView, context: ElementRef, imperativelyCreatedInjector: ResolvedBinding[]): ViewRef;
     _attachRenderView(parentView: viewModule.AppView, boundElementIndex: number, index: number, view: viewModule.AppView): void;
     _destroyViewInContainerScope: WtfScopeFn;
-    /**
-     * Destroys an Embedded or Host View attached to a View Container at the specified `index`.
-     *
-     * The View Container is located via `viewContainerLocation`.
-     */
     destroyViewInContainer(viewContainerLocation: ElementRef, index: number): void;
     _attachViewInContainerScope: WtfScopeFn;
-    /**
-     *
-     * See {@link AppViewManager#detachViewInContainer}.
-     */
     attachViewInContainer(viewContainerLocation: ElementRef, index: number, viewRef: ViewRef): ViewRef;
     _detachViewInContainerScope: WtfScopeFn;
-    /**
-     * See {@link AppViewManager#attachViewInContainer}.
-     */
     detachViewInContainer(viewContainerLocation: ElementRef, index: number): ViewRef;
     _createMainView(protoView: viewModule.AppProtoView, renderViewWithFragments: RenderViewWithFragments): viewModule.AppView;
     _createPooledView(protoView: viewModule.AppProtoView): viewModule.AppView;

@@ -41,5 +41,5 @@ var MockMessageBrokerFactory = (function (_super) {
         return this._messageBroker;
     };
     return MockMessageBrokerFactory;
-})(client_message_broker_1.ClientMessageBrokerFactory);
+})(client_message_broker_1.ClientMessageBrokerFactory_);
 //# sourceMappingURL=xhr_impl_spec.js.map

@@ -64,7 +64,7 @@ var XHRConnection = (function () {
                 responseObserver.error(new static_response_1.Response(responseOptions));
             };
             if (lang_1.isPresent(req.headers)) {
-                req.headers.forEach(function (value, name) { _xhr.setRequestHeader(name, value); });
+                req.headers.forEach(function (values, name) { _xhr.setRequestHeader(name, values.join(',')); });
             }
             _xhr.addEventListener('load', onLoad);
             _xhr.addEventListener('error', onError);
@@ -99,7 +99,7 @@ exports.XHRConnection = XHRConnection;
  * })
  * class MyComponent {
  *   constructor(http:Http) {
- *     http('people.json').toRx().subscribe(res => this.people = res.json());
+ *     http('people.json').subscribe(res => this.people = res.json());
  *   }
  * }
  * ```

@@ -17,6 +17,7 @@ var dynamic_component_loader_1 = require('angular2/src/core/linker/dynamic_compo
 var element_ref_1 = require('angular2/src/core/linker/element_ref');
 var render_1 = require('angular2/src/core/render/render');
 var dom_adapter_1 = require('angular2/src/core/dom/dom_adapter');
+var test_component_builder_1 = require("angular2/src/test_lib/test_component_builder");
 function main() {
     test_lib_1.describe('DynamicComponentLoader', function () {
         test_lib_1.describe("loading into a location", function () {
@@ -159,7 +160,7 @@ function main() {
                 dom_adapter_1.DOM.appendChild(doc.body, rootEl);
                 loader.loadAsRoot(ChildComp, null, injector)
                     .then(function (componentRef) {
-                    var el = new test_lib_1.RootTestComponent(componentRef);
+                    var el = new test_component_builder_1.RootTestComponent_(componentRef);
                     test_lib_1.expect(rootEl.parentNode).toBe(doc.body);
                     el.detectChanges();
                     test_lib_1.expect(rootEl).toHaveText('hello');

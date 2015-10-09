@@ -24,17 +24,6 @@ var Serializer = (function () {
     function Serializer(_protoViewStore, _renderViewStore) {
         this._protoViewStore = _protoViewStore;
         this._renderViewStore = _renderViewStore;
-        this._enumRegistry = new collection_1.Map();
-        var viewTypeMap = new collection_1.Map();
-        viewTypeMap[0] = api_1.ViewType.HOST;
-        viewTypeMap[1] = api_1.ViewType.COMPONENT;
-        viewTypeMap[2] = api_1.ViewType.EMBEDDED;
-        this._enumRegistry.set(api_1.ViewType, viewTypeMap);
-        var viewEncapsulationMap = new collection_1.Map();
-        viewEncapsulationMap[0] = api_1.ViewEncapsulation.Emulated;
-        viewEncapsulationMap[1] = api_1.ViewEncapsulation.Native;
-        viewEncapsulationMap[2] = api_1.ViewEncapsulation.None;
-        this._enumRegistry.set(api_1.ViewEncapsulation, viewEncapsulationMap);
     }
     Serializer.prototype.serialize = function (obj, type) {
         var _this = this;
@@ -42,9 +31,7 @@ var Serializer = (function () {
             return null;
         }
         if (lang_1.isArray(obj)) {
-            var serializedObj = [];
-            collection_1.ListWrapper.forEach(obj, function (val) { serializedObj.push(_this.serialize(val, type)); });
-            return serializedObj;
+            return obj.map(function (v) { return _this.serialize(v, type); });
         }
         if (type == exports.PRIMITIVE) {
             return obj;
@@ -75,7 +62,7 @@ var Serializer = (function () {
         }
         if (lang_1.isArray(map)) {
             var obj = [];
-            collection_1.ListWrapper.forEach(map, function (val) { obj.push(_this.deserialize(val, type, data)); });
+            map.forEach(function (val) { return obj.push(_this.deserialize(val, type, data)); });
             return obj;
         }
         if (type == exports.PRIMITIVE) {
@@ -165,7 +152,7 @@ var RenderTemplateCmdSerializer = (function () {
         };
     };
     RenderTemplateCmdSerializer.prototype.visitNgContent = function (cmd, context) {
-        return { 'deserializerIndex': 1, 'ngContentIndex': cmd.ngContentIndex };
+        return { 'deserializerIndex': 1, 'index': cmd.index, 'ngContentIndex': cmd.ngContentIndex };
     };
     RenderTemplateCmdSerializer.prototype.visitBeginElement = function (cmd, context) {
         return {
@@ -212,7 +199,7 @@ var RENDER_TEMPLATE_CMD_DESERIALIZERS = [
     function (data) {
         return new api_2.WebWorkerTextCmd(data['isBound'], data['ngContentIndex'], data['value']);
     },
-    function (data) { return new api_2.WebWorkerNgContentCmd(data['ngContentIndex']); },
+    function (data) { return new api_2.WebWorkerNgContentCmd(data['index'], data['ngContentIndex']); },
     function (data) {
         return new api_2.WebWorkerBeginElementCmd(data['isBound'], data['ngContentIndex'], data['name'], data['attrNameAndValues'], data['eventTargetAndNames']);
     },

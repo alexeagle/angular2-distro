@@ -375,7 +375,7 @@ var Router = (function () {
             throw new exceptions_1.BaseException("Link \"" + collection_1.ListWrapper.toJSON(linkParams) + "\" must start with \"/\", \"./\", or \"../\"");
         }
         if (rest[rest.length - 1] == '') {
-            collection_1.ListWrapper.removeLast(rest);
+            rest.pop();
         }
         if (rest.length < 1) {
             var msg = "Link \"" + collection_1.ListWrapper.toJSON(linkParams) + "\" must include a route name.";

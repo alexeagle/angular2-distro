@@ -167,7 +167,7 @@ function createEmptyElBinder(parent) {
 exports.createEmptyElBinder = createEmptyElBinder;
 function createNestedElBinder(nestedProtoView) {
     var componentBinding = null;
-    if (nestedProtoView.type === render_1.ViewType.COMPONENT) {
+    if (nestedProtoView.type === view_1.ViewType.COMPONENT) {
         var annotation = new directive_resolver_1.DirectiveResolver().resolve(SomeComponent);
         componentBinding = element_injector_1.DirectiveBinding.createFromType(SomeComponent, annotation);
     }
@@ -192,7 +192,7 @@ function _createProtoView(type, binders) {
             mergedElementCount += nestedPv.mergeInfo.elementCount;
             mergedEmbeddedViewCount += nestedPv.mergeInfo.embeddedViewCount;
             mergedViewCount += nestedPv.mergeInfo.viewCount;
-            if (nestedPv.type === render_1.ViewType.EMBEDDED) {
+            if (nestedPv.type === view_1.ViewType.EMBEDDED) {
                 mergedEmbeddedViewCount++;
             }
         }
@@ -203,17 +203,17 @@ function _createProtoView(type, binders) {
 }
 function createHostPv(binders) {
     if (binders === void 0) { binders = null; }
-    return _createProtoView(render_1.ViewType.HOST, binders);
+    return _createProtoView(view_1.ViewType.HOST, binders);
 }
 exports.createHostPv = createHostPv;
 function createComponentPv(binders) {
     if (binders === void 0) { binders = null; }
-    return _createProtoView(render_1.ViewType.COMPONENT, binders);
+    return _createProtoView(view_1.ViewType.COMPONENT, binders);
 }
 exports.createComponentPv = createComponentPv;
 function createEmbeddedPv(binders) {
     if (binders === void 0) { binders = null; }
-    return _createProtoView(render_1.ViewType.EMBEDDED, binders);
+    return _createProtoView(view_1.ViewType.EMBEDDED, binders);
 }
 exports.createEmbeddedPv = createEmbeddedPv;
 var SomeComponent = (function () {

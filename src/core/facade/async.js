@@ -130,7 +130,7 @@ var EventEmitter = (function (_super) {
     EventEmitter.prototype.observer = function (generator) {
         return this._subject.subscribe(function (value) { setTimeout(function () { return generator.next(value); }); }, function (error) { return generator.throw ? generator.throw(error) : null; }, function () { return generator.return ? generator.return() : null; });
     };
-    EventEmitter.prototype.toRx = function () { return this; };
+    EventEmitter.prototype.toRx = function () { return this._subject; };
     EventEmitter.prototype.next = function (value) { this._subject.next(value); };
     EventEmitter.prototype.throw = function (error) { this._subject.error(error); };
     EventEmitter.prototype.return = function (value) { this._subject.complete(); };

@@ -6,6 +6,7 @@ var compiler_1 = require('angular2/src/core/linker/compiler');
 var proto_view_factory_1 = require('angular2/src/core/linker/proto_view_factory');
 var reflection_1 = require('angular2/src/core/reflection/reflection');
 var view_1 = require('angular2/src/core/linker/view');
+var compiler_2 = require("angular2/src/core/linker/compiler");
 function main() {
     test_lib_1.describe('Compiler', function () {
         var compiler;
@@ -16,7 +17,10 @@ function main() {
             protoViewFactorySpy = new spies_1.SpyProtoViewFactory();
             someProtoView = new view_1.AppProtoView(null, null, null, null, null, null);
             protoViewFactorySpy.spy('createHost').andReturn(someProtoView);
-            return [core_1.bind(proto_view_factory_1.ProtoViewFactory).toValue(protoViewFactorySpy), compiler_1.Compiler];
+            var factoryBinding = core_1.bind(proto_view_factory_1.ProtoViewFactory).toValue(protoViewFactorySpy);
+            var classBinding = core_1.bind(compiler_1.Compiler).toClass(compiler_2.Compiler_);
+            var bindings = [factoryBinding, classBinding];
+            return bindings;
         });
         test_lib_1.beforeEach(test_lib_1.inject([compiler_1.Compiler], function (_compiler) {
             compiler = _compiler;

@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var source_module_1 = require('./source_module');
-var api_1 = require('angular2/src/core/render/api');
+var view_1 = require('angular2/src/core/metadata/view');
 var xhr_1 = require('angular2/src/core/compiler/xhr');
 var lang_1 = require('angular2/src/core/facade/lang');
 var async_1 = require('angular2/src/core/facade/async');
@@ -35,11 +35,11 @@ var StyleCompiler = (function () {
     StyleCompiler.prototype.compileComponentRuntime = function (appId, templateId, template) {
         var styles = template.styles;
         var styleAbsUrls = template.styleUrls;
-        return this._loadStyles(styles, styleAbsUrls, template.encapsulation === api_1.ViewEncapsulation.Emulated)
+        return this._loadStyles(styles, styleAbsUrls, template.encapsulation === view_1.ViewEncapsulation.Emulated)
             .then(function (styles) { return styles.map(function (style) { return lang_1.StringWrapper.replaceAll(style, COMPONENT_REGEX, componentId(appId, templateId)); }); });
     };
     StyleCompiler.prototype.compileComponentCodeGen = function (appIdExpression, templateIdExpression, template) {
-        var shim = template.encapsulation === api_1.ViewEncapsulation.Emulated;
+        var shim = template.encapsulation === view_1.ViewEncapsulation.Emulated;
         var suffix;
         if (shim) {
             suffix = util_1.codeGenMapArray(['style'], "style" + util_1.codeGenReplaceAll(COMPONENT_VARIABLE, componentIdExpression(appIdExpression, templateIdExpression)));

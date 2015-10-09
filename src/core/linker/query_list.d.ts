@@ -35,10 +35,4 @@ export declare class QueryList<T> {
      */
     map<U>(fn: (item: T) => U): U[];
     toString(): string;
-    /**
-     * @private
-     */
-    reset(res: T[]): void;
-    /** @private */
-    notifyOnChanges(): void;
 }

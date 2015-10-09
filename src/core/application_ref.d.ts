@@ -20,7 +20,7 @@ export declare function applicationCommonBindings(): Array<Type | Binding | any[
  */
 export declare function createNgZone(): NgZone;
 /**
- * @private
+ * FIXME(alexeagle): make internal
  */
 export declare function platformCommon(bindings?: Array<Type | Binding | any[]>, initializer?: () => void): PlatformRef;
 /**
@@ -31,17 +31,7 @@ export declare function platformCommon(bindings?: Array<Type | Binding | any[]>,
  * A page's platform is initialized implicitly when {@link bootstrap}() is called, or
  * explicitly by calling {@link platform}().
  */
-export declare class PlatformRef {
-    private _injector;
-    private _dispose;
-    /**
-     * @private
-     */
-    _applications: ApplicationRef[];
-    /**
-     * @private
-     */
-    constructor(_injector: Injector, _dispose: () => void);
+export declare abstract class PlatformRef {
     /**
      * Retrieve the platform {@link Injector}, which is the parent injector for
      * every Angular application on the page and provides singleton bindings.
@@ -75,7 +65,7 @@ export declare class PlatformRef {
      *
      * See the {@link bootstrap} documentation for more details.
      */
-    application(bindings: Array<Type | Binding | any[]>): ApplicationRef;
+    abstract application(bindings: Array<Type | Binding | any[]>): ApplicationRef;
     /**
      * Instantiate a new Angular application on the page, using bindings which
      * are only available asynchronously. One such use case is to initialize an
@@ -88,15 +78,22 @@ export declare class PlatformRef {
      * new application. Once this promise resolves, the application will be
      * constructed in the same manner as a normal `application()`.
      */
-    asyncApplication(bindingFn: (zone: NgZone) => Promise<Array<Type | Binding | any[]>>): Promise<ApplicationRef>;
-    private _initApp(zone, bindings);
+    abstract asyncApplication(bindingFn: (zone: NgZone) => Promise<Array<Type | Binding | any[]>>): Promise<ApplicationRef>;
     /**
      * Destroy the Angular platform and all Angular applications on the page.
      */
+    abstract dispose(): void;
+}
+export declare class PlatformRef_ extends PlatformRef {
+    private _injector;
+    private _dispose;
+    _applications: ApplicationRef[];
+    constructor(_injector: Injector, _dispose: () => void);
+    injector: Injector;
+    application(bindings: Array<Type | Binding | any[]>): ApplicationRef;
+    asyncApplication(bindingFn: (zone: NgZone) => Promise<Array<Type | Binding | any[]>>): Promise<ApplicationRef>;
+    private _initApp(zone, bindings);
     dispose(): void;
-    /**
-     * @private
-     */
     _applicationDisposed(app: ApplicationRef): void;
 }
 /**
@@ -104,21 +101,12 @@ export declare class PlatformRef {
  *
  * For more about Angular applications, see the documentation for {@link bootstrap}.
  */
-export declare class ApplicationRef {
-    private _platform;
-    private _zone;
-    private _injector;
-    private _bootstrapListeners;
-    private _rootComponents;
-    /**
-     * @private
-     */
-    constructor(_platform: PlatformRef, _zone: NgZone, _injector: Injector);
+export declare abstract class ApplicationRef {
     /**
      * Register a listener to be called each time `bootstrap()` is called to bootstrap
      * a new root component.
      */
-    registerBootstrapListener(listener: (ref: ComponentRef) => void): void;
+    abstract registerBootstrapListener(listener: (ref: ComponentRef) => void): void;
     /**
      * Bootstrap a new component at the root level of the application.
      *
@@ -141,7 +129,7 @@ export declare class ApplicationRef {
      * app.bootstrap(SecondRootComponent, [bind(OverrideBinding).toClass(OverriddenBinding)]);
      * ```
      */
-    bootstrap(componentType: Type, bindings?: Array<Type | Binding | any[]>): Promise<ComponentRef>;
+    abstract bootstrap(componentType: Type, bindings?: Array<Type | Binding | any[]>): Promise<ComponentRef>;
     /**
      * Retrieve the application {@link Injector}.
      */
@@ -153,5 +141,18 @@ export declare class ApplicationRef {
     /**
      * Dispose of this application and all of its components.
      */
+    abstract dispose(): void;
+}
+export declare class ApplicationRef_ extends ApplicationRef {
+    private _platform;
+    private _zone;
+    private _injector;
+    private _bootstrapListeners;
+    private _rootComponents;
+    constructor(_platform: PlatformRef_, _zone: NgZone, _injector: Injector);
+    registerBootstrapListener(listener: (ref: ComponentRef) => void): void;
+    bootstrap(componentType: Type, bindings?: Array<Type | Binding | any[]>): Promise<ComponentRef>;
+    injector: Injector;
+    zone: NgZone;
     dispose(): void;
 }

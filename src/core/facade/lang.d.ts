@@ -1,10 +1,3 @@
-export interface BrowserNodeGlobal extends NodeJS.Global {
-    assert(condition: any): void;
-    Reflect: any;
-    zone: Zone;
-    getAngularTestability: Function;
-    getAllAngularTestabilities: Function;
-}
 declare var _global: BrowserNodeGlobal;
 export { _global as global };
 export declare var Type: FunctionConstructor;
@@ -15,6 +8,8 @@ export declare var Type: FunctionConstructor;
  * the `MyCustomComponent` constructor function.
  */
 export interface Type extends Function {
+}
+export interface ConcreteType extends Type {
     new (...args: any[]): any;
 }
 export declare function getTypeNameForDebugging(type: Type): string;

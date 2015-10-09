@@ -34,6 +34,9 @@ var application_tokens_1 = require('angular2/src/core/application_tokens');
 var serializer_1 = require("angular2/src/web_workers/shared/serializer");
 var utils_1 = require('./utils');
 var compiler_1 = require('angular2/src/core/compiler/compiler');
+var dom_renderer_1 = require("angular2/src/core/render/dom/dom_renderer");
+var dynamic_component_loader_2 = require("angular2/src/core/linker/dynamic_component_loader");
+var view_manager_2 = require("angular2/src/core/linker/view_manager");
 /**
  * Returns the root injector bindings.
  *
@@ -67,13 +70,13 @@ function _getAppBindings() {
         compiler_1.compilerBindings(),
         di_1.bind(change_detection_1.ChangeDetectorGenConfig).toValue(new change_detection_1.ChangeDetectorGenConfig(true, true, false, true)),
         di_1.bind(render_1.DOCUMENT).toValue(appDoc),
-        render_1.DomRenderer,
+        di_1.bind(render_1.DomRenderer).toClass(dom_renderer_1.DomRenderer_),
         di_1.bind(api_1.Renderer).toAlias(render_1.DomRenderer),
         di_1.bind(application_tokens_1.APP_ID).toValue('a'),
         render_1.DomSharedStylesHost,
         di_1.bind(render_1.SharedStylesHost).toAlias(render_1.DomSharedStylesHost),
         view_pool_1.AppViewPool,
-        view_manager_1.AppViewManager,
+        di_1.bind(view_manager_1.AppViewManager).toClass(view_manager_2.AppViewManager_),
         view_manager_utils_1.AppViewManagerUtils,
         serializer_1.Serializer,
         debug_1.ELEMENT_PROBE_BINDINGS,
@@ -85,7 +88,7 @@ function _getAppBindings() {
         di_1.bind(change_detection_1.IterableDiffers).toValue(change_detection_1.defaultIterableDiffers),
         di_1.bind(change_detection_1.KeyValueDiffers).toValue(change_detection_1.defaultKeyValueDiffers),
         utils_1.Log,
-        dynamic_component_loader_1.DynamicComponentLoader,
+        di_1.bind(dynamic_component_loader_1.DynamicComponentLoader).toClass(dynamic_component_loader_2.DynamicComponentLoader_),
         pipe_resolver_1.PipeResolver,
         di_1.bind(exceptions_1.ExceptionHandler).toValue(new exceptions_1.ExceptionHandler(dom_adapter_1.DOM)),
         di_1.bind(location_strategy_1.LocationStrategy).toClass(mock_location_strategy_1.MockLocationStrategy),
@@ -144,7 +147,7 @@ var FunctionWithParamTokens = (function () {
      * Returns the value of the executed function.
      */
     FunctionWithParamTokens.prototype.execute = function (injector) {
-        var params = collection_1.ListWrapper.map(this._tokens, function (t) { return injector.get(t); });
+        var params = this._tokens.map(function (t) { return injector.get(t); });
         return lang_1.FunctionWrapper.apply(this._fn, params);
     };
     FunctionWithParamTokens.prototype.hasToken = function (token) { return this._tokens.indexOf(token) > -1; };

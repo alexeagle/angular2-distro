@@ -1,4 +1,10 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var lang_1 = require('angular2/src/core/facade/lang');
+var exceptions_1 = require('angular2/src/core/facade/exceptions');
 // This is a workaround for privacy in Dart as we don't have library parts
 function internalView(viewRef) {
     return viewRef._view;
@@ -63,37 +69,44 @@ exports.internalProtoView = internalProtoView;
  * ```
  */
 var ViewRef = (function () {
-    /**
-     * @private
-     */
-    function ViewRef(_view) {
+    function ViewRef() {
+    }
+    Object.defineProperty(ViewRef.prototype, "changeDetectorRef", {
+        get: function () { return exceptions_1.unimplemented(); },
+        set: function (value) {
+            exceptions_1.unimplemented(); // TODO: https://github.com/Microsoft/TypeScript/issues/12
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ViewRef;
+})();
+exports.ViewRef = ViewRef;
+var ViewRef_ = (function (_super) {
+    __extends(ViewRef_, _super);
+    function ViewRef_(_view) {
+        _super.call(this);
         this._view = _view;
         this._changeDetectorRef = null;
     }
-    Object.defineProperty(ViewRef.prototype, "render", {
+    Object.defineProperty(ViewRef_.prototype, "render", {
         /**
-         * @private
-         *
          * Return `RenderViewRef`
          */
         get: function () { return this._view.render; },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ViewRef.prototype, "renderFragment", {
+    Object.defineProperty(ViewRef_.prototype, "renderFragment", {
         /**
-         * @private
-         *
          * Return `RenderFragmentRef`
          */
         get: function () { return this._view.renderFragment; },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ViewRef.prototype, "changeDetectorRef", {
+    Object.defineProperty(ViewRef_.prototype, "changeDetectorRef", {
         /**
-         * @private
-         *
          * Return `ChangeDetectorRef`
          */
         get: function () {
@@ -102,19 +115,13 @@ var ViewRef = (function () {
             }
             return this._changeDetectorRef;
         },
-        set: function (value) {
-            throw "readonly"; // TODO: https://github.com/Microsoft/TypeScript/issues/12
-        },
         enumerable: true,
         configurable: true
     });
-    /**
-     * Sets `value` of local variable called `variableName` in this View.
-     */
-    ViewRef.prototype.setLocal = function (variableName, value) { this._view.setLocal(variableName, value); };
-    return ViewRef;
-})();
-exports.ViewRef = ViewRef;
+    ViewRef_.prototype.setLocal = function (variableName, value) { this._view.setLocal(variableName, value); };
+    return ViewRef_;
+})(ViewRef);
+exports.ViewRef_ = ViewRef_;
 /**
  * Represents an Angular ProtoView.
  *
@@ -155,13 +162,18 @@ exports.ViewRef = ViewRef;
  * Notice that the original template is broken down into two separate ProtoViews.
  */
 var ProtoViewRef = (function () {
-    /**
-     * @private
-     */
-    function ProtoViewRef(_protoView) {
-        this._protoView = _protoView;
+    function ProtoViewRef() {
     }
     return ProtoViewRef;
 })();
 exports.ProtoViewRef = ProtoViewRef;
+var ProtoViewRef_ = (function (_super) {
+    __extends(ProtoViewRef_, _super);
+    function ProtoViewRef_(_protoView) {
+        _super.call(this);
+        this._protoView = _protoView;
+    }
+    return ProtoViewRef_;
+})(ProtoViewRef);
+exports.ProtoViewRef_ = ProtoViewRef_;
 //# sourceMappingURL=view_ref.js.map

@@ -35,8 +35,8 @@ var MockConnection = (function () {
      *
      * ```
      * var connection;
-     * backend.connections.toRx().subscribe(c => connection = c);
-     * http.request('data.json').toRx().subscribe(res => console.log(res.text()));
+     * backend.connections.subscribe(c => connection = c);
+     * http.request('data.json').subscribe(res => console.log(res.text()));
      * connection.mockRespond(new Response('fake response')); //logs 'fake response'
      * ```
      *
@@ -95,8 +95,8 @@ exports.MockConnection = MockConnection;
  *   var http = injector.get(Http);
  *   var backend = injector.get(MockBackend);
  *   //Assign any newly-created connection to local variable
- *   backend.connections.toRx().subscribe(c => connection = c);
- *   http.request('data.json').toRx().subscribe((res) => {
+ *   backend.connections.subscribe(c => connection = c);
+ *   http.request('data.json').subscribe((res) => {
  *     expect(res.text()).toBe('awesome');
  *     async.done();
  *   });

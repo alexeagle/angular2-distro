@@ -9,7 +9,7 @@ var eval_module_1 = require('./eval_module');
 var style_compiler_1 = require('angular2/src/core/compiler/style_compiler');
 var directive_metadata_1 = require('angular2/src/core/compiler/directive_metadata');
 var source_module_1 = require('angular2/src/core/compiler/source_module');
-var api_1 = require('angular2/src/core/render/api');
+var view_1 = require('angular2/src/core/metadata/view');
 var test_bindings_1 = require('./test_bindings');
 var util_1 = require('angular2/src/core/compiler/util');
 // Attention: These module names have to correspond to real modules!
@@ -57,7 +57,7 @@ function main() {
                 return compiler.compileComponentRuntime(appId, templateId, new directive_metadata_1.CompileTemplateMetadata({ styles: styles, styleUrls: styleAbsUrls, encapsulation: encapsulation }));
             }
             test_lib_1.describe('no shim', function () {
-                var encapsulation = api_1.ViewEncapsulation.None;
+                var encapsulation = view_1.ViewEncapsulation.None;
                 test_lib_1.it('should compile plain css rules', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
                     compile(['div {color: red}', 'span {color: blue}'], [], encapsulation)
                         .then(function (styles) {
@@ -82,7 +82,7 @@ function main() {
                 }));
             });
             test_lib_1.describe('with shim', function () {
-                var encapsulation = api_1.ViewEncapsulation.Emulated;
+                var encapsulation = view_1.ViewEncapsulation.Emulated;
                 test_lib_1.it('should compile plain css rules', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
                     compile(['div {\ncolor: red;\n}', 'span {\ncolor: blue;\n}'], [], encapsulation)
                         .then(function (styles) {
@@ -117,8 +117,8 @@ function main() {
             });
             test_lib_1.it('should cache stylesheets for parallel requests', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
                 async_1.PromiseWrapper.all([
-                    compile([], [IMPORT_ABS_STYLESHEET_URL], api_1.ViewEncapsulation.None),
-                    compile([], [IMPORT_ABS_STYLESHEET_URL], api_1.ViewEncapsulation.None)
+                    compile([], [IMPORT_ABS_STYLESHEET_URL], view_1.ViewEncapsulation.None),
+                    compile([], [IMPORT_ABS_STYLESHEET_URL], view_1.ViewEncapsulation.None)
                 ])
                     .then(function (styleArrays) {
                     test_lib_1.expect(styleArrays[0]).toEqual(['span {color: blue}']);
@@ -128,10 +128,10 @@ function main() {
                 });
             }));
             test_lib_1.it('should cache stylesheets for serial requests', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
-                compile([], [IMPORT_ABS_STYLESHEET_URL], api_1.ViewEncapsulation.None)
+                compile([], [IMPORT_ABS_STYLESHEET_URL], view_1.ViewEncapsulation.None)
                     .then(function (styles0) {
                     xhrUrlResults[IMPORT_ABS_STYLESHEET_URL] = 'span {color: black}';
-                    return compile([], [IMPORT_ABS_STYLESHEET_URL], api_1.ViewEncapsulation.None)
+                    return compile([], [IMPORT_ABS_STYLESHEET_URL], view_1.ViewEncapsulation.None)
                         .then(function (styles1) {
                         test_lib_1.expect(styles0).toEqual(['span {color: blue}']);
                         test_lib_1.expect(styles1).toEqual(['span {color: blue}']);
@@ -141,11 +141,11 @@ function main() {
                 });
             }));
             test_lib_1.it('should allow to clear the cache', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
-                compile([], [IMPORT_ABS_STYLESHEET_URL], api_1.ViewEncapsulation.None)
+                compile([], [IMPORT_ABS_STYLESHEET_URL], view_1.ViewEncapsulation.None)
                     .then(function (_) {
                     compiler.clearCache();
                     xhrUrlResults[IMPORT_ABS_STYLESHEET_URL] = 'span {color: black}';
-                    return compile([], [IMPORT_ABS_STYLESHEET_URL], api_1.ViewEncapsulation.None);
+                    return compile([], [IMPORT_ABS_STYLESHEET_URL], view_1.ViewEncapsulation.None);
                 })
                     .then(function (styles) {
                     test_lib_1.expect(xhrCount).toBe(2);
@@ -162,7 +162,7 @@ function main() {
             }
             ;
             test_lib_1.describe('no shim', function () {
-                var encapsulation = api_1.ViewEncapsulation.None;
+                var encapsulation = view_1.ViewEncapsulation.None;
                 test_lib_1.it('should compile plain css rules', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
                     compile(['div {color: red}', 'span {color: blue}'], [], encapsulation)
                         .then(function (styles) {
@@ -186,7 +186,7 @@ function main() {
                 }), 1000);
             });
             test_lib_1.describe('with shim', function () {
-                var encapsulation = api_1.ViewEncapsulation.Emulated;
+                var encapsulation = view_1.ViewEncapsulation.Emulated;
                 test_lib_1.it('should compile plain css ruless', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
                     compile(['div {\ncolor: red;\n}', 'span {\ncolor: blue;\n}'], [], encapsulation)
                         .then(function (styles) {

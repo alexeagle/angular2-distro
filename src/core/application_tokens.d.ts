@@ -1,9 +1,5 @@
 import { OpaqueToken, Binding } from 'angular2/src/core/di';
 /**
- *  @private
- */
-export declare const APP_COMPONENT_REF_PROMISE: OpaqueToken;
-/**
  * An {@link angular2/di/OpaqueToken} representing the application root type in the {@link
  * Injector}.
  *

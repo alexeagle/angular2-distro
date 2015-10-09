@@ -27,7 +27,7 @@ function main() {
                 'StaticFieldType',
                 'TypedefParam',
                 'TypedefReturnType',
-                '{SomeInterface}',
+                'SomeInterface:dart',
             ])
                 .errors)
                 .toEqual([]);

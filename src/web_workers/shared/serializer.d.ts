@@ -5,7 +5,6 @@ export declare const PRIMITIVE: Type;
 export declare class Serializer {
     private _protoViewStore;
     private _renderViewStore;
-    private _enumRegistry;
     constructor(_protoViewStore: RenderProtoViewRefStore, _renderViewStore: RenderViewWithFragmentsStore);
     serialize(obj: any, type: Type): Object;
     deserialize(map: any, type: Type, data?: any): any;

@@ -1,5 +1,7 @@
+import { Type } from 'angular2/src/core/facade/lang';
 import { InjectableMetadata } from 'angular2/src/core/di/metadata';
 import { ChangeDetectionStrategy } from 'angular2/src/core/change_detection';
+import { ViewEncapsulation } from 'angular2/src/core/metadata/view';
 /**
  * Directives allow you to attach behavior to elements in the DOM.
  *
@@ -850,7 +852,14 @@ export declare class ComponentMetadata extends DirectiveMetadata {
      * ```
      */
     viewBindings: any[];
-    constructor({selector, inputs, outputs, properties, events, host, exportAs, moduleId, bindings, viewBindings, changeDetection, queries}?: {
+    templateUrl: string;
+    template: string;
+    styleUrls: string[];
+    styles: string[];
+    directives: Array<Type | any[]>;
+    pipes: Array<Type | any[]>;
+    encapsulation: ViewEncapsulation;
+    constructor({selector, inputs, outputs, properties, events, host, exportAs, moduleId, bindings, viewBindings, changeDetection, queries, templateUrl, template, styleUrls, styles, directives, pipes, encapsulation}?: {
         selector?: string;
         inputs?: string[];
         outputs?: string[];
@@ -867,6 +876,13 @@ export declare class ComponentMetadata extends DirectiveMetadata {
             [key: string]: any;
         };
         changeDetection?: ChangeDetectionStrategy;
+        templateUrl?: string;
+        template?: string;
+        styleUrls?: string[];
+        styles?: string[];
+        directives?: Array<Type | any[]>;
+        pipes?: Array<Type | any[]>;
+        encapsulation?: ViewEncapsulation;
     });
 }
 /**

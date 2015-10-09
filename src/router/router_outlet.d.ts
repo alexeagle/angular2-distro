@@ -18,9 +18,6 @@ export declare class RouterOutlet {
     name: string;
     private _componentRef;
     private _currentInstruction;
-    /**
-     * @private
-     */
     constructor(_elementRef: ElementRef, _loader: DynamicComponentLoader, _parentRouter: routerMod.Router, nameAttr: string);
     /**
      * Called by the Router to instantiate a new component during the commit phase of a navigation.

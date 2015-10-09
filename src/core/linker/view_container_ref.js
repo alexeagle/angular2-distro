@@ -1,4 +1,10 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var collection_1 = require('angular2/src/core/facade/collection');
+var exceptions_1 = require('angular2/src/core/facade/exceptions');
 var lang_1 = require('angular2/src/core/facade/lang');
 var view_ref_1 = require('./view_ref');
 /**
@@ -22,26 +28,8 @@ var view_ref_1 = require('./view_ref');
  * <!-- TODO(i): we are also considering ElementRef#viewContainer api -->
  */
 var ViewContainerRef = (function () {
-    /**
-     * @private
-     */
-    function ViewContainerRef(
-        /**
-         * @private
-         */
-        viewManager, 
-        /**
-         * Anchor element that specifies the location of this container in the containing View.
-         * <!-- TODO: rename to anchorElement -->
-         */
-        element) {
-        this.viewManager = viewManager;
-        this.element = element;
+    function ViewContainerRef() {
     }
-    ViewContainerRef.prototype._getViews = function () {
-        var vc = view_ref_1.internalView(this.element.parentView).viewContainers[this.element.boundElementIndex];
-        return lang_1.isPresent(vc) ? vc.views : [];
-    };
     /**
      * Destroys all Views in this container.
      */
@@ -50,49 +38,45 @@ var ViewContainerRef = (function () {
             this.remove(i);
         }
     };
-    /**
-     * Returns the {@link ViewRef} for the View located in this container at the specified index.
-     */
-    ViewContainerRef.prototype.get = function (index) { return this._getViews()[index].ref; };
     Object.defineProperty(ViewContainerRef.prototype, "length", {
         /**
          * Returns the number of Views currently attached to this container.
          */
+        get: function () { return exceptions_1.unimplemented(); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    return ViewContainerRef;
+})();
+exports.ViewContainerRef = ViewContainerRef;
+var ViewContainerRef_ = (function (_super) {
+    __extends(ViewContainerRef_, _super);
+    function ViewContainerRef_(viewManager, element) {
+        _super.call(this);
+        this.viewManager = viewManager;
+        this.element = element;
+    }
+    ViewContainerRef_.prototype._getViews = function () {
+        var element = this.element;
+        var vc = view_ref_1.internalView(element.parentView).viewContainers[element.boundElementIndex];
+        return lang_1.isPresent(vc) ? vc.views : [];
+    };
+    ViewContainerRef_.prototype.get = function (index) { return this._getViews()[index].ref; };
+    Object.defineProperty(ViewContainerRef_.prototype, "length", {
         get: function () { return this._getViews().length; },
         enumerable: true,
         configurable: true
     });
-    /**
-     * Instantiates an Embedded View based on the {@link TemplateRef `templateRef`} and inserts it
-     * into this container at the specified `index`.
-     *
-     * If `index` is not specified, the new View will be inserted as the last View in the container.
-     *
-     * Returns the {@link ViewRef} for the newly created View.
-     */
     // TODO(rado): profile and decide whether bounds checks should be added
     // to the methods below.
-    ViewContainerRef.prototype.createEmbeddedView = function (templateRef, index) {
+    ViewContainerRef_.prototype.createEmbeddedView = function (templateRef, index) {
         if (index === void 0) { index = -1; }
         if (index == -1)
             index = this.length;
         return this.viewManager.createEmbeddedViewInContainer(this.element, index, templateRef);
     };
-    /**
-     * Instantiates a single {@link Component} and inserts its Host View into this container at the
-     * specified `index`.
-     *
-     * The component is instantiated using its {@link ProtoViewRef `protoView`} which can be
-     * obtained via {@link Compiler#compileInHost}.
-     *
-     * If `index` is not specified, the new View will be inserted as the last View in the container.
-     *
-     * You can optionally specify `dynamicallyCreatedBindings`, which configure the {@link Injector}
-     * that will be created for the Host View.
-     *
-     * Returns the {@link HostViewRef} of the Host View created for the newly instantiated Component.
-     */
-    ViewContainerRef.prototype.createHostView = function (protoViewRef, index, dynamicallyCreatedBindings) {
+    ViewContainerRef_.prototype.createHostView = function (protoViewRef, index, dynamicallyCreatedBindings) {
         if (protoViewRef === void 0) { protoViewRef = null; }
         if (index === void 0) { index = -1; }
         if (dynamicallyCreatedBindings === void 0) { dynamicallyCreatedBindings = null; }
@@ -100,53 +84,32 @@ var ViewContainerRef = (function () {
             index = this.length;
         return this.viewManager.createHostViewInContainer(this.element, index, protoViewRef, dynamicallyCreatedBindings);
     };
-    /**
-     * Inserts a View identified by a {@link ViewRef} into the container at the specified `index`.
-     *
-     * If `index` is not specified, the new View will be inserted as the last View in the container.
-     *
-     * Returns the inserted {@link ViewRef}.
-     */
     // TODO(i): refactor insert+remove into move
-    ViewContainerRef.prototype.insert = function (viewRef, index) {
+    ViewContainerRef_.prototype.insert = function (viewRef, index) {
         if (index === void 0) { index = -1; }
         if (index == -1)
             index = this.length;
         return this.viewManager.attachViewInContainer(this.element, index, viewRef);
     };
-    /**
-     * Returns the index of the View, specified via {@link ViewRef}, within the current container or
-     * `-1` if this container doesn't contain the View.
-     */
-    ViewContainerRef.prototype.indexOf = function (viewRef) {
+    ViewContainerRef_.prototype.indexOf = function (viewRef) {
         return collection_1.ListWrapper.indexOf(this._getViews(), view_ref_1.internalView(viewRef));
     };
-    /**
-     * Destroys a View attached to this container at the specified `index`.
-     *
-     * If `index` is not specified, the last View in the container will be removed.
-     */
     // TODO(i): rename to destroy
-    ViewContainerRef.prototype.remove = function (index) {
+    ViewContainerRef_.prototype.remove = function (index) {
         if (index === void 0) { index = -1; }
         if (index == -1)
             index = this.length - 1;
         this.viewManager.destroyViewInContainer(this.element, index);
         // view is intentionally not returned to the client.
     };
-    /**
-     * Use along with {@link #insert} to move a View within the current container.
-     *
-     * If the `index` param is omitted, the last {@link ViewRef} is detached.
-     */
     // TODO(i): refactor insert+remove into move
-    ViewContainerRef.prototype.detach = function (index) {
+    ViewContainerRef_.prototype.detach = function (index) {
         if (index === void 0) { index = -1; }
         if (index == -1)
             index = this.length - 1;
         return this.viewManager.detachViewInContainer(this.element, index);
     };
-    return ViewContainerRef;
-})();
-exports.ViewContainerRef = ViewContainerRef;
+    return ViewContainerRef_;
+})(ViewContainerRef);
+exports.ViewContainerRef_ = ViewContainerRef_;
 //# sourceMappingURL=view_container_ref.js.map

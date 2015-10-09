@@ -26,11 +26,9 @@ var AnchorBasedAppRootUrl = (function (_super) {
     function AnchorBasedAppRootUrl() {
         _super.call(this, "");
         // compute the root url to pass to AppRootUrl
-        var rootUrl;
         var a = dom_adapter_1.DOM.createElement('a');
         dom_adapter_1.DOM.resolveAndSetHref(a, './', null);
-        rootUrl = dom_adapter_1.DOM.getHref(a);
-        this.value = rootUrl;
+        this.value = dom_adapter_1.DOM.getHref(a);
     }
     AnchorBasedAppRootUrl = __decorate([
         di_1.Injectable(), 

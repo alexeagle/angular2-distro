@@ -4,4 +4,5 @@ export declare class ViewResolver {
     _cache: Map<Type, ViewMetadata>;
     resolve(component: Type): ViewMetadata;
     _resolve(component: Type): ViewMetadata;
+    _throwMixingViewAndComponent(propertyName: string, component: Type): void;
 }

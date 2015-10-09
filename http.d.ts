@@ -43,7 +43,7 @@ export { URLSearchParams } from './src/http/url_search_params';
  * export class App {
  *   people: Object[];
  *   constructor(http:Http) {
- *     http.get('people.json').toRx().subscribe(res => {
+ *     http.get('people.json').subscribe(res => {
  *       this.people = res.json();
  *     });
  *   }
@@ -157,7 +157,7 @@ export declare const HTTP_BINDINGS: any[];
  * export class App {
  *   people: Array<Object>;
  *   constructor(jsonp:Jsonp) {
- *     jsonp.request('people.json').toRx().subscribe(res => {
+ *     jsonp.request('people.json').subscribe(res => {
  *       this.people = res.json();
  *     })
  *   }

@@ -117,6 +117,11 @@ function main() {
             var css = s('x >>> y {}', 'a');
             test_lib_1.expect(css).toEqual('x[a] y[a] {}');
         });
+        test_lib_1.it('should pass through @import directives', function () {
+            var styleStr = '@import url("https://fonts.googleapis.com/css?family=Roboto");';
+            var css = s(styleStr, 'a');
+            test_lib_1.expect(css).toEqual(styleStr);
+        });
     });
 }
 exports.main = main;

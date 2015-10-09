@@ -55,7 +55,7 @@ function main() {
                 core_1.bind(base_response_options_1.ResponseOptions)
                     .toClass(base_response_options_1.BaseResponseOptions),
                 core_1.bind(browser_jsonp_1.BrowserJsonp).toClass(MockBrowserJsonp),
-                jsonp_backend_1.JSONPBackend
+                core_1.bind(jsonp_backend_1.JSONPBackend).toClass(jsonp_backend_1.JSONPBackend_)
             ]);
             backend = injector.get(jsonp_backend_1.JSONPBackend);
             var base = new base_request_options_1.BaseRequestOptions();
@@ -69,7 +69,7 @@ function main() {
         });
         test_lib_1.describe('JSONPConnection', function () {
             test_lib_1.it('should use the injected BaseResponseOptions to create the response', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
-                var connection = new jsonp_backend_1.JSONPConnection(sampleRequest, new MockBrowserJsonp(), new base_response_options_1.ResponseOptions({ type: enums_1.ResponseTypes.Error }));
+                var connection = new jsonp_backend_1.JSONPConnection_(sampleRequest, new MockBrowserJsonp(), new base_response_options_1.ResponseOptions({ type: enums_1.ResponseTypes.Error }));
                 connection.response.subscribe(function (res) {
                     test_lib_1.expect(res.type).toBe(enums_1.ResponseTypes.Error);
                     async.done();
@@ -78,7 +78,7 @@ function main() {
                 existingScripts[0].dispatchEvent('load');
             }));
             test_lib_1.it('should ignore load/callback when disposed', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
-                var connection = new jsonp_backend_1.JSONPConnection(sampleRequest, new MockBrowserJsonp());
+                var connection = new jsonp_backend_1.JSONPConnection_(sampleRequest, new MockBrowserJsonp());
                 var spy = new test_lib_1.SpyObject();
                 var loadSpy = spy.spy('load');
                 var errorSpy = spy.spy('error');
@@ -96,7 +96,7 @@ function main() {
                 }, 10);
             }));
             test_lib_1.it('should report error if loaded without invoking callback', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
-                var connection = new jsonp_backend_1.JSONPConnection(sampleRequest, new MockBrowserJsonp());
+                var connection = new jsonp_backend_1.JSONPConnection_(sampleRequest, new MockBrowserJsonp());
                 connection.response.subscribe(function (res) {
                     test_lib_1.expect("response listener called").toBe(false);
                     async.done();
@@ -107,7 +107,7 @@ function main() {
                 existingScripts[0].dispatchEvent('load');
             }));
             test_lib_1.it('should report error if script contains error', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
-                var connection = new jsonp_backend_1.JSONPConnection(sampleRequest, new MockBrowserJsonp());
+                var connection = new jsonp_backend_1.JSONPConnection_(sampleRequest, new MockBrowserJsonp());
                 connection.response.subscribe(function (res) {
                     test_lib_1.expect("response listener called").toBe(false);
                     async.done();
@@ -123,12 +123,12 @@ function main() {
                     .forEach(function (method) {
                     var base = new base_request_options_1.BaseRequestOptions();
                     var req = new static_request_1.Request(base.merge(new base_request_options_1.RequestOptions({ url: 'https://google.com', method: method })));
-                    test_lib_1.expect(function () { return new jsonp_backend_1.JSONPConnection(req, new MockBrowserJsonp()).response.subscribe(); })
+                    test_lib_1.expect(function () { return new jsonp_backend_1.JSONPConnection_(req, new MockBrowserJsonp()).response.subscribe(); })
                         .toThrowError();
                 });
             });
             test_lib_1.it('should respond with data passed to callback', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
-                var connection = new jsonp_backend_1.JSONPConnection(sampleRequest, new MockBrowserJsonp());
+                var connection = new jsonp_backend_1.JSONPConnection_(sampleRequest, new MockBrowserJsonp());
                 connection.response.subscribe(function (res) {
                     test_lib_1.expect(res.json()).toEqual(({ fake_payload: true, blob_id: 12345 }));
                     async.done();

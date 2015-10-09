@@ -23,6 +23,11 @@ exports.StyleWithImports = StyleWithImports;
 function extractUrls(resolver, baseUrl, cssText, foundUrls) {
     return lang_1.StringWrapper.replaceAllMapped(cssText, _cssImportRe, function (m) {
         var url = lang_1.isPresent(m[1]) ? m[1] : m[2];
+        var schemeMatch = lang_1.RegExpWrapper.firstMatch(_urlWithSchemaRe, url);
+        if (lang_1.isPresent(schemeMatch) && schemeMatch[1] != 'package') {
+            // Do not attempt to resolve non-package absolute URLs with URI scheme
+            return m[0];
+        }
         foundUrls.push(resolver.resolve(baseUrl, url));
         return '';
     });
@@ -45,4 +50,7 @@ var _cssUrlRe = /(url\()([^)]*)(\))/g;
 var _cssImportRe = /@import\s+(?:url\()?\s*(?:(?:['"]([^'"]*))|([^;\)\s]*))[^;]*;?/g;
 var _quoteRe = /['"]/g;
 var _dataUrlRe = /^['"]?data:/g;
+// TODO: can't use /^[^:/?#.]+:/g due to clang-format bug:
+//       https://github.com/angular/angular/issues/4596
+var _urlWithSchemaRe = /^['"]?([a-zA-Z\-\+\.]+):/g;
 //# sourceMappingURL=style_url_resolver.js.map

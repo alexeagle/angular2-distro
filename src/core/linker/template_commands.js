@@ -82,7 +82,8 @@ function text(value, isBound, ngContentIndex) {
 }
 exports.text = text;
 var NgContentCmd = (function () {
-    function NgContentCmd(ngContentIndex) {
+    function NgContentCmd(index, ngContentIndex) {
+        this.index = index;
         this.ngContentIndex = ngContentIndex;
         this.isBound = false;
     }
@@ -92,8 +93,8 @@ var NgContentCmd = (function () {
     return NgContentCmd;
 })();
 exports.NgContentCmd = NgContentCmd;
-function ngContent(ngContentIndex) {
-    return new NgContentCmd(ngContentIndex);
+function ngContent(index, ngContentIndex) {
+    return new NgContentCmd(index, ngContentIndex);
 }
 exports.ngContent = ngContent;
 var BeginElementCmd = (function () {

@@ -112,43 +112,47 @@ export declare function stringifyInstruction(instruction: Instruction): string;
  *
  * You should not modify this object. It should be treated as immutable.
  */
-export declare class ComponentInstruction {
+export declare abstract class ComponentInstruction {
+    reuse: boolean;
     urlPath: string;
     urlParams: string[];
-    private _recognizer;
     params: {
         [key: string]: any;
     };
-    reuse: boolean;
-    /**
-     * @private
-     */
-    constructor(urlPath: string, urlParams: string[], _recognizer: PathRecognizer, params?: {
-        [key: string]: any;
-    });
     /**
      * Returns the component type of the represented route, or `null` if this instruction
      * hasn't been resolved.
      */
-    componentType: Type;
+    componentType: any;
     /**
      * Returns a promise that will resolve to component type of the represented route.
      * If this instruction references an {@link AsyncRoute}, the `loader` function of that route
      * will run.
      */
-    resolveComponentType(): Promise<Type>;
+    abstract resolveComponentType(): Promise<Type>;
     /**
      * Returns the specificity of the route associated with this `Instruction`.
      */
-    specificity: number;
+    specificity: any;
     /**
      * Returns `true` if the component type of this instruction has no child {@link RouteConfig},
      * or `false` if it does.
      */
-    terminal: boolean;
+    terminal: any;
     /**
      * Returns the route data of the given route that was specified in the {@link RouteDefinition},
      * or `null` if no route data was specified.
      */
+    abstract routeData(): Object;
+}
+export declare class ComponentInstruction_ extends ComponentInstruction {
+    private _recognizer;
+    constructor(urlPath: string, urlParams: string[], _recognizer: PathRecognizer, params?: {
+        [key: string]: any;
+    });
+    componentType: Type;
+    resolveComponentType(): Promise<Type>;
+    specificity: number;
+    terminal: boolean;
     routeData(): Object;
 }

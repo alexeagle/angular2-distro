@@ -23,30 +23,12 @@ import { ViewRef, HostViewRef, ProtoViewRef } from './view_ref';
  *
  * <!-- TODO(i): we are also considering ElementRef#viewContainer api -->
  */
-export declare class ViewContainerRef {
-    /**
-     * @private
-     */
-    viewManager: avmModule.AppViewManager;
+export declare abstract class ViewContainerRef {
     /**
      * Anchor element that specifies the location of this container in the containing View.
      * <!-- TODO: rename to anchorElement -->
      */
     element: ElementRef;
-    /**
-     * @private
-     */
-    constructor(
-        /**
-         * @private
-         */
-        viewManager: avmModule.AppViewManager, 
-        /**
-         * Anchor element that specifies the location of this container in the containing View.
-         * <!-- TODO: rename to anchorElement -->
-         */
-        element: ElementRef);
-    private _getViews();
     /**
      * Destroys all Views in this container.
      */
@@ -54,7 +36,7 @@ export declare class ViewContainerRef {
     /**
      * Returns the {@link ViewRef} for the View located in this container at the specified index.
      */
-    get(index: number): ViewRef;
+    abstract get(index: number): ViewRef;
     /**
      * Returns the number of Views currently attached to this container.
      */
@@ -67,7 +49,7 @@ export declare class ViewContainerRef {
      *
      * Returns the {@link ViewRef} for the newly created View.
      */
-    createEmbeddedView(templateRef: TemplateRef, index?: number): ViewRef;
+    abstract createEmbeddedView(templateRef: TemplateRef, index?: number): ViewRef;
     /**
      * Instantiates a single {@link Component} and inserts its Host View into this container at the
      * specified `index`.
@@ -82,7 +64,7 @@ export declare class ViewContainerRef {
      *
      * Returns the {@link HostViewRef} of the Host View created for the newly instantiated Component.
      */
-    createHostView(protoViewRef?: ProtoViewRef, index?: number, dynamicallyCreatedBindings?: ResolvedBinding[]): HostViewRef;
+    abstract createHostView(protoViewRef?: ProtoViewRef, index?: number, dynamicallyCreatedBindings?: ResolvedBinding[]): HostViewRef;
     /**
      * Inserts a View identified by a {@link ViewRef} into the container at the specified `index`.
      *
@@ -90,22 +72,35 @@ export declare class ViewContainerRef {
      *
      * Returns the inserted {@link ViewRef}.
      */
-    insert(viewRef: ViewRef, index?: number): ViewRef;
+    abstract insert(viewRef: ViewRef, index?: number): ViewRef;
     /**
      * Returns the index of the View, specified via {@link ViewRef}, within the current container or
      * `-1` if this container doesn't contain the View.
      */
-    indexOf(viewRef: ViewRef): number;
+    abstract indexOf(viewRef: ViewRef): number;
     /**
      * Destroys a View attached to this container at the specified `index`.
      *
      * If `index` is not specified, the last View in the container will be removed.
      */
-    remove(index?: number): void;
+    abstract remove(index?: number): void;
     /**
      * Use along with {@link #insert} to move a View within the current container.
      *
      * If the `index` param is omitted, the last {@link ViewRef} is detached.
      */
+    abstract detach(index?: number): ViewRef;
+}
+export declare class ViewContainerRef_ extends ViewContainerRef {
+    viewManager: avmModule.AppViewManager;
+    constructor(viewManager: avmModule.AppViewManager, element: ElementRef);
+    private _getViews();
+    get(index: number): ViewRef;
+    length: number;
+    createEmbeddedView(templateRef: TemplateRef, index?: number): ViewRef;
+    createHostView(protoViewRef?: ProtoViewRef, index?: number, dynamicallyCreatedBindings?: ResolvedBinding[]): HostViewRef;
+    insert(viewRef: ViewRef, index?: number): ViewRef;
+    indexOf(viewRef: ViewRef): number;
+    remove(index?: number): void;
     detach(index?: number): ViewRef;
 }

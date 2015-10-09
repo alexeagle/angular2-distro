@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var collection_1 = require('angular2/src/core/facade/collection');
 var lang_1 = require('angular2/src/core/facade/lang');
-var api_1 = require('angular2/src/core/render/api');
 var di_1 = require('angular2/src/core/di');
 var pipe_binding_1 = require('../pipes/pipe_binding');
 var pipes_1 = require('../pipes/pipes');
@@ -45,7 +44,7 @@ var ProtoViewFactory = (function () {
         if (lang_1.isBlank(result)) {
             var templateData = compiledTemplate.getData(this._appId);
             var emptyMap = {};
-            result = new view_1.AppProtoView(templateData.commands, api_1.ViewType.HOST, true, templateData.changeDetectorFactory, null, new pipes_1.ProtoPipes(emptyMap));
+            result = new view_1.AppProtoView(templateData.commands, view_1.ViewType.HOST, true, templateData.changeDetectorFactory, null, new pipes_1.ProtoPipes(emptyMap));
             this._cache.set(compiledTemplate.id, result);
         }
         return result;
@@ -57,9 +56,9 @@ var ProtoViewFactory = (function () {
             var component = cmd.directives[0];
             var view = this._viewResolver.resolve(component);
             var compiledTemplateData = cmd.template.getData(this._appId);
-            this._renderer.registerComponentTemplate(cmd.templateId, compiledTemplateData.commands, compiledTemplateData.styles);
+            this._renderer.registerComponentTemplate(cmd.templateId, compiledTemplateData.commands, compiledTemplateData.styles, cmd.nativeShadow);
             var boundPipes = this._flattenPipes(view).map(function (pipe) { return _this._bindPipe(pipe); });
-            nestedProtoView = new view_1.AppProtoView(compiledTemplateData.commands, api_1.ViewType.COMPONENT, true, compiledTemplateData.changeDetectorFactory, null, pipes_1.ProtoPipes.fromBindings(boundPipes));
+            nestedProtoView = new view_1.AppProtoView(compiledTemplateData.commands, view_1.ViewType.COMPONENT, true, compiledTemplateData.changeDetectorFactory, null, pipes_1.ProtoPipes.fromBindings(boundPipes));
             // Note: The cache is updated before recursing
             // to be able to resolve cycles
             this._cache.set(cmd.template.id, nestedProtoView);
@@ -68,7 +67,7 @@ var ProtoViewFactory = (function () {
         return nestedProtoView;
     };
     ProtoViewFactory.prototype._createEmbeddedTemplate = function (cmd, parent) {
-        var nestedProtoView = new view_1.AppProtoView(cmd.children, api_1.ViewType.EMBEDDED, cmd.isMerged, cmd.changeDetectorFactory, arrayToMap(cmd.variableNameAndValues, true), new pipes_1.ProtoPipes(parent.pipes.config));
+        var nestedProtoView = new view_1.AppProtoView(cmd.children, view_1.ViewType.EMBEDDED, cmd.isMerged, cmd.changeDetectorFactory, arrayToMap(cmd.variableNameAndValues, true), new pipes_1.ProtoPipes(parent.pipes.config));
         if (cmd.isMerged) {
             this.initializeProtoViewIfNeeded(nestedProtoView);
         }

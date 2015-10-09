@@ -23,6 +23,7 @@ var test_lib_1 = require('angular2/test_lib');
 var spies_1 = require('../spies');
 var core_1 = require('angular2/core');
 var metadata_1 = require('angular2/src/core/di/metadata');
+var binding_1 = require('angular2/src/core/di/binding');
 var injector_1 = require('angular2/src/core/di/injector');
 var CustomDependencyMetadata = (function (_super) {
     __extends(CustomDependencyMetadata, _super);
@@ -501,7 +502,7 @@ function main() {
                 bindings.forEach(function (b) {
                     if (lang_1.isBlank(b))
                         return; // the result is a sparse array
-                    test_lib_1.expect(b instanceof core_1.ResolvedBinding).toBe(true);
+                    test_lib_1.expect(b instanceof binding_1.ResolvedBinding_).toBe(true);
                 });
             });
             test_lib_1.it("should support multi bindings", function () {

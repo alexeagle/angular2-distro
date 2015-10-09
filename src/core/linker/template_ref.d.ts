@@ -12,7 +12,7 @@ import { ElementRef } from './element_ref';
  * {@link ViewContainerRef#createEmbeddedView}, which will create the View and attach it to the
  * View Container.
  */
-export declare class TemplateRef {
+export declare abstract class TemplateRef {
     /**
      * The location in the View where the Embedded View logically belongs to.
      *
@@ -26,19 +26,17 @@ export declare class TemplateRef {
      */
     elementRef: ElementRef;
     /**
-     * @private
+     * Allows you to check if this Embedded Template defines Local Variable with name matching `name`.
      */
+    abstract hasLocal(name: string): boolean;
+}
+export declare class TemplateRef_ extends TemplateRef {
     constructor(elementRef: ElementRef);
     private _getProtoView();
     /**
-     * @private
-     *
      * Reference to the ProtoView used for creating Embedded Views that are based on the compiled
      * Embedded Template.
      */
     protoViewRef: ProtoViewRef;
-    /**
-     * Allows you to check if this Embedded Template defines Local Variable with name matching `name`.
-     */
     hasLocal(name: string): boolean;
 }

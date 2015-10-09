@@ -133,7 +133,7 @@ function getAllDefinitions() {
         "onPushObserveDirective",
         "updateElementProduction"
     ]);
-    return collection_1.ListWrapper.map(allDefs, function (id) { return getDefinition(id); });
+    return allDefs.map(getDefinition);
 }
 exports.getAllDefinitions = getAllDefinitions;
 var _ExpressionWithLocals = (function () {

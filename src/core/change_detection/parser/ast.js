@@ -340,7 +340,7 @@ var RecursiveAstVisitor = (function () {
     };
     RecursiveAstVisitor.prototype.visitAll = function (asts) {
         var _this = this;
-        collection_1.ListWrapper.forEach(asts, function (ast) { ast.visit(_this); });
+        asts.forEach(function (ast) { return ast.visit(_this); });
         return null;
     };
     return RecursiveAstVisitor;

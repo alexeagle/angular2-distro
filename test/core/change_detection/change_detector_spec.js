@@ -24,7 +24,7 @@ var _DEFAULT_CONTEXT = lang_1.CONST_EXPR(new Object());
  * can be found in the generated/change_detector_classes library.
  */
 function main() {
-    collection_1.ListWrapper.forEach(['dynamic', 'JIT', 'Pregen'], function (cdType) {
+    ['dynamic', 'JIT', 'Pregen'].forEach(function (cdType) {
         if (cdType == "JIT" && platform_1.IS_DART)
             return;
         if (cdType == "Pregen" && !platform_1.IS_DART)

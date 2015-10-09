@@ -25,11 +25,12 @@ var WebWorkerRenderer = (function () {
         this._eventDispatcher = _eventDispatcher;
         this._messageBroker = messageBrokerFactory.createMessageBroker(messaging_api_1.RENDERER_CHANNEL);
     }
-    WebWorkerRenderer.prototype.registerComponentTemplate = function (templateId, commands, styles) {
+    WebWorkerRenderer.prototype.registerComponentTemplate = function (templateId, commands, styles, nativeShadow) {
         var fnArgs = [
             new client_message_broker_1.FnArg(templateId, null),
             new client_message_broker_1.FnArg(commands, api_2.WebWorkerTemplateCmd),
-            new client_message_broker_1.FnArg(styles, null)
+            new client_message_broker_1.FnArg(styles, null),
+            new client_message_broker_1.FnArg(nativeShadow, null)
         ];
         var args = new client_message_broker_1.UiArguments("registerComponentTemplate", fnArgs);
         this._messageBroker.runOnService(args, null);

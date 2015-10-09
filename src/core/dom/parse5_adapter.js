@@ -221,7 +221,7 @@ var Parse5DomAdapter = (function (_super) {
     };
     Parse5DomAdapter.prototype.insertAllBefore = function (el, nodes) {
         var _this = this;
-        collection_1.ListWrapper.forEach(nodes, function (n) { _this.insertBefore(el, n); });
+        nodes.forEach(function (n) { return _this.insertBefore(el, n); });
     };
     Parse5DomAdapter.prototype.insertAfter = function (el, node) {
         if (el.nextSibling) {
@@ -357,7 +357,7 @@ var Parse5DomAdapter = (function (_super) {
         var index = classList.indexOf(classname);
         if (index == -1) {
             classList.push(classname);
-            element.attribs["class"] = element.className = collection_1.ListWrapper.join(classList, " ");
+            element.attribs["class"] = element.className = classList.join(" ");
         }
     };
     Parse5DomAdapter.prototype.removeClass = function (element, classname) {
@@ -365,7 +365,7 @@ var Parse5DomAdapter = (function (_super) {
         var index = classList.indexOf(classname);
         if (index > -1) {
             classList.splice(index, 1);
-            element.attribs["class"] = element.className = collection_1.ListWrapper.join(classList, " ");
+            element.attribs["class"] = element.className = classList.join(" ");
         }
     };
     Parse5DomAdapter.prototype.hasClass = function (element, classname) {

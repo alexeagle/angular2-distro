@@ -143,7 +143,7 @@ var NgFormModel = (function (_super) {
     };
     NgFormModel.prototype._updateDomValue = function () {
         var _this = this;
-        collection_1.ListWrapper.forEach(this.directives, function (dir) {
+        this.directives.forEach(function (dir) {
             var ctrl = _this.form.find(dir.path);
             dir.valueAccessor.writeValue(ctrl.value);
         });

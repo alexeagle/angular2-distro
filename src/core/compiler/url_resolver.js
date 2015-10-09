@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var di_1 = require('angular2/src/core/di');
 var lang_1 = require('angular2/src/core/facade/lang');
-var collection_1 = require('angular2/src/core/facade/collection');
 /**
  * Used by the {@link Compiler} when resolving HTML and CSS template URLs.
  *
@@ -147,7 +146,7 @@ function _buildFromEncodedParts(opt_scheme, opt_userInfo, opt_domain, opt_port, 
  *    $7 = Related           fragment without #
  * </pre>
  * @type {!RegExp}
- * @private
+ * @internal
  */
 var _splitRe = lang_1.RegExpWrapper.create('^' +
     '(?:' +
@@ -221,7 +220,7 @@ function _removeDotSegments(path) {
                 break;
             case '..':
                 if (out.length > 0) {
-                    collection_1.ListWrapper.removeAt(out, out.length - 1);
+                    out.pop();
                 }
                 else {
                     up++;
@@ -233,7 +232,7 @@ function _removeDotSegments(path) {
     }
     if (leadingSlash == '') {
         while (up-- > 0) {
-            collection_1.ListWrapper.insert(out, 0, '..');
+            out.unshift('..');
         }
         if (out.length === 0)
             out.push('.');

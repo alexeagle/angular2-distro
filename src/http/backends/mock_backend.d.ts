@@ -31,8 +31,8 @@ export declare class MockConnection implements Connection {
      *
      * ```
      * var connection;
-     * backend.connections.toRx().subscribe(c => connection = c);
-     * http.request('data.json').toRx().subscribe(res => console.log(res.text()));
+     * backend.connections.subscribe(c => connection = c);
+     * http.request('data.json').subscribe(res => console.log(res.text()));
      * connection.mockRespond(new Response('fake response')); //logs 'fake response'
      * ```
      *
@@ -72,8 +72,8 @@ export declare class MockConnection implements Connection {
  *   var http = injector.get(Http);
  *   var backend = injector.get(MockBackend);
  *   //Assign any newly-created connection to local variable
- *   backend.connections.toRx().subscribe(c => connection = c);
- *   http.request('data.json').toRx().subscribe((res) => {
+ *   backend.connections.subscribe(c => connection = c);
+ *   http.request('data.json').subscribe((res) => {
  *     expect(res.text()).toBe('awesome');
  *     async.done();
  *   });
@@ -105,8 +105,8 @@ export declare class MockBackend implements ConnectionBackend {
      *     }, [MockBackend, BaseRequestOptions]]);
      *   var backend = injector.get(MockBackend);
      *   var http = injector.get(Http);
-     *   backend.connections.toRx().subscribe(c => connection = c);
-     *   http.request('something.json').toRx().subscribe(res => {
+     *   backend.connections.subscribe(c => connection = c);
+     *   http.request('something.json').subscribe(res => {
      *     text = res.text();
      *   });
      *   connection.mockRespond(new Response({body: 'Something'}));

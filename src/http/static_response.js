@@ -11,7 +11,7 @@ var http_utils_1 = require('./http_utils');
  * #Example
  *
  * ```
- * http.request('my-friends.txt').toRx().subscribe(response => this.friends = response.text());
+ * http.request('my-friends.txt').subscribe(response => this.friends = response.text());
  * ```
  *
  * The Response's interface is inspired by the Response constructor defined in the [Fetch

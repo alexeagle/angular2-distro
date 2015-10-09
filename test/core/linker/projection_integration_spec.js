@@ -11,10 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var test_lib_1 = require('angular2/test_lib');
 var dom_adapter_1 = require('angular2/src/core/dom/dom_adapter');
+var view_listener_1 = require('angular2/src/core/linker/view_listener');
 var core_1 = require('angular2/core');
 var debug_1 = require('angular2/src/core/debug');
 function main() {
     test_lib_1.describe('projection', function () {
+        test_lib_1.beforeEachBindings(function () { return [core_1.bind(view_listener_1.AppViewListener).toClass(view_listener_1.AppViewListener)]; });
         test_lib_1.it('should support simple components', test_lib_1.inject([test_lib_1.TestComponentBuilder, test_lib_1.AsyncTestCompleter], function (tcb, async) {
             tcb.overrideView(MainComp, new core_1.ViewMetadata({
                 template: '<simple>' +
@@ -65,6 +67,20 @@ function main() {
                 main.debugElement.componentInstance.text = 'A';
                 main.detectChanges();
                 test_lib_1.expect(main.debugElement.nativeElement).toHaveText('SIMPLE(AEL)');
+                async.done();
+            });
+        }));
+        test_lib_1.it('should project content components', test_lib_1.inject([test_lib_1.TestComponentBuilder, test_lib_1.AsyncTestCompleter], function (tcb, async) {
+            tcb.overrideView(Simple, new core_1.ViewMetadata({ template: 'SIMPLE({{0}}|<ng-content></ng-content>|{{2}})', directives: [] }))
+                .overrideView(OtherComp, new core_1.ViewMetadata({ template: '{{1}}', directives: [] }))
+                .overrideView(MainComp, new core_1.ViewMetadata({
+                template: '<simple><other></other></simple>',
+                directives: [Simple, OtherComp]
+            }))
+                .createAsync(MainComp)
+                .then(function (main) {
+                main.detectChanges();
+                test_lib_1.expect(main.debugElement.nativeElement).toHaveText('SIMPLE(0|1|2)');
                 async.done();
             });
         }));
@@ -282,16 +298,17 @@ function main() {
             });
         }));
         if (dom_adapter_1.DOM.supportsNativeShadowDOM()) {
-            test_lib_1.it('should support native content projection', test_lib_1.inject([test_lib_1.TestComponentBuilder, test_lib_1.AsyncTestCompleter], function (tcb, async) {
+            test_lib_1.it('should support native content projection and isolate styles per component', test_lib_1.inject([test_lib_1.TestComponentBuilder, test_lib_1.AsyncTestCompleter], function (tcb, async) {
                 tcb.overrideView(MainComp, new core_1.ViewMetadata({
-                    template: '<simple-native>' +
-                        '<div>A</div>' +
-                        '</simple-native>',
-                    directives: [SimpleNative]
+                    template: '<simple-native1><div>A</div></simple-native1>' +
+                        '<simple-native2><div>B</div></simple-native2>',
+                    directives: [SimpleNative1, SimpleNative2]
                 }))
                     .createAsync(MainComp)
                     .then(function (main) {
-                    test_lib_1.expect(main.debugElement.nativeElement).toHaveText('SIMPLE(A)');
+                    var childNodes = dom_adapter_1.DOM.childNodes(main.debugElement.nativeElement);
+                    test_lib_1.expect(childNodes[0]).toHaveText('div {color: red}SIMPLE1(A)');
+                    test_lib_1.expect(childNodes[1]).toHaveText('div {color: blue}SIMPLE2(B)');
                     async.done();
                 });
             }));
@@ -314,6 +331,26 @@ function main() {
                 async.done();
             });
         }));
+        test_lib_1.it('should allow to switch the order of nested components via ng-content', test_lib_1.inject([test_lib_1.TestComponentBuilder, test_lib_1.AsyncTestCompleter], function (tcb, async) {
+            tcb.overrideView(MainComp, new core_1.ViewMetadata({ template: "<cmp-a><cmp-b></cmp-b></cmp-a>", directives: [CmpA, CmpB] }))
+                .createAsync(MainComp)
+                .then(function (main) {
+                main.detectChanges();
+                test_lib_1.expect(dom_adapter_1.DOM.getInnerHTML(main.debugElement.nativeElement))
+                    .toEqual('<cmp-a><cmp-b><cmp-d><d>cmp-d</d></cmp-d></cmp-b><cmp-c><c>cmp-c</c></cmp-c></cmp-a>');
+                async.done();
+            });
+        }));
+        test_lib_1.it('should create nested components in the right order', test_lib_1.inject([test_lib_1.TestComponentBuilder, test_lib_1.AsyncTestCompleter], function (tcb, async) {
+            tcb.overrideView(MainComp, new core_1.ViewMetadata({ template: "<cmp-a1></cmp-a1><cmp-a2></cmp-a2>", directives: [CmpA1, CmpA2] }))
+                .createAsync(MainComp)
+                .then(function (main) {
+                main.detectChanges();
+                test_lib_1.expect(dom_adapter_1.DOM.getInnerHTML(main.debugElement.nativeElement))
+                    .toEqual('<cmp-a1>a1<cmp-b11>b11</cmp-b11><cmp-b12>b12</cmp-b12></cmp-a1><cmp-a2>a2<cmp-b21>b21</cmp-b21><cmp-b22>b22</cmp-b22></cmp-a2>');
+                async.done();
+            });
+        }));
     });
 }
 exports.main = main;
@@ -328,6 +365,17 @@ var MainComp = (function () {
     ], MainComp);
     return MainComp;
 })();
+var OtherComp = (function () {
+    function OtherComp() {
+        this.text = '';
+    }
+    OtherComp = __decorate([
+        core_1.Component({ selector: 'other' }),
+        core_1.View({ template: '', directives: [] }), 
+        __metadata('design:paramtypes', [])
+    ], OtherComp);
+    return OtherComp;
+})();
 var Simple = (function () {
     function Simple() {
         this.stringProp = '';
@@ -339,19 +387,35 @@ var Simple = (function () {
     ], Simple);
     return Simple;
 })();
-var SimpleNative = (function () {
-    function SimpleNative() {
+var SimpleNative1 = (function () {
+    function SimpleNative1() {
     }
-    SimpleNative = __decorate([
-        core_1.Component({ selector: 'simple-native' }),
+    SimpleNative1 = __decorate([
+        core_1.Component({ selector: 'simple-native1' }),
         core_1.View({
-            template: 'SIMPLE(<content></content>)',
+            template: 'SIMPLE1(<content></content>)',
             directives: [],
-            encapsulation: core_1.ViewEncapsulation.Native
+            encapsulation: core_1.ViewEncapsulation.Native,
+            styles: ['div {color: red}']
         }), 
         __metadata('design:paramtypes', [])
-    ], SimpleNative);
-    return SimpleNative;
+    ], SimpleNative1);
+    return SimpleNative1;
+})();
+var SimpleNative2 = (function () {
+    function SimpleNative2() {
+    }
+    SimpleNative2 = __decorate([
+        core_1.Component({ selector: 'simple-native2' }),
+        core_1.View({
+            template: 'SIMPLE2(<content></content>)',
+            directives: [],
+            encapsulation: core_1.ViewEncapsulation.Native,
+            styles: ['div {color: blue}']
+        }), 
+        __metadata('design:paramtypes', [])
+    ], SimpleNative2);
+    return SimpleNative2;
 })();
 var Empty = (function () {
     function Empty() {
@@ -505,5 +569,107 @@ var Tree = (function () {
         __metadata('design:paramtypes', [])
     ], Tree);
     return Tree;
+})();
+var CmpD = (function () {
+    function CmpD(elementRef) {
+        this.tagName = dom_adapter_1.DOM.tagName(elementRef.nativeElement).toLowerCase();
+    }
+    CmpD = __decorate([
+        core_1.Component({ selector: 'cmp-d' }),
+        core_1.View({ template: "<d>{{tagName}}</d>" }), 
+        __metadata('design:paramtypes', [core_1.ElementRef])
+    ], CmpD);
+    return CmpD;
+})();
+var CmpC = (function () {
+    function CmpC(elementRef) {
+        this.tagName = dom_adapter_1.DOM.tagName(elementRef.nativeElement).toLowerCase();
+    }
+    CmpC = __decorate([
+        core_1.Component({ selector: 'cmp-c' }),
+        core_1.View({ template: "<c>{{tagName}}</c>" }), 
+        __metadata('design:paramtypes', [core_1.ElementRef])
+    ], CmpC);
+    return CmpC;
+})();
+var CmpB = (function () {
+    function CmpB() {
+    }
+    CmpB = __decorate([
+        core_1.Component({ selector: 'cmp-b' }),
+        core_1.View({ template: "<ng-content></ng-content><cmp-d></cmp-d>", directives: [CmpD] }), 
+        __metadata('design:paramtypes', [])
+    ], CmpB);
+    return CmpB;
+})();
+var CmpA = (function () {
+    function CmpA() {
+    }
+    CmpA = __decorate([
+        core_1.Component({ selector: 'cmp-a' }),
+        core_1.View({ template: "<ng-content></ng-content><cmp-c></cmp-c>", directives: [CmpC] }), 
+        __metadata('design:paramtypes', [])
+    ], CmpA);
+    return CmpA;
+})();
+var CmpB11 = (function () {
+    function CmpB11() {
+    }
+    CmpB11 = __decorate([
+        core_1.Component({ selector: 'cmp-b11' }),
+        core_1.View({ template: "{{'b11'}}", directives: [] }), 
+        __metadata('design:paramtypes', [])
+    ], CmpB11);
+    return CmpB11;
+})();
+var CmpB12 = (function () {
+    function CmpB12() {
+    }
+    CmpB12 = __decorate([
+        core_1.Component({ selector: 'cmp-b12' }),
+        core_1.View({ template: "{{'b12'}}", directives: [] }), 
+        __metadata('design:paramtypes', [])
+    ], CmpB12);
+    return CmpB12;
+})();
+var CmpB21 = (function () {
+    function CmpB21() {
+    }
+    CmpB21 = __decorate([
+        core_1.Component({ selector: 'cmp-b21' }),
+        core_1.View({ template: "{{'b21'}}", directives: [] }), 
+        __metadata('design:paramtypes', [])
+    ], CmpB21);
+    return CmpB21;
+})();
+var CmpB22 = (function () {
+    function CmpB22() {
+    }
+    CmpB22 = __decorate([
+        core_1.Component({ selector: 'cmp-b22' }),
+        core_1.View({ template: "{{'b22'}}", directives: [] }), 
+        __metadata('design:paramtypes', [])
+    ], CmpB22);
+    return CmpB22;
+})();
+var CmpA1 = (function () {
+    function CmpA1() {
+    }
+    CmpA1 = __decorate([
+        core_1.Component({ selector: 'cmp-a1' }),
+        core_1.View({ template: "{{'a1'}}<cmp-b11></cmp-b11><cmp-b12></cmp-b12>", directives: [CmpB11, CmpB12] }), 
+        __metadata('design:paramtypes', [])
+    ], CmpA1);
+    return CmpA1;
+})();
+var CmpA2 = (function () {
+    function CmpA2() {
+    }
+    CmpA2 = __decorate([
+        core_1.Component({ selector: 'cmp-a2' }),
+        core_1.View({ template: "{{'a2'}}<cmp-b21></cmp-b21><cmp-b22></cmp-b22>", directives: [CmpB21, CmpB22] }), 
+        __metadata('design:paramtypes', [])
+    ], CmpA2);
+    return CmpA2;
 })();
 //# sourceMappingURL=projection_integration_spec.js.map

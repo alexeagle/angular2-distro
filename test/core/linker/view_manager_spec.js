@@ -17,8 +17,8 @@ function main() {
         var linker;
         var manager;
         var createdRenderViews;
-        function wrapPv(protoView) { return new view_ref_1.ProtoViewRef(protoView); }
-        function wrapView(view) { return new view_ref_1.ViewRef(view); }
+        function wrapPv(protoView) { return new view_ref_1.ProtoViewRef_(protoView); }
+        function wrapView(view) { return new view_ref_1.ViewRef_(view); }
         function resetSpies() {
             viewListener.spy('viewCreated').reset();
             viewListener.spy('viewDestroyed').reset();
@@ -36,7 +36,7 @@ function main() {
             viewListener = new spies_1.SpyAppViewListener();
             viewPool = new spies_1.SpyAppViewPool();
             linker = new spies_1.SpyProtoViewFactory();
-            manager = new view_manager_1.AppViewManager(viewPool, viewListener, utils, renderer, linker);
+            manager = new view_manager_1.AppViewManager_(viewPool, viewListener, utils, renderer, linker);
             createdRenderViews = [];
             renderer.spy('createRootHostView')
                 .andCallFake(function (_a, renderFragmentCount, _b) {
@@ -133,7 +133,7 @@ function main() {
                     hostView =
                         view_ref_1.internalView(manager.createRootHostView(wrapPv(hostProtoView), null, null));
                     vcRef = hostView.elementRefs[1];
-                    templateRef = new template_ref_1.TemplateRef(hostView.elementRefs[1]);
+                    templateRef = new template_ref_1.TemplateRef_(hostView.elementRefs[1]);
                     resetSpies();
                 });
                 test_lib_1.it('should initialize the ProtoView', function () {
@@ -250,7 +250,7 @@ function main() {
                     hostView =
                         view_ref_1.internalView(manager.createRootHostView(wrapPv(hostProtoView), null, null));
                     vcRef = hostView.elementRefs[1];
-                    templateRef = new template_ref_1.TemplateRef(hostView.elementRefs[1]);
+                    templateRef = new template_ref_1.TemplateRef_(hostView.elementRefs[1]);
                     firstChildView =
                         view_ref_1.internalView(manager.createEmbeddedViewInContainer(vcRef, 0, templateRef));
                     resetSpies();
@@ -309,7 +309,7 @@ function main() {
                         var hostProtoView = view_manager_utils_spec_1.createHostPv([view_manager_utils_spec_1.createNestedElBinder(view_manager_utils_spec_1.createComponentPv([view_manager_utils_spec_1.createNestedElBinder(childProtoView)]))]);
                         hostView = view_ref_1.internalView(manager.createRootHostView(wrapPv(hostProtoView), null, null));
                         vcRef = hostView.elementRefs[1];
-                        templateRef = new template_ref_1.TemplateRef(hostView.elementRefs[1]);
+                        templateRef = new template_ref_1.TemplateRef_(hostView.elementRefs[1]);
                         firstChildView =
                             view_ref_1.internalView(manager.createEmbeddedViewInContainer(vcRef, 0, templateRef));
                         secondChildView =
@@ -354,7 +354,7 @@ function main() {
                         var hostProtoView = view_manager_utils_spec_1.createHostPv([view_manager_utils_spec_1.createNestedElBinder(view_manager_utils_spec_1.createComponentPv([view_manager_utils_spec_1.createNestedElBinder(childProtoView)]))]);
                         hostView = view_ref_1.internalView(manager.createRootHostView(wrapPv(hostProtoView), null, null));
                         vcRef = hostView.elementRefs[1];
-                        templateRef = new template_ref_1.TemplateRef(hostView.elementRefs[1]);
+                        templateRef = new template_ref_1.TemplateRef_(hostView.elementRefs[1]);
                         nestedChildViews = [];
                         childViews = [];
                         nestedVcRefs = [];

@@ -79,7 +79,7 @@ exports.URLSearchParams = url_search_params_1.URLSearchParams;
  * export class App {
  *   people: Object[];
  *   constructor(http:Http) {
- *     http.get('people.json').toRx().subscribe(res => {
+ *     http.get('people.json').subscribe(res => {
  *       this.people = res.json();
  *     });
  *   }
@@ -202,7 +202,7 @@ exports.HTTP_BINDINGS = [
  * export class App {
  *   people: Array<Object>;
  *   constructor(jsonp:Jsonp) {
- *     jsonp.request('people.json').toRx().subscribe(res => {
+ *     jsonp.request('people.json').subscribe(res => {
  *       this.people = res.json();
  *     })
  *   }
@@ -283,6 +283,6 @@ exports.JSONP_BINDINGS = [
     browser_jsonp_1.BrowserJsonp,
     core_1.bind(base_request_options_1.RequestOptions).toClass(base_request_options_1.BaseRequestOptions),
     core_1.bind(base_response_options_1.ResponseOptions).toClass(base_response_options_1.BaseResponseOptions),
-    jsonp_backend_1.JSONPBackend
+    core_1.bind(jsonp_backend_1.JSONPBackend).toClass(jsonp_backend_1.JSONPBackend_)
 ];
 //# sourceMappingURL=http.js.map

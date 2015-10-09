@@ -68,6 +68,7 @@ var TemplateParseVisitor = (function () {
         this._schemaRegistry = _schemaRegistry;
         this.errors = [];
         this.directivesIndex = new Map();
+        this.ngContentCount = 0;
         this.selectorMatcher = new selector_1.SelectorMatcher();
         collection_1.ListWrapper.forEachWithIndex(directives, function (directive, index) {
             var selector = selector_1.CssSelector.parse(directive.selector);
@@ -166,7 +167,8 @@ var TemplateParseVisitor = (function () {
         var elementNgContentIndex = hasInlineTemplates ? null : component.findNgContentIndex(elementCssSelector);
         var parsedElement;
         if (preparsedElement.type === template_preparser_1.PreparsedElementType.NG_CONTENT) {
-            parsedElement = new template_ast_1.NgContentAst(elementNgContentIndex, element.sourceInfo);
+            parsedElement =
+                new template_ast_1.NgContentAst(this.ngContentCount++, elementNgContentIndex, element.sourceInfo);
         }
         else if (isTemplateElement) {
             this._assertNoComponentsNorElementBindingsOnTemplate(directives, elementProps, events, element.sourceInfo);

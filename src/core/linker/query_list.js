@@ -57,10 +57,10 @@ var QueryList = (function () {
     QueryList.prototype[lang_1.getSymbolIterator()] = function () { return this._results[lang_1.getSymbolIterator()](); };
     QueryList.prototype.toString = function () { return this._results.toString(); };
     /**
-     * @private
+     * @internal
      */
     QueryList.prototype.reset = function (res) { this._results = res; };
-    /** @private */
+    /** @internal */
     QueryList.prototype.notifyOnChanges = function () { this._emitter.next(this); };
     return QueryList;
 })();

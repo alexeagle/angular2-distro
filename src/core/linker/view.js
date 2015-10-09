@@ -10,9 +10,22 @@ var lang_1 = require('angular2/src/core/facade/lang');
 var exceptions_1 = require('angular2/src/core/facade/exceptions');
 var view_ref_1 = require('./view_ref');
 var util_1 = require('angular2/src/core/render/dom/util');
+var view_ref_2 = require("./view_ref");
 var interfaces_2 = require('angular2/src/core/change_detection/interfaces');
 exports.DebugContext = interfaces_2.DebugContext;
 var REFLECT_PREFIX = 'ng-reflect-';
+(function (ViewType) {
+    // A view that contains the host element with bound component directive.
+    // Contains a COMPONENT view
+    ViewType[ViewType["HOST"] = 0] = "HOST";
+    // The view of the component
+    // Can contain 0 to n EMBEDDED views
+    ViewType[ViewType["COMPONENT"] = 1] = "COMPONENT";
+    // A view that is embedded into another View via a <template> element
+    // inside of a COMPONENT view
+    ViewType[ViewType["EMBEDDED"] = 2] = "EMBEDDED";
+})(exports.ViewType || (exports.ViewType = {}));
+var ViewType = exports.ViewType;
 var AppViewContainer = (function () {
     function AppViewContainer() {
         // The order in this list matches the DOM order.
@@ -57,7 +70,7 @@ var AppView = (function () {
          * This is always a component instance.
          */
         this.context = null;
-        this.ref = new view_ref_1.ViewRef(this);
+        this.ref = new view_ref_2.ViewRef_(this);
         this.locals = new change_detection_1.Locals(null, collection_1.MapWrapper.clone(protoLocals)); // TODO optimize this
     }
     AppView.prototype.init = function (changeDetector, elementInjectors, rootElementInjectors, preBuiltObjects, views, elementRefs, viewContainers) {
@@ -267,7 +280,7 @@ var AppProtoView = (function () {
         this.variableLocations = null;
         this.textBindingCount = null;
         this.render = null;
-        this.ref = new view_ref_1.ProtoViewRef(this);
+        this.ref = new view_ref_2.ProtoViewRef_(this);
     }
     AppProtoView.prototype.init = function (render, elementBinders, textBindingCount, mergeInfo, variableLocations) {
         var _this = this;

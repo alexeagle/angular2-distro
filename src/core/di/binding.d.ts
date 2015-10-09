@@ -1,7 +1,8 @@
 import { Type } from 'angular2/src/core/facade/lang';
 import { Key } from './key';
 /**
- * @private
+ * FIXME(alexeagle): make internal
+ * currently exposed by di
  */
 export declare class Dependency {
     key: Key;
@@ -205,44 +206,30 @@ export declare class Binding {
  * expect(injector.get('message')).toEqual('Hello');
  * ```
  */
-export declare class ResolvedBinding {
+export interface ResolvedBinding {
     /**
      * A key, usually a `Type`.
      */
     key: Key;
     /**
-     * @private
      * Factory function which can return an instance of an object represented by a key.
      */
     resolvedFactories: ResolvedFactory[];
     /**
-     * @private
      * Indicates if the binding is a multi-binding or a regular binding.
      */
     multiBinding: boolean;
-    /**
-     * @private
-     */
-    constructor(
-        /**
-         * A key, usually a `Type`.
-         */
-        key: Key, 
-        /**
-         * @private
-         * Factory function which can return an instance of an object represented by a key.
-         */
-        resolvedFactories: ResolvedFactory[], 
-        /**
-         * @private
-         * Indicates if the binding is a multi-binding or a regular binding.
-         */
-        multiBinding: boolean);
-    /** @private */
+}
+export declare class ResolvedBinding_ implements ResolvedBinding {
+    key: Key;
+    resolvedFactories: ResolvedFactory[];
+    multiBinding: boolean;
+    constructor(key: Key, resolvedFactories: ResolvedFactory[], multiBinding: boolean);
     resolvedFactory: ResolvedFactory;
 }
 /**
- * @private
+ * FIXME(alexeagle): make internal
+ * currently this is exposed by di, binding
  * An internal resolved representation of a factory function created by resolving {@link Binding}.
  */
 export declare class ResolvedFactory {

@@ -43,15 +43,15 @@ var KeyEventsPlugin = (function (_super) {
     };
     KeyEventsPlugin.parseEventName = function (eventName) {
         var parts = eventName.toLowerCase().split('.');
-        var domEventName = collection_1.ListWrapper.removeAt(parts, 0);
+        var domEventName = parts.shift();
         if ((parts.length === 0) ||
             !(lang_1.StringWrapper.equals(domEventName, 'keydown') ||
                 lang_1.StringWrapper.equals(domEventName, 'keyup'))) {
             return null;
         }
-        var key = KeyEventsPlugin._normalizeKey(collection_1.ListWrapper.removeLast(parts));
+        var key = KeyEventsPlugin._normalizeKey(parts.pop());
         var fullKey = '';
-        collection_1.ListWrapper.forEach(modifierKeys, function (modifierName) {
+        modifierKeys.forEach(function (modifierName) {
             if (collection_1.ListWrapper.contains(parts, modifierName)) {
                 collection_1.ListWrapper.remove(parts, modifierName);
                 fullKey += modifierName + '.';
@@ -77,7 +77,7 @@ var KeyEventsPlugin = (function (_super) {
         else if (lang_1.StringWrapper.equals(key, '.')) {
             key = 'dot'; // because '.' is used as a separator in event names
         }
-        collection_1.ListWrapper.forEach(modifierKeys, function (modifierName) {
+        modifierKeys.forEach(function (modifierName) {
             if (modifierName != key) {
                 var modifierGetter = collection_1.StringMapWrapper.get(modifierKeyGetters, modifierName);
                 if (modifierGetter(event)) {

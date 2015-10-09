@@ -12,8 +12,14 @@ import { HostViewRef } from './view_ref';
  * Component Instance and allows you to destroy the Component Instance via the {@link #dispose}
  * method.
  */
-export declare class ComponentRef {
-    private _dispose;
+export declare abstract class ComponentRef {
+    /**
+     * The injector provided {@link DynamicComponentLoader#loadAsRoot}.
+     *
+     * TODO(i): this api is useless and should be replaced by an injector retrieved from
+     *     the HostElementRef, which is currently not possible.
+     */
+    injector: Injector;
     /**
      * Location of the Host Element of this Component Instance.
      */
@@ -29,57 +35,28 @@ export declare class ComponentRef {
      */
     componentType: Type;
     /**
-     * @private
-     *
-     * The injector provided {@link DynamicComponentLoader#loadAsRoot}.
-     *
-     * TODO(i): this api is useless and should be replaced by an injector retrieved from
-     *     the HostElementRef, which is currently not possible.
-     */
-    injector: Injector;
-    /**
-     * @private
-     *
-     * TODO(i): refactor into public/private fields
-     */
-    constructor(location: ElementRef, instance: any, componentType: Type, injector: Injector, _dispose: () => void);
-    /**
      * The {@link ViewRef} of the Host View of this Component instance.
      */
     hostView: HostViewRef;
-    /**
-     * @private
-     *
-     * Returns the type of this Component instance.
-     *
-     * TODO(i): this api should be removed
-     */
-    hostComponentType: Type;
-    /**
-     * @private
-     *
-     * The instance of the component.
-     *
-     * TODO(i): this api should be removed
-     */
-    hostComponent: any;
     /**
      * Destroys the component instance and all of the data structures associated with it.
      *
      * TODO(i): rename to destroy to be consistent with AppViewManager and ViewContainerRef
      */
+    abstract dispose(): any;
+}
+export declare class ComponentRef_ extends ComponentRef {
+    private _dispose;
+    /**
+     * TODO(i): refactor into public/private fields
+     */
+    constructor(location: ElementRef, instance: any, componentType: Type, injector: Injector, _dispose: () => void);
     dispose(): void;
 }
 /**
  * Service for instantiating a Component and attaching it to a View at a specified location.
  */
-export declare class DynamicComponentLoader {
-    private _compiler;
-    private _viewManager;
-    /**
-     * @private
-     */
-    constructor(_compiler: Compiler, _viewManager: AppViewManager);
+export declare abstract class DynamicComponentLoader {
     /**
      * Creates an instance of a Component `type` and attaches it to the first element in the
      * platform-specific global view that matches the component's selector.
@@ -140,7 +117,7 @@ export declare class DynamicComponentLoader {
      * </my-app>
      * ```
      */
-    loadAsRoot(type: Type, overrideSelector: string, injector: Injector, onDispose?: () => void): Promise<ComponentRef>;
+    abstract loadAsRoot(type: Type, overrideSelector: string, injector: Injector, onDispose?: () => void): Promise<ComponentRef>;
     /**
      * Creates an instance of a Component and attaches it to a View Container located inside of the
      * Component View of another Component instance.
@@ -196,7 +173,7 @@ export declare class DynamicComponentLoader {
      * </my-app>
      * ```
      */
-    loadIntoLocation(type: Type, hostLocation: ElementRef, anchorName: string, bindings?: ResolvedBinding[]): Promise<ComponentRef>;
+    abstract loadIntoLocation(type: Type, hostLocation: ElementRef, anchorName: string, bindings?: ResolvedBinding[]): Promise<ComponentRef>;
     /**
      * Creates an instance of a Component and attaches it to the View Container found at the
      * `location` specified as {@link ElementRef}.
@@ -242,5 +219,13 @@ export declare class DynamicComponentLoader {
      * <child-component>Child</child-component>
      * ```
      */
+    abstract loadNextToLocation(type: Type, location: ElementRef, bindings?: ResolvedBinding[]): Promise<ComponentRef>;
+}
+export declare class DynamicComponentLoader_ extends DynamicComponentLoader {
+    private _compiler;
+    private _viewManager;
+    constructor(_compiler: Compiler, _viewManager: AppViewManager);
+    loadAsRoot(type: Type, overrideSelector: string, injector: Injector, onDispose?: () => void): Promise<ComponentRef>;
+    loadIntoLocation(type: Type, hostLocation: ElementRef, anchorName: string, bindings?: ResolvedBinding[]): Promise<ComponentRef>;
     loadNextToLocation(type: Type, location: ElementRef, bindings?: ResolvedBinding[]): Promise<ComponentRef>;
 }

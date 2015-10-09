@@ -191,6 +191,13 @@ export interface ComponentFactory {
         };
         viewBindings?: any[];
         changeDetection?: ChangeDetectionStrategy;
+        templateUrl?: string;
+        template?: string;
+        styleUrls?: string[];
+        styles?: string[];
+        directives?: Array<Type | any[]>;
+        pipes?: Array<Type | any[]>;
+        encapsulation?: ViewEncapsulation;
     }): ComponentDecorator;
     new (obj: {
         selector?: string;
@@ -209,6 +216,13 @@ export interface ComponentFactory {
         };
         viewBindings?: any[];
         changeDetection?: ChangeDetectionStrategy;
+        templateUrl?: string;
+        template?: string;
+        styleUrls?: string[];
+        styles?: string[];
+        directives?: Array<Type | any[]>;
+        pipes?: Array<Type | any[]>;
+        encapsulation?: ViewEncapsulation;
     }): ComponentMetadata;
 }
 /**

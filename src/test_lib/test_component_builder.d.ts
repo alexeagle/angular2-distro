@@ -5,13 +5,14 @@ import { ViewMetadata } from '../core/metadata';
 import { AppView } from 'angular2/src/core/linker/view';
 import { ComponentRef } from 'angular2/src/core/linker/dynamic_component_loader';
 import { DebugElement } from 'angular2/src/core/debug/debug_element';
-export declare class RootTestComponent {
+export declare abstract class RootTestComponent {
+    debugElement: DebugElement;
+    abstract detectChanges(): void;
+    abstract destroy(): void;
+}
+export declare class RootTestComponent_ extends RootTestComponent {
     _componentRef: ComponentRef;
     _componentParentView: AppView;
-    debugElement: DebugElement;
-    /**
-     * @private
-     */
     constructor(componentRef: ComponentRef);
     detectChanges(): void;
     destroy(): void;

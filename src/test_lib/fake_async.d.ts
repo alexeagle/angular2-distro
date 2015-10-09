@@ -1,4 +1,3 @@
-/// <reference path="../../../../../angular2/typings/jasmine/jasmine.d.ts" />
 /**
  * Wraps a function to be executed in the fakeAsync zone:
  * - microtasks are manually executed by calling `flushMicrotasks()`,

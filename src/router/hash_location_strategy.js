@@ -23,9 +23,6 @@ var location_strategy_1 = require('./location_strategy');
  * [hash fragment](https://en.wikipedia.org/wiki/Uniform_Resource_Locator#Syntax)
  * of the browser's URL.
  *
- * `HashLocationStrategy` is the default binding for {@link LocationStrategy}
- * provided in {@link routerBindings} and {@link ROUTER_BINDINGS}.
- *
  * For instance, if you call `location.go('/foo')`, the browser's URL will become
  * `example.com#/foo`.
  *
@@ -52,7 +49,7 @@ var location_strategy_1 = require('./location_strategy');
  * }
  *
  * bootstrap(AppCmp, [
- *   routerBindings(AppCmp) // includes binding to HashLocationStrategy
+ *   routerBindings(AppCmp)
  * ]);
  * ```
  */

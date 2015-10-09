@@ -24,7 +24,6 @@ exports.Injector = injector_1.Injector;
 var binding_1 = require('./di/binding');
 exports.Binding = binding_1.Binding;
 exports.BindingBuilder = binding_1.BindingBuilder;
-exports.ResolvedBinding = binding_1.ResolvedBinding;
 exports.ResolvedFactory = binding_1.ResolvedFactory;
 exports.Dependency = binding_1.Dependency;
 exports.bind = binding_1.bind;

@@ -18,6 +18,6 @@ var PipeBinding = (function (_super) {
         return new PipeBinding(metadata.name, metadata.pure, rb.key, rb.resolvedFactories, rb.multiBinding);
     };
     return PipeBinding;
-})(di_1.ResolvedBinding);
+})(binding_1.ResolvedBinding_);
 exports.PipeBinding = PipeBinding;
 //# sourceMappingURL=pipe_binding.js.map

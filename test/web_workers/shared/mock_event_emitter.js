@@ -4,7 +4,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var async_1 = require('angular2/src/core/facade/async');
-var collection_1 = require('angular2/src/core/facade/collection');
 var MockEventEmitter = (function (_super) {
     __extends(MockEventEmitter, _super);
     function MockEventEmitter() {
@@ -15,9 +14,7 @@ var MockEventEmitter = (function (_super) {
         this._nextFns.push(generator.next);
         return new MockDisposable();
     };
-    MockEventEmitter.prototype.next = function (value) {
-        collection_1.ListWrapper.forEach(this._nextFns, function (fn) { fn(value); });
-    };
+    MockEventEmitter.prototype.next = function (value) { this._nextFns.forEach(function (fn) { return fn(value); }); };
     return MockEventEmitter;
 })(async_1.EventEmitter);
 exports.MockEventEmitter = MockEventEmitter;

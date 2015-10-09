@@ -104,12 +104,13 @@ function main() {
                 test_lib_1.expect(sendSpy).toHaveBeenCalledWith(body);
             });
             test_lib_1.it('should attach headers to the request', function () {
-                var headers = new headers_1.Headers({ 'Content-Type': 'text/xml', 'Breaking-Bad': '<3' });
+                var headers = new headers_1.Headers({ 'Content-Type': 'text/xml', 'Breaking-Bad': '<3', 'X-Multi': ['a', 'b'] });
                 var base = new base_request_options_1.BaseRequestOptions();
                 var connection = new xhr_backend_1.XHRConnection(new static_request_1.Request(base.merge(new base_request_options_1.RequestOptions({ headers: headers }))), new MockBrowserXHR());
                 connection.response.subscribe();
-                test_lib_1.expect(setRequestHeaderSpy).toHaveBeenCalledWith('Content-Type', ['text/xml']);
-                test_lib_1.expect(setRequestHeaderSpy).toHaveBeenCalledWith('Breaking-Bad', ['<3']);
+                test_lib_1.expect(setRequestHeaderSpy).toHaveBeenCalledWith('Content-Type', 'text/xml');
+                test_lib_1.expect(setRequestHeaderSpy).toHaveBeenCalledWith('Breaking-Bad', '<3');
+                test_lib_1.expect(setRequestHeaderSpy).toHaveBeenCalledWith('X-Multi', 'a,b');
             });
             test_lib_1.it('should return the correct status code', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
                 var statusCode = 418;

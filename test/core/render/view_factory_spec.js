@@ -23,8 +23,8 @@ function beginComponent(name, attrNameAndValues, eventTargetAndNames, nativeShad
 function endComponent() {
     return appCmds.endComponent();
 }
-function ngContent(ngContentIndex) {
-    return appCmds.ngContent(ngContentIndex);
+function ngContent(index, ngContentIndex) {
+    return appCmds.ngContent(index, ngContentIndex);
 }
 function main() {
     test_lib_1.describe('createRenderView', function () {
@@ -254,6 +254,61 @@ function main() {
                 test_lib_1.expect(mapAttrs(view.boundElements, 'id'))
                     .toEqual(['1.1', '1.2', '1.3', '1.4', '2.1', '2.2', '3.1', '3.1']);
             });
+            test_lib_1.it('should store bound elements from the view before bound elements from content components', function () {
+                componentTemplates.set(0, [
+                    beginElement('a', ['id', '2.1'], [], true, null),
+                    endElement(),
+                ]);
+                componentTemplates.set(1, [
+                    beginElement('a', ['id', '3.1'], [], true, null),
+                    endElement(),
+                ]);
+                var view = view_factory_1.createRenderView([
+                    beginComponent('a-comp', ['id', '1.1'], [], false, null, 0),
+                    beginComponent('b-comp', ['id', '1.2'], [], false, null, 1),
+                    endComponent(),
+                    endComponent(),
+                ], null, nodeFactory);
+                test_lib_1.expect(mapAttrs(view.boundElements, 'id')).toEqual(['1.1', '1.2', '2.1', '3.1']);
+            });
+            test_lib_1.it('should process nested components in depth first order', function () {
+                componentTemplates.set(0, [
+                    beginComponent('b11-comp', ['id', '2.1'], [], false, null, 2),
+                    endComponent(),
+                    beginComponent('b12-comp', ['id', '2.2'], [], false, null, 3),
+                    endComponent(),
+                ]);
+                componentTemplates.set(1, [
+                    beginComponent('b21-comp', ['id', '3.1'], [], false, null, 4),
+                    endComponent(),
+                    beginComponent('b22-comp', ['id', '3.2'], [], false, null, 5),
+                    endComponent(),
+                ]);
+                componentTemplates.set(2, [
+                    beginElement('b11', ['id', '4.11'], [], true, null),
+                    endElement(),
+                ]);
+                componentTemplates.set(3, [
+                    beginElement('b12', ['id', '4.12'], [], true, null),
+                    endElement(),
+                ]);
+                componentTemplates.set(4, [
+                    beginElement('b21', ['id', '4.21'], [], true, null),
+                    endElement(),
+                ]);
+                componentTemplates.set(5, [
+                    beginElement('b22', ['id', '4.22'], [], true, null),
+                    endElement(),
+                ]);
+                var view = view_factory_1.createRenderView([
+                    beginComponent('a1-comp', ['id', '1.1'], [], false, null, 0),
+                    endComponent(),
+                    beginComponent('a2-comp', ['id', '1.2'], [], false, null, 1),
+                    endComponent(),
+                ], null, nodeFactory);
+                test_lib_1.expect(mapAttrs(view.boundElements, 'id'))
+                    .toEqual(['1.1', '1.2', '2.1', '2.2', '4.11', '4.12', '3.1', '3.2', '4.21', '4.22']);
+            });
             test_lib_1.it('should store bound text nodes after the bound text nodes of the main template', function () {
                 componentTemplates.set(0, [
                     text('2.1', true, null),
@@ -276,6 +331,17 @@ function main() {
                 test_lib_1.expect(mapText(view.boundTextNodes))
                     .toEqual(['1.1', '1.2', '1.3', '2.1', '2.2', '3.1', '3.1']);
             });
+        });
+        test_lib_1.it('should store bound text nodes from the view before bound text nodes from content components', function () {
+            componentTemplates.set(0, [text('2.1', true, null)]);
+            componentTemplates.set(1, [text('3.1', true, null)]);
+            var view = view_factory_1.createRenderView([
+                beginComponent('a-comp', [], [], false, null, 0),
+                beginComponent('b-comp', [], [], false, null, 1),
+                endComponent(),
+                endComponent(),
+            ], null, nodeFactory);
+            test_lib_1.expect(mapText(view.boundTextNodes)).toEqual(['2.1', '3.1']);
         });
         test_lib_1.describe('content projection', function () {
             test_lib_1.it('should remove non projected nodes', function () {
@@ -301,9 +367,9 @@ function main() {
             test_lib_1.it('should project commands based on their ngContentIndex', function () {
                 componentTemplates.set(0, [
                     text('(', false, null),
-                    ngContent(null),
+                    ngContent(0, null),
                     text(',', false, null),
-                    ngContent(null),
+                    ngContent(1, null),
                     text(')', false, null)
                 ]);
                 var view = view_factory_1.createRenderView([
@@ -315,8 +381,8 @@ function main() {
                 test_lib_1.expect(stringifyFragment(view.fragments[0].nodes)).toEqual('<my-comp>(1,2)</my-comp>');
             });
             test_lib_1.it('should reproject nodes over multiple ng-content commands', function () {
-                componentTemplates.set(0, [beginComponent('b-comp', [], [], false, null, 1), ngContent(0), endComponent()]);
-                componentTemplates.set(1, [text('(', false, null), ngContent(null), text(')', false, null)]);
+                componentTemplates.set(0, [beginComponent('b-comp', [], [], false, null, 1), ngContent(0, 0), endComponent()]);
+                componentTemplates.set(1, [text('(', false, null), ngContent(0, null), text(')', false, null)]);
                 var view = view_factory_1.createRenderView([
                     beginComponent('a-comp', [], [], false, null, 0),
                     text('hello', false, 0),
@@ -371,7 +437,7 @@ var DomNodeFactory = (function () {
             dom_adapter_1.DOM.setAttribute(el, attrNameAndValues[attrIdx], attrNameAndValues[attrIdx + 1]);
         }
     };
-    DomNodeFactory.prototype.createShadowRoot = function (host) {
+    DomNodeFactory.prototype.createShadowRoot = function (host, templateId) {
         var root = dom_adapter_1.DOM.createElement('shadow-root');
         dom_adapter_1.DOM.appendChild(host, root);
         return root;

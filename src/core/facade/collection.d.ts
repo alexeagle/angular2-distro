@@ -66,9 +66,7 @@ export declare class ListWrapper {
     static createFixedSize(size: number): any[];
     static createGrowableSize(size: number): any[];
     static clone<T>(array: T[]): T[];
-    static map<T, V>(array: T[], fn: (t: any) => V): V[];
-    static forEach<T>(array: T[], fn: (t: any) => void): void;
-    static forEachWithIndex<T>(array: T[], fn: (t: any, n: number) => void): void;
+    static forEachWithIndex<T>(array: T[], fn: (t: T, n: number) => void): void;
     static first<T>(array: T[]): T;
     static last<T>(array: T[]): T;
     static find<T>(list: T[], pred: Predicate<T>): T;
@@ -82,10 +80,8 @@ export declare class ListWrapper {
     static insert<T>(list: T[], index: number, value: T): void;
     static removeAt<T>(list: T[], index: number): T;
     static removeAll<T>(list: T[], items: T[]): void;
-    static removeLast<T>(list: T[]): T;
     static remove<T>(list: T[], el: T): boolean;
     static clear(list: any[]): void;
-    static join(list: any[], s: string): string;
     static isEmpty(list: any[]): boolean;
     static fill(list: any[], value: any, start?: number, end?: number): void;
     static equals(a: any[], b: any[]): boolean;

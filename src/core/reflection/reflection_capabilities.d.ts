@@ -1,11 +1,11 @@
-import { Type } from 'angular2/src/core/facade/lang';
+import { Type, ConcreteType } from 'angular2/src/core/facade/lang';
 import { GetterFn, SetterFn, MethodFn } from './types';
-import { PlatformReflectionCapabilities } from 'platform_reflection_capabilities';
+import { PlatformReflectionCapabilities } from './platform_reflection_capabilities';
 export declare class ReflectionCapabilities implements PlatformReflectionCapabilities {
     private _reflect;
     constructor(reflect?: any);
     isReflectionEnabled(): boolean;
-    factory(t: Type): Function;
+    factory(t: ConcreteType): Function;
     _zipTypesAndAnnotaions(paramTypes: any, paramAnnotations: any): any[][];
     parameters(typeOrFunc: Type): any[][];
     annotations(typeOrFunc: Type): any[];

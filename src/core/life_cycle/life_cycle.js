@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
     switch (arguments.length) {
@@ -40,12 +45,17 @@ var profile_1 = require('../profile/profile');
  * ```
  */
 var LifeCycle = (function () {
-    /**
-     * @private
-     */
-    function LifeCycle(changeDetector, enforceNoNewChanges) {
+    function LifeCycle() {
+    }
+    return LifeCycle;
+})();
+exports.LifeCycle = LifeCycle;
+var LifeCycle_ = (function (_super) {
+    __extends(LifeCycle_, _super);
+    function LifeCycle_(changeDetector, enforceNoNewChanges) {
         if (changeDetector === void 0) { changeDetector = null; }
         if (enforceNoNewChanges === void 0) { enforceNoNewChanges = false; }
+        _super.call(this);
         this._runningTick = false;
         this._changeDetectors = [];
         if (lang_1.isPresent(changeDetector)) {
@@ -53,10 +63,7 @@ var LifeCycle = (function () {
         }
         this._enforceNoNewChanges = enforceNoNewChanges;
     }
-    /**
-     * @private
-     */
-    LifeCycle.prototype.registerWith = function (zone, changeDetector) {
+    LifeCycle_.prototype.registerWith = function (zone, changeDetector) {
         var _this = this;
         if (changeDetector === void 0) { changeDetector = null; }
         if (lang_1.isPresent(changeDetector)) {
@@ -64,26 +71,11 @@ var LifeCycle = (function () {
         }
         zone.overrideOnTurnDone(function () { return _this.tick(); });
     };
-    /**
-     *  Invoke this method to explicitly process change detection and its side-effects.
-     *
-     *  In development mode, `tick()` also performs a second change detection cycle to ensure that no
-     * further
-     *  changes are detected. If additional changes are picked up during this second cycle, bindings
-     * in
-     * the app have
-     *  side-effects that cannot be resolved in a single change detection pass. In this case, Angular
-     * throws an error,
-     *  since an Angular application can only have one change detection pass during which all change
-     * detection must
-     *  complete.
-     *
-     */
-    LifeCycle.prototype.tick = function () {
+    LifeCycle_.prototype.tick = function () {
         if (this._runningTick) {
             throw new exceptions_1.BaseException("LifeCycle.tick is called recursively");
         }
-        var s = LifeCycle._tickScope();
+        var s = LifeCycle_._tickScope();
         try {
             this._runningTick = true;
             this._changeDetectors.forEach(function (detector) { return detector.detectChanges(); });
@@ -96,12 +88,12 @@ var LifeCycle = (function () {
             profile_1.wtfLeave(s);
         }
     };
-    LifeCycle._tickScope = profile_1.wtfCreateScope('LifeCycle#tick()');
-    LifeCycle = __decorate([
+    LifeCycle_._tickScope = profile_1.wtfCreateScope('LifeCycle#tick()');
+    LifeCycle_ = __decorate([
         di_1.Injectable(), 
         __metadata('design:paramtypes', [Object, Boolean])
-    ], LifeCycle);
-    return LifeCycle;
-})();
-exports.LifeCycle = LifeCycle;
+    ], LifeCycle_);
+    return LifeCycle_;
+})(LifeCycle);
+exports.LifeCycle_ = LifeCycle_;
 //# sourceMappingURL=life_cycle.js.map

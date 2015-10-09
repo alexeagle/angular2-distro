@@ -97,7 +97,7 @@ var Location = (function () {
         this._subject = new async_1.EventEmitter();
         var browserBaseHref = lang_1.isPresent(href) ? href : this.platformStrategy.getBaseHref();
         if (lang_2.isBlank(browserBaseHref)) {
-            throw new exceptions_1.BaseException("No base href set. Either provide a binding to \"appBaseHrefToken\" or add a base element.");
+            throw new exceptions_1.BaseException("No base href set. Either provide a binding for the APP_BASE_HREF token or add a base element to the document.");
         }
         this._baseHref = stripTrailingSlash(stripIndexHtml(browserBaseHref));
         this.platformStrategy.onPopState(function (_) { async_1.ObservableWrapper.callNext(_this._subject, { 'url': _this.path(), 'pop': true }); });

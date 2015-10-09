@@ -5,14 +5,6 @@ import { Injector } from './injector';
  * Base class for all errors arising from misconfigured bindings.
  */
 export declare class AbstractBindingError extends BaseException {
-    /** @private */
-    message: string;
-    /** @private */
-    keys: Key[];
-    /** @private */
-    injectors: Injector[];
-    /** @private */
-    constructResolvingMessage: Function;
     constructor(injector: Injector, key: Key, constructResolvingMessage: Function);
     addKey(injector: Injector, key: Key): void;
     context: any;
@@ -80,11 +72,6 @@ export declare class CyclicDependencyError extends AbstractBindingError {
  * ```
  */
 export declare class InstantiationError extends WrappedException {
-    /** @private */
-    keys: Key[];
-    /** @private */
-    injectors: Injector[];
-    /** @private */
     constructor(injector: Injector, originalException: any, originalStack: any, key: Key);
     addKey(injector: Injector, key: Key): void;
     wrapperMessage: string;

@@ -23,6 +23,7 @@ var reflection_1 = require('angular2/src/core/reflection/reflection');
 var event_config_1 = require('angular2/src/core/linker/event_config');
 var pipe_binding_1 = require('../pipes/pipe_binding');
 var interfaces_1 = require('./interfaces');
+var view_container_ref_2 = require("./view_container_ref");
 var _staticKeys;
 var StaticKeys = (function () {
     function StaticKeys() {
@@ -141,7 +142,7 @@ var DirectiveBinding = (function (_super) {
         return DirectiveBinding.createFromBinding(binding, annotation);
     };
     return DirectiveBinding;
-})(di_1.ResolvedBinding);
+})(binding_1.ResolvedBinding_);
 exports.DirectiveBinding = DirectiveBinding;
 // TODO(rado): benchmark and consider rolling in as ElementInjector fields.
 var PreBuiltObjects = (function () {
@@ -181,7 +182,7 @@ function _createEventEmitterAccessors(bwv) {
     if (!(binding instanceof DirectiveBinding))
         return [];
     var db = binding;
-    return collection_1.ListWrapper.map(db.eventEmitters, function (eventConfig) {
+    return db.eventEmitters.map(function (eventConfig) {
         var parsedEvent = event_config_1.EventConfig.parse(eventConfig);
         return new EventEmitterAccessor(parsedEvent.eventName, reflection_1.reflector.getter(parsedEvent.fieldName));
     });
@@ -190,12 +191,13 @@ function _createProtoQueryRefs(bindings) {
     var res = [];
     collection_1.ListWrapper.forEachWithIndex(bindings, function (b, i) {
         if (b.binding instanceof DirectiveBinding) {
+            var directiveBinding = b.binding;
             // field queries
-            var queries = b.binding.queries;
+            var queries = directiveBinding.queries;
             queries.forEach(function (q) { return res.push(new ProtoQueryRef(i, q.setter, q.metadata)); });
             // queries passed into the constructor.
             // TODO: remove this after constructor queries are no longer supported
-            var deps = b.binding.resolvedFactories[0].dependencies;
+            var deps = directiveBinding.resolvedFactory.dependencies;
             deps.forEach(function (d) {
                 if (lang_1.isPresent(d.queryDecorator))
                     res.push(new ProtoQueryRef(i, null, d.queryDecorator));
@@ -364,7 +366,7 @@ var ElementInjector = (function (_super) {
     ElementInjector.prototype.getInjector = function () { return this._injector; };
     ElementInjector.prototype.getElementRef = function () { return this._preBuiltObjects.elementRef; };
     ElementInjector.prototype.getViewContainerRef = function () {
-        return new view_container_ref_1.ViewContainerRef(this._preBuiltObjects.viewManager, this.getElementRef());
+        return new view_container_ref_2.ViewContainerRef_(this._preBuiltObjects.viewManager, this.getElementRef());
     };
     ElementInjector.prototype.getNestedView = function () { return this._preBuiltObjects.nestedView; };
     ElementInjector.prototype.getView = function () { return this._preBuiltObjects.view; };

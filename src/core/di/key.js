@@ -53,7 +53,7 @@ var Key = (function () {
 })();
 exports.Key = Key;
 /**
- * @private
+ * @internal
  */
 var KeyRegistry = (function () {
     function KeyRegistry() {

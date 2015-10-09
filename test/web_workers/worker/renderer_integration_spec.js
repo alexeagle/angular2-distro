@@ -29,9 +29,9 @@ function main() {
         var uiMessageBus = messageBuses.ui;
         var workerMessageBus = messageBuses.worker;
         // set up the worker side
-        var webWorkerBrokerFactory = new client_message_broker_1.ClientMessageBrokerFactory(workerMessageBus, workerSerializer);
+        var webWorkerBrokerFactory = new client_message_broker_1.ClientMessageBrokerFactory_(workerMessageBus, workerSerializer);
         // set up the ui side
-        var uiMessageBrokerFactory = new service_message_broker_1.ServiceMessageBrokerFactory(uiMessageBus, uiSerializer);
+        var uiMessageBrokerFactory = new service_message_broker_1.ServiceMessageBrokerFactory_(uiMessageBus, uiSerializer);
         var renderer = new renderer_2.MessageBasedRenderer(uiMessageBrokerFactory, uiMessageBus, uiSerializer, uiRenderProtoViewStore, uiRenderViewStore, domRenderer);
         renderer.start();
         new impl_1.WebWorkerApplication(null, null);
@@ -53,7 +53,8 @@ function main() {
                 core_1.bind(render_proto_view_ref_store_1.RenderProtoViewRefStore)
                     .toValue(uiRenderProtoViewStore),
                 core_1.bind(render_view_with_fragments_store_1.RenderViewWithFragmentsStore).toValue(uiRenderViewStore),
-                core_1.bind(api_1.Renderer).toClass(dom_renderer_1.DomRenderer)
+                core_1.bind(dom_renderer_1.DomRenderer).toClass(dom_renderer_1.DomRenderer_),
+                core_1.bind(api_1.Renderer).toAlias(dom_renderer_1.DomRenderer)
             ]);
             var uiSerializer = uiInjector.get(serializer_1.Serializer);
             var domRenderer = uiInjector.get(dom_renderer_1.DomRenderer);

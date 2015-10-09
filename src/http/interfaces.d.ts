@@ -9,7 +9,6 @@ import { URLSearchParams } from './url_search_params';
  * {@link Request}.
  */
 export declare abstract class ConnectionBackend {
-    constructor();
     abstract createConnection(request: any): Connection;
 }
 /**

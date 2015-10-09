@@ -32,7 +32,7 @@ var MessageBasedRenderer = (function () {
     MessageBasedRenderer.prototype.start = function () {
         var broker = this._brokerFactory.createMessageBroker(messaging_api_1.RENDERER_CHANNEL);
         this._bus.initChannel(messaging_api_1.EVENT_CHANNEL);
-        broker.registerMethod("registerComponentTemplate", [serializer_1.PRIMITIVE, api_2.WebWorkerTemplateCmd, serializer_1.PRIMITIVE], bind_1.bind(this._renderer.registerComponentTemplate, this._renderer));
+        broker.registerMethod("registerComponentTemplate", [serializer_1.PRIMITIVE, api_2.WebWorkerTemplateCmd, serializer_1.PRIMITIVE, serializer_1.PRIMITIVE], bind_1.bind(this._renderer.registerComponentTemplate, this._renderer));
         broker.registerMethod("createProtoView", [api_2.WebWorkerTemplateCmd, serializer_1.PRIMITIVE], bind_1.bind(this._createProtoView, this));
         broker.registerMethod("createRootHostView", [api_1.RenderProtoViewRef, serializer_1.PRIMITIVE, serializer_1.PRIMITIVE, serializer_1.PRIMITIVE], bind_1.bind(this._createRootHostView, this));
         broker.registerMethod("createView", [api_1.RenderProtoViewRef, serializer_1.PRIMITIVE, serializer_1.PRIMITIVE], bind_1.bind(this._createView, this));

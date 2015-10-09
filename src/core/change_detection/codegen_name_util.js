@@ -84,8 +84,8 @@ var CodegenNameUtil = (function () {
                 }
             }
         }
-        var assignmentsCode = collection_1.ListWrapper.isEmpty(assignments) ? '' : collection_1.ListWrapper.join(assignments, '=') + " = false;";
-        return "var " + collection_1.ListWrapper.join(declarations, ',') + ";" + assignmentsCode;
+        var assignmentsCode = collection_1.ListWrapper.isEmpty(assignments) ? '' : assignments.join('=') + " = false;";
+        return "var " + declarations.join(',') + ";" + assignmentsCode;
     };
     /**
      * Generate a statement initializing local variables for event handlers.
@@ -137,16 +137,16 @@ var CodegenNameUtil = (function () {
             return '';
         // At least one assignment.
         fields.push(this._utilName + ".uninitialized;");
-        return collection_1.ListWrapper.join(fields, ' = ');
+        return fields.join(' = ');
     };
     /**
      * Generates statements destroying all pipe variables.
      */
     CodegenNameUtil.prototype.genPipeOnDestroy = function () {
         var _this = this;
-        return collection_1.ListWrapper.join(collection_1.ListWrapper.map(collection_1.ListWrapper.filter(this._records, function (r) { return r.isPipeRecord(); }), function (r) {
-            return _this._utilName + ".callPipeOnDestroy(" + _this.getPipeName(r.selfIndex) + ");";
-        }), '\n');
+        return collection_1.ListWrapper.filter(this._records, function (r) { return r.isPipeRecord(); })
+            .map(function (r) { return (_this._utilName + ".callPipeOnDestroy(" + _this.getPipeName(r.selfIndex) + ");"); })
+            .join('\n');
     };
     CodegenNameUtil.prototype.getPipeName = function (idx) {
         return this._addFieldPrefix(this._sanitizedNames[idx] + "_pipe");

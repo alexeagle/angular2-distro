@@ -21,17 +21,8 @@ var di_1 = require('angular2/src/core/di');
  */
 var AppRootUrl = (function () {
     function AppRootUrl(value) {
-        this._value = value;
+        this.value = value;
     }
-    Object.defineProperty(AppRootUrl.prototype, "value", {
-        /**
-         * Returns the base URL of the currently running application.
-         */
-        get: function () { return this._value; },
-        set: function (value) { this._value = value; },
-        enumerable: true,
-        configurable: true
-    });
     AppRootUrl = __decorate([
         di_1.Injectable(), 
         __metadata('design:paramtypes', [String])

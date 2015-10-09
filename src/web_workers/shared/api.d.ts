@@ -17,8 +17,9 @@ export declare class WebWorkerTextCmd implements RenderTextCmd {
     visit(visitor: RenderCommandVisitor, context: any): any;
 }
 export declare class WebWorkerNgContentCmd implements RenderNgContentCmd {
+    index: number;
     ngContentIndex: number;
-    constructor(ngContentIndex: number);
+    constructor(index: number, ngContentIndex: number);
     visit(visitor: RenderCommandVisitor, context: any): any;
 }
 export declare class WebWorkerBeginElementCmd implements RenderBeginElementCmd {

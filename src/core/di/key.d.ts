@@ -32,11 +32,3 @@ export declare class Key {
      */
     static numberOfKeys: number;
 }
-/**
- * @private
- */
-export declare class KeyRegistry {
-    private _allKeys;
-    get(token: Object): Key;
-    numberOfKeys: number;
-}

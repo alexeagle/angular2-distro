@@ -120,7 +120,7 @@ export declare class BindingWithVisibility {
     getKeyId(): number;
 }
 /**
- * @private
+ * FIXME(alexeagle): make internal
  * Used to provide dependencies that cannot be easily expressed as bindings.
  */
 export interface DependencyProvider {
@@ -255,10 +255,6 @@ export declare class Injector {
      */
     constructor(_proto: any, _parent?: Injector, _depProvider?: any, _debugContext?: Function);
     /**
-     * @private
-     */
-    debugContext(): any;
-    /**
      * Retrieves an instance from the injector based on the provided token.
      * Throws {@link NoBindingError} if not found.
      *
@@ -303,10 +299,6 @@ export declare class Injector {
      */
     getOptional(token: any): any;
     /**
-     * @private
-     */
-    getAt(index: number): any;
-    /**
      * Parent of this injector.
      *
      * <!-- TODO: Add a link to the section of the user guide talking about hierarchical injection.
@@ -321,12 +313,6 @@ export declare class Injector {
      * ```
      */
     parent: Injector;
-    /**
-     * @private
-     * Internal. Do not use.
-     * We return `any` not to export the InjectorStrategy type.
-     */
-    internalStrategy: any;
     /**
      * Resolves an array of bindings and creates a child injector from those bindings.
      *

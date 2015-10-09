@@ -1,6 +1,7 @@
 import { SimpleChange } from 'angular2/src/core/change_detection/change_detection_util';
 /**
- * @private
+ * FIXME(alexeagle): make internal
+ * This is currently exposed by directive_metadata
  */
 export declare enum LifecycleHooks {
     OnInit = 0,
@@ -12,10 +13,6 @@ export declare enum LifecycleHooks {
     AfterViewInit = 6,
     AfterViewChecked = 7,
 }
-/**
- * @private
- */
-export declare var LIFECYCLE_HOOKS_VALUES: LifecycleHooks[];
 /**
  * Lifecycle hooks are guaranteed to be called in the following order:
  * - `OnChanges` (if any bindings have changed),

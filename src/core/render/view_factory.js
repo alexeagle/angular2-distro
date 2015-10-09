@@ -1,46 +1,69 @@
 var lang_1 = require('angular2/src/core/facade/lang');
 var view_1 = require('./view');
 function createRenderView(fragmentCmds, inplaceElement, nodeFactory) {
-    var builders = [];
-    visitAll(new RenderViewBuilder(null, null, inplaceElement, builders, nodeFactory), fragmentCmds);
-    var boundElements = [];
-    var boundTextNodes = [];
-    var nativeShadowRoots = [];
-    var fragments = [];
-    var viewElementOffset = 0;
     var view;
     var eventDispatcher = function (boundElementIndex, eventName, event) {
         return view.dispatchRenderEvent(boundElementIndex, eventName, event);
     };
-    var globalEventAdders = [];
-    for (var i = 0; i < builders.length; i++) {
-        var builder = builders[i];
-        addAll(builder.boundElements, boundElements);
-        addAll(builder.boundTextNodes, boundTextNodes);
-        addAll(builder.nativeShadowRoots, nativeShadowRoots);
-        if (lang_1.isBlank(builder.rootNodesParent)) {
-            fragments.push(new view_1.DefaultRenderFragmentRef(builder.fragmentRootNodes));
-        }
-        for (var j = 0; j < builder.eventData.length; j++) {
-            var eventData = builder.eventData[j];
-            var boundElementIndex = eventData[0] + viewElementOffset;
-            var target = eventData[1];
-            var eventName = eventData[2];
-            if (lang_1.isPresent(target)) {
-                var handler = createEventHandler(boundElementIndex, target + ":" + eventName, eventDispatcher);
-                globalEventAdders.push(createGlobalEventAdder(target, eventName, handler, nodeFactory));
-            }
-            else {
-                var handler = createEventHandler(boundElementIndex, eventName, eventDispatcher);
-                nodeFactory.on(boundElements[boundElementIndex], eventName, handler);
-            }
-        }
-        viewElementOffset += builder.boundElements.length;
+    var context = new BuildContext(eventDispatcher, nodeFactory, inplaceElement);
+    context.build(fragmentCmds);
+    var fragments = [];
+    for (var i = 0; i < context.fragments.length; i++) {
+        fragments.push(new view_1.DefaultRenderFragmentRef(context.fragments[i]));
     }
-    view = new view_1.DefaultRenderView(fragments, boundTextNodes, boundElements, nativeShadowRoots, globalEventAdders);
+    view = new view_1.DefaultRenderView(fragments, context.boundTextNodes, context.boundElements, context.nativeShadowRoots, context.globalEventAdders);
     return view;
 }
 exports.createRenderView = createRenderView;
+var BuildContext = (function () {
+    function BuildContext(_eventDispatcher, factory, _inplaceElement) {
+        this._eventDispatcher = _eventDispatcher;
+        this.factory = factory;
+        this._inplaceElement = _inplaceElement;
+        this._builders = [];
+        this.globalEventAdders = [];
+        this.boundElements = [];
+        this.boundTextNodes = [];
+        this.nativeShadowRoots = [];
+        this.fragments = [];
+    }
+    BuildContext.prototype.build = function (fragmentCmds) {
+        this.enqueueFragmentBuilder(null, fragmentCmds);
+        this._build(this._builders[0]);
+    };
+    BuildContext.prototype._build = function (builder) {
+        this._builders = [];
+        builder.build(this);
+        var enqueuedBuilders = this._builders;
+        for (var i = 0; i < enqueuedBuilders.length; i++) {
+            this._build(enqueuedBuilders[i]);
+        }
+    };
+    BuildContext.prototype.enqueueComponentBuilder = function (component) {
+        this._builders.push(new RenderViewBuilder(component, null, this.factory.resolveComponentTemplate(component.cmd.templateId)));
+    };
+    BuildContext.prototype.enqueueFragmentBuilder = function (parentComponent, commands) {
+        var rootNodes = [];
+        this.fragments.push(rootNodes);
+        this._builders.push(new RenderViewBuilder(parentComponent, rootNodes, commands));
+    };
+    BuildContext.prototype.consumeInplaceElement = function () {
+        var result = this._inplaceElement;
+        this._inplaceElement = null;
+        return result;
+    };
+    BuildContext.prototype.addEventListener = function (boundElementIndex, target, eventName) {
+        if (lang_1.isPresent(target)) {
+            var handler = createEventHandler(boundElementIndex, target + ":" + eventName, this._eventDispatcher);
+            this.globalEventAdders.push(createGlobalEventAdder(target, eventName, handler, this.factory));
+        }
+        else {
+            var handler = createEventHandler(boundElementIndex, eventName, this._eventDispatcher);
+            this.factory.on(this.boundElements[boundElementIndex], eventName, handler);
+        }
+    };
+    return BuildContext;
+})();
 function createEventHandler(boundElementIndex, eventName, eventDispatcher) {
     return function ($event) { return eventDispatcher(boundElementIndex, eventName, $event); };
 }
@@ -48,45 +71,43 @@ function createGlobalEventAdder(target, eventName, eventHandler, nodeFactory) {
     return function () { return nodeFactory.globalOn(target, eventName, eventHandler); };
 }
 var RenderViewBuilder = (function () {
-    function RenderViewBuilder(parentComponent, rootNodesParent, inplaceElement, allBuilders, factory) {
+    function RenderViewBuilder(parentComponent, fragmentRootNodes, commands) {
         this.parentComponent = parentComponent;
-        this.rootNodesParent = rootNodesParent;
-        this.inplaceElement = inplaceElement;
-        this.allBuilders = allBuilders;
-        this.factory = factory;
-        this.boundTextNodes = [];
-        this.boundElements = [];
-        this.eventData = [];
-        this.fragmentRootNodes = [];
-        this.nativeShadowRoots = [];
+        this.fragmentRootNodes = fragmentRootNodes;
+        this.commands = commands;
+        var rootNodesParent = lang_1.isPresent(fragmentRootNodes) ? null : parentComponent.shadowRoot;
         this.parentStack = [rootNodesParent];
-        allBuilders.push(this);
     }
+    RenderViewBuilder.prototype.build = function (context) {
+        for (var i = 0; i < this.commands.length; i++) {
+            this.commands[i].visit(this, context);
+        }
+    };
     Object.defineProperty(RenderViewBuilder.prototype, "parent", {
         get: function () { return this.parentStack[this.parentStack.length - 1]; },
         enumerable: true,
         configurable: true
     });
     RenderViewBuilder.prototype.visitText = function (cmd, context) {
-        var text = this.factory.createText(cmd.value);
-        this._addChild(text, cmd.ngContentIndex);
+        var text = context.factory.createText(cmd.value);
+        this._addChild(text, cmd.ngContentIndex, context);
         if (cmd.isBound) {
-            this.boundTextNodes.push(text);
+            context.boundTextNodes.push(text);
         }
         return null;
     };
     RenderViewBuilder.prototype.visitNgContent = function (cmd, context) {
         if (lang_1.isPresent(this.parentComponent)) {
-            var projectedNodes = this.parentComponent.project();
+            var projectedNodes = this.parentComponent.project(cmd.index);
             for (var i = 0; i < projectedNodes.length; i++) {
                 var node = projectedNodes[i];
-                this._addChild(node, cmd.ngContentIndex);
+                this._addChild(node, cmd.ngContentIndex, context);
             }
         }
         return null;
     };
     RenderViewBuilder.prototype.visitBeginElement = function (cmd, context) {
-        this.parentStack.push(this._beginElement(cmd));
+        this.parentStack.push(this._beginElement(cmd, context));
         return null;
     };
     RenderViewBuilder.prototype.visitEndElement = function (context) {
@@ -94,65 +115,60 @@ var RenderViewBuilder = (function () {
         return null;
     };
     RenderViewBuilder.prototype.visitBeginComponent = function (cmd, context) {
-        var el = this._beginElement(cmd);
+        var el = this._beginElement(cmd, context);
         var root = el;
         if (cmd.nativeShadow) {
-            root = this.factory.createShadowRoot(el);
-            this.nativeShadowRoots.push(root);
+            root = context.factory.createShadowRoot(el, cmd.templateId);
+            context.nativeShadowRoots.push(root);
         }
-        this.parentStack.push(new Component(el, root, cmd, this.factory));
+        var component = new Component(el, root, cmd);
+        context.enqueueComponentBuilder(component);
+        this.parentStack.push(component);
         return null;
     };
     RenderViewBuilder.prototype.visitEndComponent = function (context) {
-        var c = this.parent;
-        var template = this.factory.resolveComponentTemplate(c.cmd.templateId);
-        this._visitChildTemplate(template, c, c.shadowRoot);
         this._endElement();
         return null;
     };
     RenderViewBuilder.prototype.visitEmbeddedTemplate = function (cmd, context) {
-        var el = this.factory.createTemplateAnchor(cmd.attrNameAndValues);
-        this._addChild(el, cmd.ngContentIndex);
-        this.boundElements.push(el);
+        var el = context.factory.createTemplateAnchor(cmd.attrNameAndValues);
+        this._addChild(el, cmd.ngContentIndex, context);
+        context.boundElements.push(el);
         if (cmd.isMerged) {
-            this._visitChildTemplate(cmd.children, this.parentComponent, null);
+            context.enqueueFragmentBuilder(this.parentComponent, cmd.children);
         }
         return null;
     };
-    RenderViewBuilder.prototype._beginElement = function (cmd) {
-        var el;
-        if (lang_1.isPresent(this.inplaceElement)) {
-            el = this.inplaceElement;
-            this.inplaceElement = null;
-            this.factory.mergeElement(el, cmd.attrNameAndValues);
+    RenderViewBuilder.prototype._beginElement = function (cmd, context) {
+        var el = context.consumeInplaceElement();
+        if (lang_1.isPresent(el)) {
+            context.factory.mergeElement(el, cmd.attrNameAndValues);
             this.fragmentRootNodes.push(el);
         }
         else {
-            el = this.factory.createElement(cmd.name, cmd.attrNameAndValues);
-            this._addChild(el, cmd.ngContentIndex);
+            el = context.factory.createElement(cmd.name, cmd.attrNameAndValues);
+            this._addChild(el, cmd.ngContentIndex, context);
         }
         if (cmd.isBound) {
-            this.boundElements.push(el);
+            var boundElementIndex = context.boundElements.length;
+            context.boundElements.push(el);
             for (var i = 0; i < cmd.eventTargetAndNames.length; i += 2) {
                 var target = cmd.eventTargetAndNames[i];
                 var eventName = cmd.eventTargetAndNames[i + 1];
-                this.eventData.push([this.boundElements.length - 1, target, eventName]);
+                context.addEventListener(boundElementIndex, target, eventName);
             }
         }
         return el;
     };
     RenderViewBuilder.prototype._endElement = function () { this.parentStack.pop(); };
-    RenderViewBuilder.prototype._visitChildTemplate = function (cmds, parent, rootNodesParent) {
-        visitAll(new RenderViewBuilder(parent, rootNodesParent, null, this.allBuilders, this.factory), cmds);
-    };
-    RenderViewBuilder.prototype._addChild = function (node, ngContentIndex) {
+    RenderViewBuilder.prototype._addChild = function (node, ngContentIndex, context) {
         var parent = this.parent;
         if (lang_1.isPresent(parent)) {
             if (parent instanceof Component) {
-                parent.addContentNode(ngContentIndex, node);
+                parent.addContentNode(ngContentIndex, node, context);
             }
             else {
-                this.factory.appendChild(parent, node);
+                context.factory.appendChild(parent, node);
             }
         }
         else {
@@ -162,18 +178,16 @@ var RenderViewBuilder = (function () {
     return RenderViewBuilder;
 })();
 var Component = (function () {
-    function Component(hostElement, shadowRoot, cmd, factory) {
+    function Component(hostElement, shadowRoot, cmd) {
         this.hostElement = hostElement;
         this.shadowRoot = shadowRoot;
         this.cmd = cmd;
-        this.factory = factory;
         this.contentNodesByNgContentIndex = [];
-        this.projectingNgContentIndex = 0;
     }
-    Component.prototype.addContentNode = function (ngContentIndex, node) {
+    Component.prototype.addContentNode = function (ngContentIndex, node, context) {
         if (lang_1.isBlank(ngContentIndex)) {
             if (this.cmd.nativeShadow) {
-                this.factory.appendChild(this.hostElement, node);
+                context.factory.appendChild(this.hostElement, node);
             }
         }
         else {
@@ -183,8 +197,7 @@ var Component = (function () {
             this.contentNodesByNgContentIndex[ngContentIndex].push(node);
         }
     };
-    Component.prototype.project = function () {
-        var ngContentIndex = this.projectingNgContentIndex++;
+    Component.prototype.project = function (ngContentIndex) {
         return ngContentIndex < this.contentNodesByNgContentIndex.length ?
             this.contentNodesByNgContentIndex[ngContentIndex] :
             [];
@@ -194,11 +207,6 @@ var Component = (function () {
 function addAll(source, target) {
     for (var i = 0; i < source.length; i++) {
         target.push(source[i]);
-    }
-}
-function visitAll(visitor, fragmentCmds) {
-    for (var i = 0; i < fragmentCmds.length; i++) {
-        fragmentCmds[i].visit(visitor, null);
     }
 }
 //# sourceMappingURL=view_factory.js.map

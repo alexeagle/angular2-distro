@@ -35,7 +35,7 @@ var AbstractChangeDetector = (function () {
         this.locals = null;
         this.mode = null;
         this.pipes = null;
-        this.ref = new change_detector_ref_1.ChangeDetectorRef(this);
+        this.ref = new change_detector_ref_1.ChangeDetectorRef_(this);
     }
     AbstractChangeDetector.prototype.addChild = function (cd) {
         this.lightDomChildren.push(cd);

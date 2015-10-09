@@ -9,6 +9,11 @@ import { ElementRef } from './element_ref';
 import { ProtoPipes } from 'angular2/src/core/pipes/pipes';
 import { TemplateCmd } from './template_commands';
 export { DebugContext } from 'angular2/src/core/change_detection/interfaces';
+export declare enum ViewType {
+    HOST = 0,
+    COMPONENT = 1,
+    EMBEDDED = 2,
+}
 export declare class AppViewContainer {
     views: AppView[];
 }
@@ -83,7 +88,7 @@ export declare class AppProtoViewMergeInfo {
  */
 export declare class AppProtoView {
     templateCmds: TemplateCmd[];
-    type: renderApi.ViewType;
+    type: ViewType;
     isMergable: boolean;
     changeDetectorFactory: Function;
     templateVariableBindings: Map<string, string>;
@@ -95,7 +100,7 @@ export declare class AppProtoView {
     variableLocations: Map<string, number>;
     textBindingCount: any;
     render: renderApi.RenderProtoViewRef;
-    constructor(templateCmds: TemplateCmd[], type: renderApi.ViewType, isMergable: boolean, changeDetectorFactory: Function, templateVariableBindings: Map<string, string>, pipes: ProtoPipes);
+    constructor(templateCmds: TemplateCmd[], type: ViewType, isMergable: boolean, changeDetectorFactory: Function, templateVariableBindings: Map<string, string>, pipes: ProtoPipes);
     init(render: renderApi.RenderProtoViewRef, elementBinders: ElementBinder[], textBindingCount: number, mergeInfo: AppProtoViewMergeInfo, variableLocations: Map<string, number>): void;
     isInitialized(): boolean;
 }

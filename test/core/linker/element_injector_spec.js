@@ -336,7 +336,7 @@ function main() {
         if (distance === void 0) { distance = 1; }
         if (hasShadowRoot === void 0) { hasShadowRoot = false; }
         if (dirVariableBindings === void 0) { dirVariableBindings = null; }
-        var directiveBinding = collection_1.ListWrapper.map(bindings, function (b) {
+        var directiveBinding = bindings.map(function (b) {
             if (b instanceof element_injector_1.DirectiveBinding)
                 return b;
             if (b instanceof core_1.Binding)
@@ -675,7 +675,7 @@ function main() {
                         }).toThrowError(new RegExp("No provider for service!"));
                     });
                     test_lib_1.it("should instantiate directives that depend on pre built objects", function () {
-                        var templateRef = new template_ref_1.TemplateRef(new spies_1.SpyElementRef());
+                        var templateRef = new template_ref_1.TemplateRef_(new spies_1.SpyElementRef());
                         var bindings = collection_1.ListWrapper.concat([NeedsTemplateRef], extraBindings);
                         var inj = injector(bindings, null, false, new element_injector_1.PreBuiltObjects(null, null, null, templateRef));
                         test_lib_1.expect(inj.get(NeedsTemplateRef).templateRef).toEqual(templateRef);
@@ -817,10 +817,10 @@ function main() {
                     });
                     test_lib_1.it('should inject ViewContainerRef', function () {
                         var inj = injector(collection_1.ListWrapper.concat([NeedsViewContainer], extraBindings));
-                        test_lib_1.expect(inj.get(NeedsViewContainer).viewContainer).toBeAnInstanceOf(view_container_ref_1.ViewContainerRef);
+                        test_lib_1.expect(inj.get(NeedsViewContainer).viewContainer).toBeAnInstanceOf(view_container_ref_1.ViewContainerRef_);
                     });
                     test_lib_1.it("should inject TemplateRef", function () {
-                        var templateRef = new template_ref_1.TemplateRef(new spies_1.SpyElementRef());
+                        var templateRef = new template_ref_1.TemplateRef_(new spies_1.SpyElementRef());
                         var inj = injector(collection_1.ListWrapper.concat([NeedsTemplateRef], extraBindings), null, false, new element_injector_1.PreBuiltObjects(null, null, null, templateRef));
                         test_lib_1.expect(inj.get(NeedsTemplateRef).templateRef).toEqual(templateRef);
                     });
@@ -865,7 +865,7 @@ function main() {
                         expectDirectives(inj.get(NeedsQuery).query, CountingDirective, [0]);
                     });
                     test_lib_1.it('should contain PreBuiltObjects on the same injector', function () {
-                        var preBuiltObjects = new element_injector_1.PreBuiltObjects(null, dummyView, null, new template_ref_1.TemplateRef(new spies_1.SpyElementRef()));
+                        var preBuiltObjects = new element_injector_1.PreBuiltObjects(null, dummyView, null, new template_ref_1.TemplateRef_(new spies_1.SpyElementRef()));
                         var inj = injector(collection_1.ListWrapper.concat([
                             NeedsTemplateRefQuery
                         ], extraBindings), null, false, preBuiltObjects);

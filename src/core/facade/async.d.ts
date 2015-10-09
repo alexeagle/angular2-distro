@@ -13,6 +13,10 @@ export declare class PromiseWrapper {
     static wrap<T>(computation: () => T): Promise<T>;
     static completer(): PromiseCompleter<any>;
 }
+export declare namespace NodeJS {
+    interface Timer {
+    }
+}
 export declare class TimerWrapper {
     static setTimeout(fn: (...args: any[]) => void, millis: number): NodeJS.Timer;
     static clearTimeout(id: NodeJS.Timer): void;

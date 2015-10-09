@@ -18,6 +18,7 @@ var template_compiler_1 = require('angular2/src/core/compiler/template_compiler'
 var eval_module_1 = require('./eval_module');
 var source_module_1 = require('angular2/src/core/compiler/source_module');
 var xhr_1 = require('angular2/src/core/compiler/xhr');
+var view_1 = require('angular2/src/core/metadata/view');
 var change_detection_1 = require('angular2/src/core/change_detection/change_detection');
 var template_commands_1 = require('angular2/src/core/linker/template_commands');
 var core_1 = require('angular2/core');
@@ -215,7 +216,11 @@ var CompWithBindingsAndStyles = (function () {
             moduleId: THIS_MODULE_ID,
             exportAs: 'someExportAs'
         }),
-        core_1.View({ template: '<a [href]="someProp"></a>', styles: ['div {color: red}'] }), 
+        core_1.View({
+            template: '<a [href]="someProp"></a>',
+            styles: ['div {color: red}'],
+            encapsulation: view_1.ViewEncapsulation.None
+        }), 
         __metadata('design:paramtypes', [])
     ], CompWithBindingsAndStyles);
     return CompWithBindingsAndStyles;
@@ -225,7 +230,7 @@ var TreeComp = (function () {
     }
     TreeComp = __decorate([
         core_1.Component({ selector: 'tree', moduleId: THIS_MODULE_ID }),
-        core_1.View({ template: '<tree></tree>', directives: [TreeComp] }), 
+        core_1.View({ template: '<tree></tree>', directives: [TreeComp], encapsulation: view_1.ViewEncapsulation.None }), 
         __metadata('design:paramtypes', [])
     ], TreeComp);
     return TreeComp;
@@ -235,7 +240,7 @@ var CompWithTemplateUrl = (function () {
     }
     CompWithTemplateUrl = __decorate([
         core_1.Component({ selector: 'comp-url', moduleId: THIS_MODULE_ID }),
-        core_1.View({ templateUrl: 'compUrl.html' }), 
+        core_1.View({ templateUrl: 'compUrl.html', encapsulation: view_1.ViewEncapsulation.None }), 
         __metadata('design:paramtypes', [])
     ], CompWithTemplateUrl);
     return CompWithTemplateUrl;
@@ -245,7 +250,10 @@ var CompWithEmbeddedTemplate = (function () {
     }
     CompWithEmbeddedTemplate = __decorate([
         core_1.Component({ selector: 'comp-tpl', moduleId: THIS_MODULE_ID }),
-        core_1.View({ template: '<template><a [href]="someProp"></a></template>' }), 
+        core_1.View({
+            template: '<template><a [href]="someProp"></a></template>',
+            encapsulation: view_1.ViewEncapsulation.None
+        }), 
         __metadata('design:paramtypes', [])
     ], CompWithEmbeddedTemplate);
     return CompWithEmbeddedTemplate;

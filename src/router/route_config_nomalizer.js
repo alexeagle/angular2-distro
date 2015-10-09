@@ -9,8 +9,11 @@ function normalizeRouteConfig(config) {
         config instanceof route_config_decorator_1.AuxRoute) {
         return config;
     }
-    if ((!config.component) == (!config.redirectTo)) {
+    if ((+!!config.component) + (+!!config.redirectTo) + (+!!config.loader) != 1) {
         throw new exceptions_1.BaseException("Route config should contain exactly one \"component\", \"loader\", or \"redirectTo\" property.");
+    }
+    if (config.loader) {
+        return new route_config_decorator_1.AsyncRoute({ path: config.path, loader: config.loader, as: config.as });
     }
     if (config.component) {
         if (typeof config.component == 'object') {

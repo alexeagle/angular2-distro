@@ -54,7 +54,7 @@ function _sameDirIndex(a, b) {
     return di1 === di2 && ei1 === ei2;
 }
 function _replaceIndices(r, selfIndex, indexMap) {
-    var args = collection_1.ListWrapper.map(r.args, function (a) { return _map(indexMap, a); });
+    var args = r.args.map(function (a) { return _map(indexMap, a); });
     var contextIndex = _map(indexMap, r.contextIndex);
     return new proto_record_1.ProtoRecord(r.mode, r.name, r.funcOrValue, args, r.fixedArgs, contextIndex, r.directiveIndex, selfIndex, r.bindingRecord, r.lastInBinding, r.lastInDirective, r.argumentToPureFunction, r.referencedBySelf, r.propertyBindingIndex);
 }

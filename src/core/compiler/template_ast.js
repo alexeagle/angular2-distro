@@ -153,7 +153,8 @@ var DirectiveAst = (function () {
 })();
 exports.DirectiveAst = DirectiveAst;
 var NgContentAst = (function () {
-    function NgContentAst(ngContentIndex, sourceInfo) {
+    function NgContentAst(index, ngContentIndex, sourceInfo) {
+        this.index = index;
         this.ngContentIndex = ngContentIndex;
         this.sourceInfo = sourceInfo;
     }

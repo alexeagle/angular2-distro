@@ -1,4 +1,3 @@
-var collection_1 = require('angular2/src/core/facade/collection');
 var lang_1 = require('angular2/src/core/facade/lang');
 var codegen_facade_1 = require('./codegen_facade');
 var proto_record_1 = require('./proto_record');
@@ -33,7 +32,7 @@ var CodegenLogicUtil = (function () {
         var context = (protoRec.contextIndex == -1) ?
             this._names.getDirectiveName(protoRec.directiveIndex) :
             getLocalName(protoRec.contextIndex);
-        var argString = collection_1.ListWrapper.map(protoRec.args, function (arg) { return getLocalName(arg); }).join(", ");
+        var argString = protoRec.args.map(function (arg) { return getLocalName(arg); }).join(", ");
         var rhs;
         switch (protoRec.mode) {
             case proto_record_1.RecordType.Self:

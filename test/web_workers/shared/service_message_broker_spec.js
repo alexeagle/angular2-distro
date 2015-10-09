@@ -28,7 +28,7 @@ function main() {
             messageBuses.worker.initChannel(CHANNEL);
         });
         test_lib_1.it("should call registered method with correct arguments", test_lib_1.inject([serializer_1.Serializer], function (serializer) {
-            var broker = new service_message_broker_1.ServiceMessageBroker(messageBuses.ui, serializer, CHANNEL);
+            var broker = new service_message_broker_1.ServiceMessageBroker_(messageBuses.ui, serializer, CHANNEL);
             broker.registerMethod(TEST_METHOD, [serializer_1.PRIMITIVE, serializer_1.PRIMITIVE], function (arg1, arg2) {
                 test_lib_1.expect(arg1).toEqual(PASSED_ARG_1);
                 test_lib_1.expect(arg2).toEqual(PASSED_ARG_2);
@@ -36,7 +36,7 @@ function main() {
             async_1.ObservableWrapper.callNext(messageBuses.worker.to(CHANNEL), { 'method': TEST_METHOD, 'args': [PASSED_ARG_1, PASSED_ARG_2] });
         }));
         test_lib_1.it("should return promises to the worker", test_lib_1.inject([serializer_1.Serializer], function (serializer) {
-            var broker = new service_message_broker_1.ServiceMessageBroker(messageBuses.ui, serializer, CHANNEL);
+            var broker = new service_message_broker_1.ServiceMessageBroker_(messageBuses.ui, serializer, CHANNEL);
             broker.registerMethod(TEST_METHOD, [serializer_1.PRIMITIVE], function (arg1) {
                 test_lib_1.expect(arg1).toEqual(PASSED_ARG_1);
                 return async_1.PromiseWrapper.wrap(function () { return RESULT; });

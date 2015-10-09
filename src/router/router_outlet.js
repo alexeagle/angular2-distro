@@ -35,9 +35,6 @@ var _resolveToTrue = async_1.PromiseWrapper.resolve(true);
  * ```
  */
 var RouterOutlet = (function () {
-    /**
-     * @private
-     */
     function RouterOutlet(_elementRef, _loader, _parentRouter, nameAttr) {
         this._elementRef = _elementRef;
         this._loader = _loader;

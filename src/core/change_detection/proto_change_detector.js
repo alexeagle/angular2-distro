@@ -243,7 +243,7 @@ function _arrayFn(length) {
     }
 }
 function _mapPrimitiveName(keys) {
-    var stringifiedKeys = collection_1.ListWrapper.join(collection_1.ListWrapper.map(keys, function (k) { return lang_1.isString(k) ? "\"" + k + "\"" : "" + k; }), ", ");
+    var stringifiedKeys = keys.map(function (k) { return lang_1.isString(k) ? "\"" + k + "\"" : "" + k; }).join(', ');
     return "mapFn([" + stringifiedKeys + "])";
 }
 function _operationToPrimitiveName(operation) {

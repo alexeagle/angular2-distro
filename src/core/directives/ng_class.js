@@ -112,13 +112,13 @@ var NgClass = (function () {
     };
     NgClass.prototype._applyInitialClasses = function (isCleanup) {
         var _this = this;
-        collection_1.ListWrapper.forEach(this._initialClasses, function (className) { _this._toggleClass(className, !isCleanup); });
+        this._initialClasses.forEach(function (className) { return _this._toggleClass(className, !isCleanup); });
     };
     NgClass.prototype._applyClasses = function (rawClassVal, isCleanup) {
         var _this = this;
         if (lang_1.isPresent(rawClassVal)) {
             if (collection_1.isListLikeIterable(rawClassVal)) {
-                collection_1.ListWrapper.forEach(rawClassVal, function (className) { return _this._toggleClass(className, !isCleanup); });
+                rawClassVal.forEach(function (className) { return _this._toggleClass(className, !isCleanup); });
             }
             else {
                 collection_1.StringMapWrapper.forEach(rawClassVal, function (expVal, className) {

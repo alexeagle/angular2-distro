@@ -408,7 +408,7 @@ var ShadowCss = (function () {
         for (var i = 0; i < splits.length; i++) {
             var sep = splits[i];
             var parts = scoped.split(sep);
-            scoped = collection_1.ListWrapper.map(parts, function (p) {
+            scoped = parts.map(function (p) {
                 // remove :host since it should be unnecessary
                 var t = lang_1.StringWrapper.replaceAll(p.trim(), _polyfillHostRe, '');
                 if (t.length > 0 && !collection_1.ListWrapper.contains(splits, t) &&
@@ -420,7 +420,8 @@ var ShadowCss = (function () {
                     }
                 }
                 return p;
-            }).join(sep);
+            })
+                .join(sep);
         }
         return scoped;
     };

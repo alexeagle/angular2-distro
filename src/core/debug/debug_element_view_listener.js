@@ -25,13 +25,13 @@ var _allViewsById = new collection_1.Map();
 var _nextId = 0;
 function _setElementId(element, indices) {
     if (lang_1.isPresent(element)) {
-        dom_adapter_1.DOM.setData(element, NG_ID_PROPERTY, collection_1.ListWrapper.join(indices, NG_ID_SEPARATOR));
+        dom_adapter_1.DOM.setData(element, NG_ID_PROPERTY, indices.join(NG_ID_SEPARATOR));
     }
 }
 function _getElementId(element) {
     var elId = dom_adapter_1.DOM.getData(element, NG_ID_PROPERTY);
     if (lang_1.isPresent(elId)) {
-        return collection_1.ListWrapper.map(elId.split(NG_ID_SEPARATOR), function (partStr) { return lang_1.NumberWrapper.parseInt(partStr, 10); });
+        return elId.split(NG_ID_SEPARATOR).map(function (partStr) { return lang_1.NumberWrapper.parseInt(partStr, 10); });
     }
     else {
         return null;
@@ -42,7 +42,7 @@ function inspectNativeElement(element) {
     if (lang_1.isPresent(elId)) {
         var view = _allViewsById.get(elId[0]);
         if (lang_1.isPresent(view)) {
-            return new debug_element_1.DebugElement(view, elId[1]);
+            return new debug_element_1.DebugElement_(view, elId[1]);
         }
     }
     return null;

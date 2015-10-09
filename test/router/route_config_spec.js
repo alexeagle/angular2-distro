@@ -82,6 +82,18 @@ function main() {
                 router.navigateByUrl('/hello');
             });
         }));
+        test_lib_1.it('should work in an app with async components defined with "loader"', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
+            bootstrap_1.bootstrap(ConciseAsyncAppCmp, [core_1.bind(router_1.ROUTER_PRIMARY_COMPONENT).toValue(AsyncAppCmp), testBindings])
+                .then(function (applicationRef) {
+                var router = applicationRef.hostComponent.router;
+                router.subscribe(function (_) {
+                    test_lib_1.expect(el).toHaveText('root { hello }');
+                    test_lib_1.expect(applicationRef.hostComponent.location.path()).toEqual('/hello');
+                    async.done();
+                });
+                router.navigateByUrl('/hello');
+            });
+        }));
         test_lib_1.it('should work in an app with a constructor component', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
             bootstrap_1.bootstrap(ExplicitConstructorAppCmp, [core_1.bind(router_1.ROUTER_PRIMARY_COMPONENT).toValue(ExplicitConstructorAppCmp), testBindings])
                 .then(function (applicationRef) {
@@ -164,6 +176,21 @@ var AsyncAppCmp = (function () {
         __metadata('design:paramtypes', [router_1.Router, location_strategy_1.LocationStrategy])
     ], AsyncAppCmp);
     return AsyncAppCmp;
+})();
+var ConciseAsyncAppCmp = (function () {
+    function ConciseAsyncAppCmp(router, location) {
+        this.router = router;
+        this.location = location;
+    }
+    ConciseAsyncAppCmp = __decorate([
+        metadata_1.Component({ selector: 'app-cmp' }),
+        metadata_1.View({ template: "root { <router-outlet></router-outlet> }", directives: router_1.ROUTER_DIRECTIVES }),
+        router_1.RouteConfig([
+            { path: '/hello', loader: HelloLoader },
+        ]), 
+        __metadata('design:paramtypes', [router_1.Router, location_strategy_1.LocationStrategy])
+    ], ConciseAsyncAppCmp);
+    return ConciseAsyncAppCmp;
 })();
 var ExplicitConstructorAppCmp = (function () {
     function ExplicitConstructorAppCmp(router, location) {

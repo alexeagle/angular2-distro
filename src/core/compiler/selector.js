@@ -125,7 +125,7 @@ var CssSelector = (function () {
                 res += ']';
             }
         }
-        collection_1.ListWrapper.forEach(this.notSelectors, function (notSelector) { res += ":not(" + notSelector.toString() + ")"; });
+        this.notSelectors.forEach(function (notSelector) { return res += ":not(" + notSelector + ")"; });
         return res;
     };
     return CssSelector;

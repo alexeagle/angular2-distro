@@ -18,7 +18,7 @@ var Log = (function () {
         };
     };
     Log.prototype.clear = function () { this._result = []; };
-    Log.prototype.result = function () { return collection_1.ListWrapper.join(this._result, "; "); };
+    Log.prototype.result = function () { return this._result.join("; "); };
     return Log;
 })();
 exports.Log = Log;

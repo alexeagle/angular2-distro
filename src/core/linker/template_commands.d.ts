@@ -39,12 +39,13 @@ export declare class TextCmd implements TemplateCmd, RenderTextCmd {
 }
 export declare function text(value: string, isBound: boolean, ngContentIndex: number): TextCmd;
 export declare class NgContentCmd implements TemplateCmd, RenderNgContentCmd {
+    index: number;
     ngContentIndex: number;
     isBound: boolean;
-    constructor(ngContentIndex: number);
+    constructor(index: number, ngContentIndex: number);
     visit(visitor: RenderCommandVisitor, context: any): any;
 }
-export declare function ngContent(ngContentIndex: number): NgContentCmd;
+export declare function ngContent(index: number, ngContentIndex: number): NgContentCmd;
 export interface IBeginElementCmd extends TemplateCmd, RenderBeginElementCmd {
     variableNameAndValues: Array<string | number>;
     eventTargetAndNames: string[];

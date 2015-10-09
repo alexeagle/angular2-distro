@@ -1,5 +1,6 @@
 /**
- * @private
+ * FIXME(alexeagle): make internal
+ * This is currently exposed by directive_metadata
  */
 (function (LifecycleHooks) {
     LifecycleHooks[LifecycleHooks["OnInit"] = 0] = "OnInit";
@@ -13,7 +14,7 @@
 })(exports.LifecycleHooks || (exports.LifecycleHooks = {}));
 var LifecycleHooks = exports.LifecycleHooks;
 /**
- * @private
+ * @internal
  */
 exports.LIFECYCLE_HOOKS_VALUES = [
     LifecycleHooks.OnInit,

@@ -29,7 +29,8 @@ var WebWorkerTextCmd = (function () {
 })();
 exports.WebWorkerTextCmd = WebWorkerTextCmd;
 var WebWorkerNgContentCmd = (function () {
-    function WebWorkerNgContentCmd(ngContentIndex) {
+    function WebWorkerNgContentCmd(index, ngContentIndex) {
+        this.index = index;
         this.ngContentIndex = ngContentIndex;
     }
     WebWorkerNgContentCmd.prototype.visit = function (visitor, context) {

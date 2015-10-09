@@ -164,9 +164,7 @@ var BrowserDomAdapter = (function (_super) {
         return node;
     };
     BrowserDomAdapter.prototype.insertBefore = function (el, node) { el.parentNode.insertBefore(node, el); };
-    BrowserDomAdapter.prototype.insertAllBefore = function (el, nodes) {
-        collection_1.ListWrapper.forEach(nodes, function (n) { el.parentNode.insertBefore(n, el); });
-    };
+    BrowserDomAdapter.prototype.insertAllBefore = function (el, nodes) { nodes.forEach(function (n) { return el.parentNode.insertBefore(n, el); }); };
     BrowserDomAdapter.prototype.insertAfter = function (el, node) { el.parentNode.insertBefore(node, el.nextSibling); };
     BrowserDomAdapter.prototype.setInnerHTML = function (el, value) { el.innerHTML = value; };
     BrowserDomAdapter.prototype.getText = function (el) { return el.textContent; };

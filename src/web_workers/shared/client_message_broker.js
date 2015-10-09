@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
     switch (arguments.length) {
@@ -19,34 +24,44 @@ var lang_2 = require("angular2/src/core/facade/lang");
 var lang_3 = require("angular2/src/core/facade/lang");
 exports.Type = lang_3.Type;
 var ClientMessageBrokerFactory = (function () {
-    /**
-     * @private
-     */
-    function ClientMessageBrokerFactory(_messageBus, _serializer) {
+    function ClientMessageBrokerFactory() {
+    }
+    return ClientMessageBrokerFactory;
+})();
+exports.ClientMessageBrokerFactory = ClientMessageBrokerFactory;
+var ClientMessageBrokerFactory_ = (function (_super) {
+    __extends(ClientMessageBrokerFactory_, _super);
+    function ClientMessageBrokerFactory_(_messageBus, _serializer) {
+        _super.call(this);
         this._messageBus = _messageBus;
         this._serializer = _serializer;
     }
     /**
      * Initializes the given channel and attaches a new {@link ClientMessageBroker} to it.
      */
-    ClientMessageBrokerFactory.prototype.createMessageBroker = function (channel, runInZone) {
+    ClientMessageBrokerFactory_.prototype.createMessageBroker = function (channel, runInZone) {
         if (runInZone === void 0) { runInZone = true; }
         this._messageBus.initChannel(channel, runInZone);
-        return new ClientMessageBroker(this._messageBus, this._serializer, channel);
+        return new ClientMessageBroker_(this._messageBus, this._serializer, channel);
     };
-    ClientMessageBrokerFactory = __decorate([
+    ClientMessageBrokerFactory_ = __decorate([
         di_1.Injectable(), 
         __metadata('design:paramtypes', [message_bus_1.MessageBus, serializer_1.Serializer])
-    ], ClientMessageBrokerFactory);
-    return ClientMessageBrokerFactory;
-})();
-exports.ClientMessageBrokerFactory = ClientMessageBrokerFactory;
+    ], ClientMessageBrokerFactory_);
+    return ClientMessageBrokerFactory_;
+})(ClientMessageBrokerFactory);
+exports.ClientMessageBrokerFactory_ = ClientMessageBrokerFactory_;
 var ClientMessageBroker = (function () {
-    /**
-     * @private
-     */
-    function ClientMessageBroker(messageBus, _serializer, channel) {
+    function ClientMessageBroker() {
+    }
+    return ClientMessageBroker;
+})();
+exports.ClientMessageBroker = ClientMessageBroker;
+var ClientMessageBroker_ = (function (_super) {
+    __extends(ClientMessageBroker_, _super);
+    function ClientMessageBroker_(messageBus, _serializer, channel) {
         var _this = this;
+        _super.call(this);
         this._serializer = _serializer;
         this.channel = channel;
         this._pending = new Map();
@@ -54,7 +69,7 @@ var ClientMessageBroker = (function () {
         var source = messageBus.from(channel);
         async_1.ObservableWrapper.subscribe(source, function (message) { return _this._handleMessage(message); });
     }
-    ClientMessageBroker.prototype._generateMessageId = function (name) {
+    ClientMessageBroker_.prototype._generateMessageId = function (name) {
         var time = lang_1.stringify(lang_1.DateWrapper.toMillis(lang_1.DateWrapper.now()));
         var iteration = 0;
         var id = name + time + lang_1.stringify(iteration);
@@ -64,11 +79,11 @@ var ClientMessageBroker = (function () {
         }
         return id;
     };
-    ClientMessageBroker.prototype.runOnService = function (args, returnType) {
+    ClientMessageBroker_.prototype.runOnService = function (args, returnType) {
         var _this = this;
         var fnArgs = [];
         if (lang_1.isPresent(args.args)) {
-            collection_1.ListWrapper.forEach(args.args, function (argument) {
+            args.args.forEach(function (argument) {
                 if (argument.type != null) {
                     fnArgs.push(_this._serializer.serialize(argument.value, argument.type));
                 }
@@ -107,7 +122,7 @@ var ClientMessageBroker = (function () {
         async_1.ObservableWrapper.callNext(this._sink, message);
         return promise;
     };
-    ClientMessageBroker.prototype._handleMessage = function (message) {
+    ClientMessageBroker_.prototype._handleMessage = function (message) {
         var data = new MessageData(message);
         // TODO(jteplitz602): replace these strings with messaging constants #3685
         if (lang_2.StringWrapper.equals(data.type, "result") || lang_2.StringWrapper.equals(data.type, "error")) {
@@ -123,9 +138,9 @@ var ClientMessageBroker = (function () {
             }
         }
     };
-    return ClientMessageBroker;
-})();
-exports.ClientMessageBroker = ClientMessageBroker;
+    return ClientMessageBroker_;
+})(ClientMessageBroker);
+exports.ClientMessageBroker_ = ClientMessageBroker_;
 var MessageData = (function () {
     function MessageData(data) {
         this.type = collection_1.StringMapWrapper.get(data, "type");

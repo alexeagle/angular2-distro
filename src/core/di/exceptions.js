@@ -22,7 +22,7 @@ function findFirstClosedCycle(keys) {
 function constructResolvingPath(keys) {
     if (keys.length > 1) {
         var reversed = findFirstClosedCycle(collection_1.ListWrapper.reversed(keys));
-        var tokenStrs = collection_1.ListWrapper.map(reversed, function (k) { return lang_1.stringify(k.token); });
+        var tokenStrs = reversed.map(function (k) { return lang_1.stringify(k.token); });
         return " (" + tokenStrs.join(' -> ') + ")";
     }
     else {
@@ -133,7 +133,6 @@ exports.CyclicDependencyError = CyclicDependencyError;
  */
 var InstantiationError = (function (_super) {
     __extends(InstantiationError, _super);
-    /** @private */
     function InstantiationError(injector, originalException, originalStack, key) {
         _super.call(this, "DI Exception", originalException, originalStack, null);
         this.keys = [key];
@@ -224,7 +223,7 @@ var NoAnnotationError = (function (_super) {
                 signature.push('?');
             }
             else {
-                signature.push(collection_1.ListWrapper.map(parameter, lang_1.stringify).join(' '));
+                signature.push(parameter.map(lang_1.stringify).join(' '));
             }
         }
         return "Cannot resolve all parameters for " + lang_1.stringify(typeOrFunc) + "(" +

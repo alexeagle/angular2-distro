@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var view_ref_1 = require('./view_ref');
 /**
  * Represents an Embedded Template that can be used to instantiate Embedded Views.
@@ -12,22 +17,25 @@ var view_ref_1 = require('./view_ref');
  * View Container.
  */
 var TemplateRef = (function () {
-    /**
-     * @private
-     */
-    function TemplateRef(elementRef) {
+    function TemplateRef() {
+    }
+    return TemplateRef;
+})();
+exports.TemplateRef = TemplateRef;
+var TemplateRef_ = (function (_super) {
+    __extends(TemplateRef_, _super);
+    function TemplateRef_(elementRef) {
+        _super.call(this);
         this.elementRef = elementRef;
     }
-    TemplateRef.prototype._getProtoView = function () {
-        var parentView = view_ref_1.internalView(this.elementRef.parentView);
-        return parentView.proto
-            .elementBinders[this.elementRef.boundElementIndex - parentView.elementOffset]
+    TemplateRef_.prototype._getProtoView = function () {
+        var elementRef = this.elementRef;
+        var parentView = view_ref_1.internalView(elementRef.parentView);
+        return parentView.proto.elementBinders[elementRef.boundElementIndex - parentView.elementOffset]
             .nestedProtoView;
     };
-    Object.defineProperty(TemplateRef.prototype, "protoViewRef", {
+    Object.defineProperty(TemplateRef_.prototype, "protoViewRef", {
         /**
-         * @private
-         *
          * Reference to the ProtoView used for creating Embedded Views that are based on the compiled
          * Embedded Template.
          */
@@ -35,13 +43,10 @@ var TemplateRef = (function () {
         enumerable: true,
         configurable: true
     });
-    /**
-     * Allows you to check if this Embedded Template defines Local Variable with name matching `name`.
-     */
-    TemplateRef.prototype.hasLocal = function (name) {
+    TemplateRef_.prototype.hasLocal = function (name) {
         return this._getProtoView().templateVariableBindings.has(name);
     };
-    return TemplateRef;
-})();
-exports.TemplateRef = TemplateRef;
+    return TemplateRef_;
+})(TemplateRef);
+exports.TemplateRef_ = TemplateRef_;
 //# sourceMappingURL=template_ref.js.map

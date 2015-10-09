@@ -7,7 +7,7 @@ var template_commands_1 = require('angular2/src/core/linker/template_commands');
 var command_compiler_1 = require('angular2/src/core/compiler/command_compiler');
 var directive_metadata_1 = require('angular2/src/core/compiler/directive_metadata');
 var source_module_1 = require('angular2/src/core/compiler/source_module');
-var api_1 = require('angular2/src/core/render/api');
+var view_1 = require('angular2/src/core/metadata/view');
 var eval_module_1 = require('./eval_module');
 var util_1 = require('angular2/src/core/compiler/util');
 var test_bindings_1 = require('./test_bindings');
@@ -60,7 +60,7 @@ function main() {
         function createComp(_a) {
             var type = _a.type, selector = _a.selector, template = _a.template, encapsulation = _a.encapsulation, ngContentSelectors = _a.ngContentSelectors;
             if (lang_1.isBlank(encapsulation)) {
-                encapsulation = api_1.ViewEncapsulation.None;
+                encapsulation = view_1.ViewEncapsulation.None;
             }
             if (lang_1.isBlank(selector)) {
                 selector = 'root';
@@ -171,7 +171,7 @@ function main() {
                     var rootComp = createComp({
                         type: RootCompTypeMeta,
                         template: '<div>',
-                        encapsulation: api_1.ViewEncapsulation.Emulated
+                        encapsulation: view_1.ViewEncapsulation.Emulated
                     });
                     run(rootComp, [])
                         .then(function (data) {
@@ -222,9 +222,9 @@ function main() {
                     var rootComp = createComp({
                         type: RootCompTypeMeta,
                         template: '<a></a>',
-                        encapsulation: api_1.ViewEncapsulation.Emulated
+                        encapsulation: view_1.ViewEncapsulation.Emulated
                     });
-                    var comp = createComp({ type: ACompTypeMeta, selector: 'a', encapsulation: api_1.ViewEncapsulation.Emulated });
+                    var comp = createComp({ type: ACompTypeMeta, selector: 'a', encapsulation: view_1.ViewEncapsulation.Emulated });
                     run(rootComp, [comp])
                         .then(function (data) {
                         test_lib_1.expect(data).toEqual([
@@ -246,7 +246,7 @@ function main() {
                 }));
                 test_lib_1.it('should set nativeShadow flag', test_lib_1.inject([test_lib_1.AsyncTestCompleter], function (async) {
                     var rootComp = createComp({ type: RootCompTypeMeta, template: '<a></a>' });
-                    var comp = createComp({ type: ACompTypeMeta, selector: 'a', encapsulation: api_1.ViewEncapsulation.Native });
+                    var comp = createComp({ type: ACompTypeMeta, selector: 'a', encapsulation: view_1.ViewEncapsulation.Native });
                     run(rootComp, [comp])
                         .then(function (data) {
                         test_lib_1.expect(data).toEqual([

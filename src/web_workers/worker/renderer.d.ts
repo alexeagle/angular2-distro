@@ -9,7 +9,7 @@ export declare class WebWorkerRenderer implements Renderer {
     private _eventDispatcher;
     private _messageBroker;
     constructor(messageBrokerFactory: ClientMessageBrokerFactory, _renderProtoViewRefStore: RenderProtoViewRefStore, _renderViewStore: RenderViewWithFragmentsStore, _eventDispatcher: WebWorkerEventDispatcher);
-    registerComponentTemplate(templateId: number, commands: RenderTemplateCmd[], styles: string[]): void;
+    registerComponentTemplate(templateId: number, commands: RenderTemplateCmd[], styles: string[], nativeShadow: boolean): void;
     createProtoView(cmds: RenderTemplateCmd[]): RenderProtoViewRef;
     /**
      * Creates a root host view that includes the given element.

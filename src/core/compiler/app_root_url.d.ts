@@ -8,10 +8,6 @@
  * See {@link Compiler}
  */
 export declare class AppRootUrl {
-    private _value;
-    constructor(value: string);
-    /**
-     * Returns the base URL of the currently running application.
-     */
     value: string;
+    constructor(value: string);
 }
