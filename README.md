@@ -5,7 +5,7 @@ It's a proof-of-concept for solving https://github.com/angular/angular/issues/30
 in a way that lets developers start coding Angular 2 this fast:
 
 ```
-$ mkdir angular2-quickerstart; cd !$
+$ mkdir angular2-quickerstart; cd angular2-quickerstart
 $ npm install typescript angular2@alexeagle/angular2-distro
 $ ./node_modules/.bin/tsc -init --experimentalDecorators --target es5
 # Open VSCode
@@ -18,8 +18,6 @@ It works because the TypeScript team has developed a way for the compiler
 to find the type definitions directly from the `node_modules` folder.
 
 Remaining problems to address before demo/shipping:
-- Errors from tsc because our transitive typings are missing, see 
-  https://github.com/Microsoft/TypeScript/issues/5097
 - VSCode should use the version of typescript found in node_modules *by default*:
   mailed a contact on the team requesting this
 - tsc --watch should see newly added files, so we can start the compiler before coding:
