@@ -17,13 +17,8 @@ It works because the TypeScript team has developed a way for the compiler
 (and editor plugins that use TypeScript's language services)
 to find the type definitions directly from the `node_modules` folder.
 
-Remaining problems to address before demo/shipping:
+Remaining problems to address before shipping:
 - VSCode should use the version of typescript found in node_modules *by default*:
   mailed a contact on the team requesting this
 - tsc --watch should see newly added files, so we can start the compiler before coding:
   https://github.com/Microsoft/TypeScript/issues/4553
-- Lots of private APIs exposed, need to
-  - Use `@internal` everywhere: https://github.com/angular/angular/pull/4477
-  - members marked `private` appear: https://github.com/Microsoft/TypeScript/issues/5106
-  - introduce abstract classes as a supertype of current Angular APIs with @private constructor:
-    https://github.com/angular/angular/issues/4518
